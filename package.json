@@ -10,7 +10,10 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+
+    "clean": "rm -rf node_modules dist && pnpm -r run clean",
+    "phoenix": "pnpm clean && pnpm install"
   },
   "devEngines": {
     "packageManager": {
@@ -21,6 +24,8 @@
   },
   "devDependencies": {
     "@maxigarcia/eslint-config": "^1.14.1",
-    "eslint": "^10.13.0"
+    "@nx/js": "^23.3.0",
+    "eslint": "^10.13.0",
+    "nx": "^23.3.0"
   }
 }
