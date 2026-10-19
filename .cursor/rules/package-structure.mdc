@@ -1,0 +1,43 @@
+---
+description: Standard folder layout for packages; shared types/logic go in shared
+alwaysApply: true
+---
+
+# Package structure
+
+Every package under `packages/` follows this layout. Use only the folders you need; do not invent parallel layers.
+
+```
+packages/<name>/
+  domain/       # business logic and types (entities, rules, domain errors)
+  components/   # UI building blocks (apps)
+  scripts/      # CLI / runnable entrypoints (scrapers, jobs, tools)
+  services/     # API and external I/O (HTTP, feeds, DB clients)
+  utils/        # small reusable helpers with no business meaning
+```
+
+## Layer rules
+
+- **domain**: types, pure business rules, validation. No HTTP, DOM, or framework UI.
+- **components / scripts**: application surface — screens, CLI, orchestration. Call domain + services; keep thin.
+- **services**: fetch/map external data. Return domain types; do not embed product rules.
+- **utils**: generic helpers (dates, geo math, formatting). If it encodes product meaning, it belongs in domain.
+
+## Shared package
+
+If logic or types are needed by more than one package, put them in `packages/shared` (same folder layout as above). Import from `shared` instead of copying.
+
+- Prefer extracting to `shared` over duplicating types or helpers.
+- Do not put city-specific or app-only code in `shared`.
+- Avoid circular deps: `shared` must not depend on app/scraper packages.
+
+```typescript
+// ❌ BAD — duplicate type in two packages
+// packages/scrapper/domain/contract.ts
+// packages/web/domain/contract.ts
+export type Contract = { id: string; amountEur: number };
+
+// ✅ GOOD — single source in shared
+// packages/shared/domain/contract.ts
+export type Contract = { id: string; amountEur: number };
+```
