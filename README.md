@@ -25,8 +25,7 @@ Prefer **national** sources that scale to any municipality. Regional portals and
 
 ### 1. Public Spending
 
-- [PLACSP](https://contrataciondelestado.es) — national public procurement; [ATOM / recent contracts](https://contrataciondelestado.es/sourcing/html/mostRecentContracts.html). Filter by municipality / organism and autonomous community. Fields: tender title, awarded amount (€), awardee, execution location, awarding date.
-- Regional open data (pilot): [Cantabria — contratos menores y licitaciones](https://datos.cantabria.es/dataset/contratos-menores-y-licitaciones)
+- [PLACSP](https://contrataciondelestado.es) — national public procurement; [Atom syndication (CODICE)](https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom) (paginate via `rel="next"`). Filter by municipality / organism and autonomous community. Fields: tender title, awarded amount (€), awardee, execution location, awarding date.
 
 ### 2. Business Power
 

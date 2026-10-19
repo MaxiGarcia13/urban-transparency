@@ -1,0 +1,14 @@
+@import 'tailwindcss';
+
+a,
+button:not(:disabled),
+[role='button'],
+[role='option'],
+[role='combobox'],
+summary {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}

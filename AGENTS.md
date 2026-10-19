@@ -21,11 +21,10 @@ National sources first. Pilot filters shown in italics where relevant.
 
 ### 1. Public Spending
 
-| Source                     | URL                                                                     | Role                          |
-| -------------------------- | ----------------------------------------------------------------------- | ----------------------------- |
-| PLACSP portal              | https://contrataciondelestado.es                                        | Official national procurement |
-| PLACSP ATOM / recent       | https://contrataciondelestado.es/sourcing/html/mostRecentContracts.html | Feed of recent contracts      |
-| Regional open data (pilot) | https://datos.cantabria.es/dataset/contratos-menores-y-licitaciones     | Optional regional supplement  |
+| Source               | URL                                                                                                        | Role                          |
+| -------------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| PLACSP portal        | https://contrataciondelestado.es                                                                           | Official national procurement |
+| PLACSP Atom (CODICE) | https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom | National syndication feed     |
 
 **Filters**: by municipality / organism and autonomous community (_pilot: Ayuntamiento de Santander / Cantabria_).
 
