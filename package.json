@@ -1,14 +1,17 @@
 {
   "name": "urban-transparency",
+  "type": "module",
   "version": "0.0.0",
+  "packageManager": "pnpm@12.14.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
   "author": "",
   "license": "ISC",
+  "keywords": [],
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
@@ -16,6 +19,8 @@
       "onFail": "download"
     }
   },
-  "packageManager": "pnpm@12.14.0",
-  "type": "module"
+  "devDependencies": {
+    "@maxigarcia/eslint-config": "^1.14.1",
+    "eslint": "^10.13.0"
+  }
 }
