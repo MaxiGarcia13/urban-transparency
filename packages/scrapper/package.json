@@ -5,5 +5,14 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf node_modules dist"
+  },
+  "dependencies": {
+    "@urban-transparency/db": "workspace:*",
+    "puppeteer": "^25.14.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3"
   }
 }

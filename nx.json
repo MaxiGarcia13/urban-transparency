@@ -24,6 +24,7 @@
   },
   "release": {
     "projects": [
+      "packages/database",
       "packages/scrapper"
     ],
     "projectsRelationship": "independent",
