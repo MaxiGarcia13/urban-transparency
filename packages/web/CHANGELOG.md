@@ -1,3 +1,13 @@
+## 0.0.3 (2026-10-20)
+
+### 🧹 Chores
+
+- Update product name references from 'UrbanClarity 3D' to 'UrbanClarity' across documentation and components ([151c1e4](https://github.com/MaxiGarcia13/urban-transparency/commit/151c1e4))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.2 (2026-10-20)
 
 ### 🚀 Features
