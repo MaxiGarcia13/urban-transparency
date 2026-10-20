@@ -22,11 +22,7 @@ const spending = computed(() =>
     : aggregateMunicipalSpending(filteredContracts.value),
 );
 
-const mapSpending = computed(() =>
-  contracts.value.length === 0
-    ? null
-    : aggregateMunicipalSpending(contracts.value),
-);
+const mapContracts = computed(() => filteredContracts.value);
 
 onMounted(async () => {
   try {
@@ -58,7 +54,7 @@ onMounted(async () => {
       />
     </div>
     <div class="min-h-96 flex-1 lg:min-h-dvh">
-      <SpendingMap :spending="mapSpending" />
+      <SpendingMap :contracts="mapContracts" />
     </div>
   </div>
 </template>

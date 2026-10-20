@@ -7,6 +7,7 @@ import {
 } from '@urban-transparency/db';
 import { requireMunicipalityByCode } from '@urban-transparency/shared';
 
+import { geocodeContractLocation } from '../domain/geocode-contract-location';
 import {
   applyMunicipalityCode,
   matchesMunicipalityContract,
@@ -103,11 +104,19 @@ async function scrapePlacsp(): Promise<void> {
     pageUrl = nextPageUrl;
   }
 
+  console.log(`Geocoding ${matchedContracts.length} matched contracts…`);
+  const geocodedContracts: PublicContract[] = [];
+  for (const contract of matchedContracts) {
+    geocodedContracts.push(await geocodeContractLocation(contract, municipality));
+  }
+
+  const withPostalCode = geocodedContracts.filter((contract) => contract.postalCode).length;
+
   const client = createDatabaseClient();
   try {
-    const upserted = await upsertPublicContracts(client, matchedContracts);
+    const upserted = await upsertPublicContracts(client, geocodedContracts);
     console.log(
-      `PLACSP scrape done: pages=${pagesFetched} entries=${entriesSeen} matched=${matchedContracts.length} upserted=${upserted}`,
+      `PLACSP scrape done: pages=${pagesFetched} entries=${entriesSeen} matched=${matchedContracts.length} withPostalCode=${withPostalCode} upserted=${upserted}`,
     );
   } finally {
     await client.close();

@@ -130,6 +130,12 @@ const statusMessage = computed(() => {
           <p class="mt-2 text-sm text-zinc-400">
             {{ contract.awardeeName ?? 'Adjudicatario no disponible' }}
           </p>
+          <p
+            v-if="contract.postalCode"
+            class="mt-1 text-xs tracking-wide text-zinc-500 uppercase"
+          >
+            CP {{ contract.postalCode }}
+          </p>
           <p class="mt-2 text-base font-semibold text-orange-300">
             {{
               contract.awardedAmountEur == null

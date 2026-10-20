@@ -67,12 +67,23 @@ function findRealizedLocation(status: Record<string, unknown>): Record<string, u
   return asArray(project.RealizedLocation)[0] as Record<string, unknown> | undefined;
 }
 
-function findExecutionCity(location: Record<string, unknown> | undefined): string | null {
+function findExecutionAddress(location: Record<string, unknown> | undefined): {
+  city: string | null;
+  postalCode: string | null;
+  addressLine: string | null;
+} {
   if (!location) {
-    return null;
+    return { city: null, postalCode: null, addressLine: null };
   }
+
   const address = location.Address as Record<string, unknown> | undefined;
-  return xmlText(address?.CityName) ?? xmlText(location.CountrySubentity);
+  const addressLineNode = asArray(address?.AddressLine)[0] as Record<string, unknown> | undefined;
+
+  return {
+    city: xmlText(address?.CityName) ?? xmlText(location.CountrySubentity),
+    postalCode: xmlText(address?.PostalZone),
+    addressLine: xmlText(addressLineNode?.Line) ?? xmlText(address?.StreetName),
+  };
 }
 
 function findNutsCode(location: Record<string, unknown> | undefined): string | null {
@@ -137,6 +148,7 @@ function parseEntry(
   }
 
   const location = findRealizedLocation(status);
+  const executionAddress = findExecutionAddress(location);
   const awardee = findWinningParty(status);
 
   return {
@@ -149,7 +161,9 @@ function parseEntry(
     awardedAmountEur: findAwardedAmountEur(status),
     awardeeName: awardee.name,
     awardeeNif: awardee.nif,
-    executionCity: findExecutionCity(location),
+    executionCity: executionAddress.city,
+    postalCode: executionAddress.postalCode,
+    executionAddressLine: executionAddress.addressLine,
     nutsCode: findNutsCode(location),
     awardedAt: xmlText((status.TenderResult as Record<string, unknown> | undefined)?.AwardDate),
     detailUrl: findLinkHref(entry),

@@ -13,6 +13,8 @@ export interface PublicContract {
   awardeeName: string | null;
   awardeeNif: string | null;
   executionCity: string | null;
+  postalCode: string | null;
+  executionAddressLine: string | null;
   nutsCode: string | null;
   awardedAt: string | null;
   detailUrl: string | null;

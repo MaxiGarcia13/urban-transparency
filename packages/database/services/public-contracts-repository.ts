@@ -14,6 +14,8 @@ INSERT INTO public_contracts (
   awardee_name,
   awardee_nif,
   execution_city,
+  postal_code,
+  execution_address_line,
   nuts_code,
   awarded_at,
   detail_url,
@@ -24,7 +26,7 @@ INSERT INTO public_contracts (
   source_system,
   source_entry_updated_at,
   fetched_at
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ON CONFLICT(id) DO UPDATE SET
   contract_folder_id = excluded.contract_folder_id,
   title = excluded.title,
@@ -35,6 +37,8 @@ ON CONFLICT(id) DO UPDATE SET
   awardee_name = excluded.awardee_name,
   awardee_nif = excluded.awardee_nif,
   execution_city = excluded.execution_city,
+  postal_code = excluded.postal_code,
+  execution_address_line = excluded.execution_address_line,
   nuts_code = excluded.nuts_code,
   awarded_at = excluded.awarded_at,
   detail_url = excluded.detail_url,
@@ -59,6 +63,8 @@ SELECT
   awardee_name AS awardeeName,
   awardee_nif AS awardeeNif,
   execution_city AS executionCity,
+  postal_code AS postalCode,
+  execution_address_line AS executionAddressLine,
   nuts_code AS nutsCode,
   awarded_at AS awardedAt,
   detail_url AS detailUrl,
@@ -88,6 +94,8 @@ function toUpsertArgs(contract: PublicContract): unknown[] {
     contract.awardeeName,
     contract.awardeeNif,
     contract.executionCity,
+    contract.postalCode,
+    contract.executionAddressLine,
     contract.nutsCode,
     contract.awardedAt,
     contract.detailUrl,
@@ -113,6 +121,8 @@ function mapRowToPublicContract(row: Record<string, unknown>): PublicContract {
     awardeeName: (row.awardeeName as string | null) ?? null,
     awardeeNif: (row.awardeeNif as string | null) ?? null,
     executionCity: (row.executionCity as string | null) ?? null,
+    postalCode: (row.postalCode as string | null) ?? null,
+    executionAddressLine: (row.executionAddressLine as string | null) ?? null,
     nutsCode: (row.nutsCode as string | null) ?? null,
     awardedAt: (row.awardedAt as string | null) ?? null,
     detailUrl: (row.detailUrl as string | null) ?? null,

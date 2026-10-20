@@ -1,44 +1,68 @@
-import type { MunicipalSpending } from '@/domain/aggregate-municipal-spending';
+import type { PublicContract } from '@urban-transparency/shared';
 import { ScatterplotLayer, TextLayer } from '@deck.gl/layers';
 
-export type MunicipalityMapPoint = MunicipalSpending & {
-  name: string;
+export type ContractMapPoint = {
+  id: string;
+  title: string;
+  awardedAmountEur: number;
+  postalCode: string | null;
   longitude: number;
   latitude: number;
 };
 
 interface BuildSpendingDeckLayersOptions {
-  municipalityPoint: MunicipalityMapPoint | null;
-  onShowTooltip: (point: MunicipalityMapPoint, x: number, y: number) => void;
+  contractPoints: ContractMapPoint[];
+  onShowTooltip: (point: ContractMapPoint, x: number, y: number) => void;
   onClearTooltip: () => void;
 }
 
+export function toContractMapPoints(
+  contracts: readonly PublicContract[],
+): ContractMapPoint[] {
+  const points: ContractMapPoint[] = [];
+
+  for (const contract of contracts) {
+    if (contract.executionLongitude == null || contract.executionLatitude == null) {
+      continue;
+    }
+
+    points.push({
+      id: contract.id,
+      title: contract.title,
+      awardedAmountEur: contract.awardedAmountEur ?? 0,
+      postalCode: contract.postalCode,
+      longitude: contract.executionLongitude,
+      latitude: contract.executionLatitude,
+    });
+  }
+
+  return points;
+}
+
 export function buildSpendingDeckLayers({
-  municipalityPoint,
+  contractPoints,
   onShowTooltip,
   onClearTooltip,
 }: BuildSpendingDeckLayersOptions): Array<
-  ScatterplotLayer<MunicipalityMapPoint> | TextLayer<MunicipalityMapPoint>
+  ScatterplotLayer<ContractMapPoint> | TextLayer<ContractMapPoint>
 > {
-  if (!municipalityPoint || municipalityPoint.contractCount === 0) {
+  if (contractPoints.length === 0) {
     return [];
   }
 
-  const data = [municipalityPoint];
-
-  const markerLayer = new ScatterplotLayer<MunicipalityMapPoint>({
-    id: 'municipality-marker',
-    data,
+  const markerLayer = new ScatterplotLayer<ContractMapPoint>({
+    id: 'contract-markers',
+    data: contractPoints,
     pickable: true,
     radiusUnits: 'pixels',
     getPosition: (point) => [point.longitude, point.latitude],
-    getRadius: 18,
+    getRadius: 10,
     getFillColor: [251, 146, 60, 220],
     getLineColor: [255, 255, 255, 200],
-    lineWidthMinPixels: 2,
+    lineWidthMinPixels: 1,
     stroked: true,
     onHover: (info) => {
-      const point = info.object as MunicipalityMapPoint | undefined;
+      const point = info.object as ContractMapPoint | undefined;
       if (!point || info.x == null || info.y == null) {
         onClearTooltip();
         return;
@@ -47,19 +71,19 @@ export function buildSpendingDeckLayers({
     },
   });
 
-  const labelLayer = new TextLayer<MunicipalityMapPoint>({
-    id: 'municipality-label',
-    data,
+  const labelLayer = new TextLayer<ContractMapPoint>({
+    id: 'contract-postal-labels',
+    data: contractPoints.filter((point) => point.postalCode),
     pickable: false,
     billboard: true,
     sizeUnits: 'pixels',
     getPosition: (point) => [point.longitude, point.latitude],
-    getText: (point) => point.name,
-    getSize: 14,
-    getColor: [255, 255, 255, 235],
+    getText: (point) => point.postalCode ?? '',
+    getSize: 11,
+    getColor: [255, 255, 255, 220],
     getTextAnchor: 'start',
     getAlignmentBaseline: 'center',
-    getPixelOffset: [22, 0],
+    getPixelOffset: [14, 0],
     fontFamily: 'system-ui, sans-serif',
     fontWeight: 600,
   });
