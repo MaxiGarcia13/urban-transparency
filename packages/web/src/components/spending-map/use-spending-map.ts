@@ -18,24 +18,40 @@ setWorkerUrl(maplibreWorkerUrl);
 const CARTO_DARK_STYLE
   = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
 
+const MUNICIPALITY_FALLBACK_CENTER = {
+  longitude: santanderMunicipality.center[0],
+  latitude: santanderMunicipality.center[1],
+};
+
 export function useSpendingMap(contracts: Ref<PublicContract[]>) {
   const mapContainer = shallowRef<HTMLElement | null>(null);
   const tooltip = shallowRef<ContractSpendingTooltipState | null>(null);
+  const selectedClusterId = shallowRef<string | null>(null);
   const mapInstance = shallowRef<MaplibreMap | null>(null);
   const deckOverlay = shallowRef<MapLibreOverlay | null>(null);
 
-  const clusters = computed(() => groupContractsByCoordinates(contracts.value));
+  const clusters = computed(() =>
+    groupContractsByCoordinates(contracts.value, MUNICIPALITY_FALLBACK_CENTER),
+  );
 
   function clearTooltip(): void {
     tooltip.value = null;
+    selectedClusterId.value = null;
   }
 
-  function showTooltip(cluster: ContractMapCluster, x: number, y: number): void {
+  function selectCluster(cluster: ContractMapCluster, x: number, y: number): void {
+    if (selectedClusterId.value === cluster.id) {
+      clearTooltip();
+      return;
+    }
+
+    selectedClusterId.value = cluster.id;
     tooltip.value = {
       contracts: cluster.contracts,
       contractCount: cluster.contractCount,
       totalAwardedEur: cluster.totalAwardedEur,
       postalCode: cluster.postalCode,
+      hasKnownLocation: cluster.hasKnownLocation,
       x,
       y,
     };
@@ -45,15 +61,26 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
     deckOverlay.value?.setProps({
       layers: buildSpendingDeckLayers({
         clusters: clusters.value,
-        onShowTooltip: showTooltip,
-        onClearTooltip: clearTooltip,
+        onSelectCluster: selectCluster,
       }),
+      onClick: (info) => {
+        if (!info.object) {
+          clearTooltip();
+        }
+      },
+      getCursor: ({ isHovering }) => (isHovering ? 'pointer' : 'grab'),
     });
   }
 
   watch(clusters, () => {
     syncDeckLayers();
   });
+
+  function handleEscapeKey(event: KeyboardEvent): void {
+    if (event.key === 'Escape') {
+      clearTooltip();
+    }
+  }
 
   onMounted(() => {
     if (!mapContainer.value) {
@@ -76,17 +103,24 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
       interleaved: false,
       layers: buildSpendingDeckLayers({
         clusters: clusters.value,
-        onShowTooltip: showTooltip,
-        onClearTooltip: clearTooltip,
+        onSelectCluster: selectCluster,
       }),
+      onClick: (info) => {
+        if (!info.object) {
+          clearTooltip();
+        }
+      },
+      getCursor: ({ isHovering }) => (isHovering ? 'pointer' : 'grab'),
     });
 
     map.addControl(overlay);
     mapInstance.value = map;
     deckOverlay.value = overlay;
+    window.addEventListener('keydown', handleEscapeKey);
   });
 
   onUnmounted(() => {
+    window.removeEventListener('keydown', handleEscapeKey);
     deckOverlay.value?.finalize();
     mapInstance.value?.remove();
     deckOverlay.value = null;
@@ -96,5 +130,6 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
   return {
     mapContainer,
     tooltip,
+    clearTooltip,
   };
 }

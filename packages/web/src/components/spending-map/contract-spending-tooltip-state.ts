@@ -5,6 +5,7 @@ export type ContractSpendingTooltipState = {
   contractCount: number;
   totalAwardedEur: number;
   postalCode: string | null;
+  hasKnownLocation: boolean;
   x: number;
   y: number;
 };

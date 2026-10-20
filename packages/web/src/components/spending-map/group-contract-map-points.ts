@@ -12,9 +12,15 @@ export type ContractMapCluster = {
   longitude: number;
   latitude: number;
   postalCode: string | null;
+  hasKnownLocation: boolean;
   contractCount: number;
   totalAwardedEur: number;
   contracts: ContractMapPoint[];
+};
+
+export type MunicipalityMapCenter = {
+  longitude: number;
+  latitude: number;
 };
 
 function coordinateKey(longitude: number, latitude: number): string {
@@ -23,17 +29,21 @@ function coordinateKey(longitude: number, latitude: number): string {
 
 export function groupContractsByCoordinates(
   contracts: readonly PublicContract[],
+  fallbackCenter: MunicipalityMapCenter,
 ): ContractMapCluster[] {
   const clustersByKey = new Map<string, ContractMapCluster>();
 
   for (const contract of contracts) {
-    if (contract.executionLongitude == null || contract.executionLatitude == null) {
-      continue;
-    }
+    const knownLongitude = contract.executionLongitude;
+    const knownLatitude = contract.executionLatitude;
+    const hasKnownLocation = knownLongitude != null && knownLatitude != null;
+    const longitude = hasKnownLocation ? knownLongitude : fallbackCenter.longitude;
+    const latitude = hasKnownLocation ? knownLatitude : fallbackCenter.latitude;
+    // Keep unknown locations in their own cluster even if coords match the city center.
+    const key = hasKnownLocation
+      ? coordinateKey(longitude, latitude)
+      : `unknown:${coordinateKey(longitude, latitude)}`;
 
-    const longitude = contract.executionLongitude;
-    const latitude = contract.executionLatitude;
-    const key = coordinateKey(longitude, latitude);
     const point: ContractMapPoint = {
       id: contract.id,
       title: contract.title,
@@ -57,6 +67,7 @@ export function groupContractsByCoordinates(
       longitude,
       latitude,
       postalCode: point.postalCode,
+      hasKnownLocation,
       contractCount: 1,
       totalAwardedEur: point.awardedAmountEur,
       contracts: [point],

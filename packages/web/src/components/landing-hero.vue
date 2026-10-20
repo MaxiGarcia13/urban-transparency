@@ -6,8 +6,6 @@ import { santanderMunicipality } from '@/config/municipalities/santander';
 import { matchContractsBySearch } from '@/domain/match-contracts-by-search';
 import { formatEur } from '@/utils/format-eur';
 
-const searchQuery = defineModel<string>('searchQuery', { default: '' });
-
 const props = withDefaults(
   defineProps<{
     contracts?: PublicContract[];
@@ -22,6 +20,8 @@ const props = withDefaults(
     isError: false,
   },
 );
+
+const searchQuery = defineModel<string>('searchQuery', { default: '' });
 
 const metrics = [
   { id: 'spending', label: 'Gasto público', enabled: true },

@@ -8,7 +8,7 @@ const props = defineProps<{
   contracts: PublicContract[];
 }>();
 
-const { mapContainer, tooltip } = useSpendingMap(toRef(props, 'contracts'));
+const { mapContainer, tooltip, clearTooltip } = useSpendingMap(toRef(props, 'contracts'));
 </script>
 
 <template>
@@ -21,8 +21,10 @@ const { mapContainer, tooltip } = useSpendingMap(toRef(props, 'contracts'));
       :contract-count="tooltip.contractCount"
       :total-awarded-eur="tooltip.totalAwardedEur"
       :postal-code="tooltip.postalCode"
+      :has-known-location="tooltip.hasKnownLocation"
       :x="tooltip.x"
       :y="tooltip.y"
+      @close="clearTooltip"
     />
   </div>
 </template>
