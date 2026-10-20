@@ -214,6 +214,12 @@ importers:
         specifier: ~6.0.3
         version: 6.0.3
 
+  packages/shared:
+    devDependencies:
+      typescript:
+        specifier: ~6.0.3
+        version: 6.0.3
+
   packages/web:
     dependencies:
       '@astrojs/vue':
@@ -234,6 +240,9 @@ importers:
       '@tanstack/vue-query':
         specifier: ^5.104.2
         version: 5.104.4(vue@3.5.44(typescript@6.0.3))
+      '@urban-transparency/shared':
+        specifier: workspace:*
+        version: link:../shared
       astro:
         specifier: ^7.3.8
         version: 7.4.0(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)

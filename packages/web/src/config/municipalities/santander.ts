@@ -18,5 +18,5 @@ export const santanderMunicipality = {
   ],
 } as const;
 
-export type FakeSantanderNeighborhoodId =
-  (typeof santanderMunicipality.fakeNeighborhoods)[number]['id'];
+export type FakeSantanderNeighborhoodId
+  = (typeof santanderMunicipality.fakeNeighborhoods)[number]['id'];

@@ -26,6 +26,7 @@
     "projects": [
       "packages/database",
       "packages/scrapper",
+      "packages/shared",
       "packages/web"
     ],
     "projectsRelationship": "independent",
