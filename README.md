@@ -1,4 +1,4 @@
-# UrbanClarity 3D
+# UrbanClarity
 
 Spatial intelligence platform for **Spain**. Maps four core urban metrics in 3D so citizens, journalists, and researchers can see how money, business, income, and rent shape cities.
 

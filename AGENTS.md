@@ -1,6 +1,6 @@
-# Agent guide — UrbanClarity 3D
+# Agent guide — UrbanClarity
 
-This repository builds **UrbanClarity 3D**: a spatial intelligence platform for **Spain** covering four metrics — Public Spending, Business Power, Salary & Household Income, and Rent Costs.
+This repository builds **UrbanClarity**: a spatial intelligence platform for **Spain** covering four metrics — Public Spending, Business Power, Salary & Household Income, and Rent Costs.
 
 **Pilot municipality:** Santander (INE `39075`, Cantabria). Build for Spain; use Santander only as the first configured city. Do not hardcode Santander (or Cantabria) into core models, APIs, or product copy as if they were the whole platform.
 
@@ -86,4 +86,4 @@ National sources first. Pilot filters shown in italics where relevant.
 
 ## Repo naming note
 
-Package / folder may appear as `urban-transparency`; product name is **UrbanClarity 3D**. Use UrbanClarity 3D in user-facing copy. Do not brand the product as “Santander-only.”
+Package / folder may appear as `urban-transparency`; product name is **UrbanClarity**. Use UrbanClarity in user-facing copy (see `packages/web/src/config/product.ts`). Do not brand the product as “Santander-only.”

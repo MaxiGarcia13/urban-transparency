@@ -3,6 +3,7 @@ import type { PublicContract } from '@urban-transparency/shared';
 import type { MunicipalSpending } from '@/domain/aggregate-municipal-spending';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { santanderMunicipality } from '@/config/municipalities/santander';
+import { PRODUCT_NAME } from '@/config/product';
 import { matchContractsBySearch } from '@/domain/match-contracts-by-search';
 import { formatEur } from '@/utils/format-eur';
 
@@ -71,7 +72,7 @@ onUnmounted(() => {
   <aside class="flex h-full min-h-0 flex-col text-zinc-100">
     <div class="flex shrink-0 flex-col gap-4 p-4 md:gap-6 md:p-8">
       <p class="text-sm font-medium tracking-wide text-orange-300 uppercase">
-        UrbanClarity 3D
+        {{ PRODUCT_NAME }}
       </p>
 
       <div class="flex flex-col gap-2 md:gap-4">
