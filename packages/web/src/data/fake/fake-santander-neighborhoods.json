@@ -1,0 +1,110 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "neighborhoodId": "penacastillo",
+        "name": "Peñacastillo",
+        "labelLongitude": -3.859,
+        "labelLatitude": 43.446
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-3.87, 43.44],
+            [-3.848, 43.44],
+            [-3.848, 43.452],
+            [-3.87, 43.452],
+            [-3.87, 43.44]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "neighborhoodId": "alisal-cazona",
+        "name": "Alisal / Cazoña",
+        "labelLongitude": -3.838,
+        "labelLatitude": 43.456
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-3.848, 43.45],
+            [-3.826, 43.45],
+            [-3.826, 43.462],
+            [-3.848, 43.462],
+            [-3.848, 43.45]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "neighborhoodId": "general-davila",
+        "name": "General Dávila",
+        "labelLongitude": -3.818,
+        "labelLatitude": 43.468
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-3.828, 43.462],
+            [-3.81, 43.462],
+            [-3.81, 43.474],
+            [-3.828, 43.474],
+            [-3.828, 43.462]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "neighborhoodId": "centro",
+        "name": "Centro",
+        "labelLongitude": -3.804,
+        "labelLatitude": 43.462
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-3.81, 43.456],
+            [-3.794, 43.456],
+            [-3.794, 43.468],
+            [-3.81, 43.468],
+            [-3.81, 43.456]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "neighborhoodId": "sardinero",
+        "name": "El Sardinero",
+        "labelLongitude": -3.786,
+        "labelLatitude": 43.472
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-3.794, 43.466],
+            [-3.776, 43.466],
+            [-3.776, 43.478],
+            [-3.794, 43.478],
+            [-3.794, 43.466]
+          ]
+        ]
+      }
+    }
+  ]
+}

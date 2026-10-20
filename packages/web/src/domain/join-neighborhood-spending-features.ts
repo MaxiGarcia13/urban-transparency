@@ -1,15 +1,12 @@
 import type { NeighborhoodSpending } from './aggregate-spending-by-neighborhood';
 
-interface PolygonGeometry {
-  type: 'Polygon';
-  coordinates: number[][][];
-}
-
 interface RawNeighborhoodFeature {
   type: 'Feature';
   properties?: {
     neighborhoodId?: string;
     name?: string;
+    labelLongitude?: number;
+    labelLatitude?: number;
   } | null;
   geometry?: {
     type: string;
@@ -22,16 +19,19 @@ export interface NeighborhoodGeoJson {
   features: RawNeighborhoodFeature[];
 }
 
-export interface NeighborhoodSpendingFeatureProperties {
-  neighborhoodId: string;
+/** Zone properties for map layers, tooltips, and labels. */
+export type NeighborhoodSpendingFeatureProperties = NeighborhoodSpending & {
   name: string;
-  contractCount: number;
-  totalAwardedEur: number;
-}
+  labelLongitude: number;
+  labelLatitude: number;
+};
 
 export interface NeighborhoodSpendingFeature {
   type: 'Feature';
-  geometry: PolygonGeometry;
+  geometry: {
+    type: 'Polygon';
+    coordinates: number[][][];
+  };
   properties: NeighborhoodSpendingFeatureProperties;
 }
 
@@ -40,7 +40,7 @@ export interface NeighborhoodSpendingFeatureCollection {
   features: NeighborhoodSpendingFeature[];
 }
 
-/** Joins GeoJSON neighborhoods with aggregated spending for deck.gl. */
+/** Joins neighborhood polygons with aggregated spending for deck.gl zones. */
 export function joinNeighborhoodSpendingFeatures(
   neighborhoods: NeighborhoodGeoJson,
   spendingByNeighborhood: Map<string, NeighborhoodSpending>,
@@ -55,6 +55,9 @@ export function joinNeighborhoodSpendingFeatures(
     const neighborhoodId = feature.properties?.neighborhoodId ?? '';
     const name = feature.properties?.name ?? neighborhoodId;
     const spending = spendingByNeighborhood.get(neighborhoodId);
+    const ring = feature.geometry.coordinates[0] ?? [];
+    const fallbackLng = ring[0]?.[0] ?? 0;
+    const fallbackLat = ring[0]?.[1] ?? 0;
 
     features.push({
       type: 'Feature',
@@ -67,6 +70,8 @@ export function joinNeighborhoodSpendingFeatures(
         name,
         contractCount: spending?.contractCount ?? 0,
         totalAwardedEur: spending?.totalAwardedEur ?? 0,
+        labelLongitude: feature.properties?.labelLongitude ?? fallbackLng,
+        labelLatitude: feature.properties?.labelLatitude ?? fallbackLat,
       },
     });
   }

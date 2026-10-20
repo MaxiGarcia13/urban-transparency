@@ -17,7 +17,9 @@
     "sourceSystem": "placsp",
     "sourceEntryUpdatedAt": "2025-03-12T10:00:00.000Z",
     "fetchedAt": "2025-10-01T12:00:00.000Z",
-    "neighborhoodId": "centro"
+    "neighborhoodId": "centro",
+    "executionLongitude": -3.8042,
+    "executionLatitude": 43.4618
   },
   {
     "id": "fake-placsp-002",
@@ -37,7 +39,9 @@
     "sourceSystem": "placsp",
     "sourceEntryUpdatedAt": "2025-05-08T10:00:00.000Z",
     "fetchedAt": "2025-10-01T12:00:00.000Z",
-    "neighborhoodId": "sardinero"
+    "neighborhoodId": "sardinero",
+    "executionLongitude": -3.7851,
+    "executionLatitude": 43.4732
   },
   {
     "id": "fake-placsp-003",
@@ -57,7 +61,9 @@
     "sourceSystem": "placsp",
     "sourceEntryUpdatedAt": "2025-01-22T10:00:00.000Z",
     "fetchedAt": "2025-10-01T12:00:00.000Z",
-    "neighborhoodId": "general-davila"
+    "neighborhoodId": "general-davila",
+    "executionLongitude": -3.8164,
+    "executionLatitude": 43.4688
   },
   {
     "id": "fake-placsp-004",
@@ -77,7 +83,9 @@
     "sourceSystem": "placsp",
     "sourceEntryUpdatedAt": "2024-11-04T10:00:00.000Z",
     "fetchedAt": "2025-10-01T12:00:00.000Z",
-    "neighborhoodId": "alisal-cazona"
+    "neighborhoodId": "alisal-cazona",
+    "executionLongitude": -3.8386,
+    "executionLatitude": 43.4564
   },
   {
     "id": "fake-placsp-005",
@@ -97,7 +105,9 @@
     "sourceSystem": "placsp",
     "sourceEntryUpdatedAt": "2025-06-18T10:00:00.000Z",
     "fetchedAt": "2025-10-01T12:00:00.000Z",
-    "neighborhoodId": "penacastillo"
+    "neighborhoodId": "penacastillo",
+    "executionLongitude": -3.8528,
+    "executionLatitude": 43.4476
   },
   {
     "id": "fake-placsp-006",
@@ -117,6 +127,8 @@
     "sourceSystem": "placsp",
     "sourceEntryUpdatedAt": "2025-07-01T10:00:00.000Z",
     "fetchedAt": "2025-10-01T12:00:00.000Z",
-    "neighborhoodId": "centro"
+    "neighborhoodId": "centro",
+    "executionLongitude": -3.8096,
+    "executionLatitude": 43.4621
   }
 ]
