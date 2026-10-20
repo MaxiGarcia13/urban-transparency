@@ -1,18 +1,72 @@
 <script setup lang="ts">
 import type { ContractSpendingTooltipState } from './contract-spending-tooltip-state';
+import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { formatEur } from '@/utils/format-eur';
+import { clampTooltipPosition } from './clamp-tooltip-position';
 
-defineProps<ContractSpendingTooltipState>();
+const props = defineProps<ContractSpendingTooltipState>();
 
 const emit = defineEmits<{
   close: [];
 }>();
+
+const root = ref<HTMLElement | null>(null);
+const left = ref(props.x + 12);
+const top = ref(props.y + 12);
+
+let resizeObserver: ResizeObserver | null = null;
+
+function updatePosition(): void {
+  const el = root.value;
+  const container = el?.offsetParent;
+  if (!(el instanceof HTMLElement) || !(container instanceof HTMLElement)) {
+    return;
+  }
+
+  const position = clampTooltipPosition({
+    x: props.x,
+    y: props.y,
+    tooltipWidth: el.offsetWidth,
+    tooltipHeight: el.offsetHeight,
+    containerWidth: container.clientWidth,
+    containerHeight: container.clientHeight,
+  });
+
+  left.value = position.left;
+  top.value = position.top;
+}
+
+watch(
+  () => [props.x, props.y, props.contractCount, props.contracts] as const,
+  async () => {
+    await nextTick();
+    updatePosition();
+  },
+);
+
+onMounted(async () => {
+  await nextTick();
+  updatePosition();
+
+  if (root.value) {
+    resizeObserver = new ResizeObserver(() => {
+      updatePosition();
+    });
+    resizeObserver.observe(root.value);
+  }
+});
+
+onUnmounted(() => {
+  resizeObserver?.disconnect();
+  resizeObserver = null;
+});
 </script>
 
 <template>
   <div
-    class="absolute z-10 max-w-xs rounded-xl border border-white/10 bg-zinc-950/95 px-4 py-4 text-white shadow-lg backdrop-blur-sm"
-    :style="{ left: `${x + 12}px`, top: `${y + 12}px` }"
+    ref="root"
+    class="absolute z-10 max-h-[min(20rem,calc(100%-16px))] max-w-[min(20rem,calc(100%-16px))] overflow-y-auto overscroll-contain rounded-xl border border-white/10 bg-zinc-950/95 px-4 py-4 text-white shadow-lg backdrop-blur-sm"
+    :style="{ left: `${left}px`, top: `${top}px` }"
     @click.stop
     @wheel.stop
   >

@@ -12,7 +12,7 @@ const { mapContainer, tooltip, clearTooltip } = useSpendingMap(toRef(props, 'con
 </script>
 
 <template>
-  <div class="relative h-full min-h-96 w-full overflow-hidden bg-zinc-950">
+  <div class="relative h-full min-h-0 w-full overflow-hidden bg-zinc-950">
     <div ref="mapContainer" class="h-full w-full" />
 
     <ContractSpendingTooltip

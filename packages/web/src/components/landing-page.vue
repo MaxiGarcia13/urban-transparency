@@ -43,17 +43,24 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex max-h-dvh flex-col overflow-auto bg-zinc-950 lg:flex-row">
-    <div class="w-full shrink-0 border-b border-white/10 lg:w-md lg:border-r lg:border-b-0">
-      <LandingHero
-        v-model:search-query="searchQuery"
-        :contracts="contracts"
-        :spending="spending"
-        :is-loading="isLoading"
-        :is-error="isError"
-      />
+  <div class="relative h-dvh overflow-hidden bg-zinc-950 lg:flex lg:flex-row">
+    <div
+      class="pointer-events-none absolute inset-x-0 top-0 z-20 p-4 lg:pointer-events-auto lg:static lg:inset-auto lg:flex lg:h-full lg:w-md lg:shrink-0 lg:border-r lg:border-white/10 lg:p-0"
+    >
+      <div
+        class="pointer-events-auto flex max-h-[min(70dvh,100%)] flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-950/90 shadow-lg backdrop-blur-md lg:h-full lg:max-h-none lg:rounded-none lg:border-0 lg:bg-zinc-950 lg:shadow-none lg:backdrop-blur-none"
+      >
+        <LandingHero
+          v-model:search-query="searchQuery"
+          :contracts="contracts"
+          :spending="spending"
+          :is-loading="isLoading"
+          :is-error="isError"
+        />
+      </div>
     </div>
-    <div class="min-h-96 flex-1 lg:min-h-dvh">
+
+    <div class="h-full min-h-0 w-full lg:flex-1">
       <SpendingMap :contracts="mapContracts" />
     </div>
   </div>
