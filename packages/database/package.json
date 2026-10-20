@@ -4,14 +4,16 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./index.ts"
   },
-  "types": "./src/index.ts",
+  "types": "./index.ts",
   "scripts": {
+    "migrate": "tsx --env-file=../../.env scripts/migrate.ts",
     "clean": "rm -rf node_modules dist"
   },
   "dependencies": {
-    "@tursodatabase/serverless": "^1.4.1"
+    "@tursodatabase/serverless": "^1.4.1",
+    "@urban-transparency/shared": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",

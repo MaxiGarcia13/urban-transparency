@@ -184,6 +184,9 @@ importers:
       '@tursodatabase/serverless':
         specifier: ^1.4.1
         version: 1.4.1
+      '@urban-transparency/shared':
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@types/node':
         specifier: ^26.6.5
