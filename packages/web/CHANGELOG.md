@@ -1,3 +1,24 @@
+## 0.0.2 (2026-10-20)
+
+### 🚀 Features
+
+- Add build and preview scripts for web package, update pnpm workspace trust policy exclusions, and switch adapter to Vercel in Astro configuration ([50e21df](https://github.com/MaxiGarcia13/urban-transparency/commit/50e21df))
+
+### 🧹 Chores
+
+- Add Vercel configuration file to manage deployment settings ([2e40898](https://github.com/MaxiGarcia13/urban-transparency/commit/2e40898))
+- Add Vercel configuration file to manage deployment settings ([fbd1304](https://github.com/MaxiGarcia13/urban-transparency/commit/fbd1304))
+- Update pnpm-lock.yaml and package.json to replace '@astrojs/node' with '@astrojs/vercel' and add new dependencies ([ec17a7c](https://github.com/MaxiGarcia13/urban-transparency/commit/ec17a7c))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/db to 0.0.2
+- Updated @urban-transparency/shared to 0.0.2
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.1 (2026-10-20)
 
 ### 🚀 Features
