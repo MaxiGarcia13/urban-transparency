@@ -1,11 +1,12 @@
-export const SANTANDER_MUNICIPALITY_CODE = '39075';
+import { requireMunicipalityByCode } from '@urban-transparency/shared';
+
+const santander = requireMunicipalityByCode('39075');
 
 /** Pilot city map camera and fake neighborhood labels (demo only). */
 export const santanderMunicipality = {
-  municipalityCode: SANTANDER_MUNICIPALITY_CODE,
-  name: 'Santander',
-  nutsCode: 'ES130',
-  center: [-3.82, 43.46] as [number, number],
+  municipalityCode: santander.id,
+  name: santander.name,
+  center: [santander.longitude, santander.latitude] as [number, number],
   zoom: 12,
   pitch: 50,
   bearing: -25,
@@ -17,6 +18,8 @@ export const santanderMunicipality = {
     { id: 'penacastillo', name: 'Peñacastillo' },
   ],
 } as const;
+
+export const SANTANDER_MUNICIPALITY_CODE = santanderMunicipality.municipalityCode;
 
 export type FakeSantanderNeighborhoodId
   = (typeof santanderMunicipality.fakeNeighborhoods)[number]['id'];

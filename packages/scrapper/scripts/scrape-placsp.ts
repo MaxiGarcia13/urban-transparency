@@ -5,11 +5,8 @@ import {
   createDatabaseClient,
   upsertPublicContracts,
 } from '@urban-transparency/db';
+import { requireMunicipalityByCode } from '@urban-transparency/shared';
 
-import {
-  getMunicipalityPlacspFilter,
-  SANTANDER_MUNICIPALITY_CODE,
-} from '../config/municipalities';
 import {
   applyMunicipalityCode,
   matchesMunicipalityContract,
@@ -21,6 +18,8 @@ import {
 } from '../services/placsp-atom-client';
 import { delay } from '../utils/delay';
 
+/** Pilot default — INE code for Santander from spain.json. */
+const DEFAULT_MUNICIPALITY_CODE = '39075';
 const DEFAULT_REQUEST_DELAY_MS = 1_500;
 const DEFAULT_MAX_PAGES = 5;
 
@@ -31,7 +30,7 @@ interface CliOptions {
 }
 
 function parseCliOptions(argv: string[]): CliOptions {
-  let municipalityCode = SANTANDER_MUNICIPALITY_CODE;
+  let municipalityCode = DEFAULT_MUNICIPALITY_CODE;
   let maxPages = DEFAULT_MAX_PAGES;
   let delayMs = DEFAULT_REQUEST_DELAY_MS;
 
@@ -69,13 +68,17 @@ function parseCliOptions(argv: string[]): CliOptions {
 
 async function scrapePlacsp(): Promise<void> {
   const options = parseCliOptions(process.argv.slice(2));
-  const filter = getMunicipalityPlacspFilter(options.municipalityCode);
+  const municipality = requireMunicipalityByCode(options.municipalityCode);
   const fetchedAt = new Date().toISOString();
   const matchedContracts: PublicContract[] = [];
 
   let pageUrl: string | null = getPlacspAtomFeedUrl();
   let pagesFetched = 0;
   let entriesSeen = 0;
+
+  console.log(
+    `Scraping PLACSP for ${municipality.name} (${municipality.id})`,
+  );
 
   while (pageUrl && pagesFetched < options.maxPages) {
     if (pagesFetched > 0 && options.delayMs > 0) {
@@ -91,10 +94,10 @@ async function scrapePlacsp(): Promise<void> {
     entriesSeen += contracts.length;
 
     for (const contract of contracts) {
-      if (!matchesMunicipalityContract(contract, filter)) {
+      if (!matchesMunicipalityContract(contract, municipality)) {
         continue;
       }
-      matchedContracts.push(applyMunicipalityCode(contract, filter.municipalityCode));
+      matchedContracts.push(applyMunicipalityCode(contract, municipality.id));
     }
 
     pageUrl = nextPageUrl;
