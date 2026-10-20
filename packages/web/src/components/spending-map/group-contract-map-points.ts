@@ -1,13 +1,13 @@
 import type { PublicContract } from '@urban-transparency/shared';
 
-export type ContractMapPoint = {
+export interface ContractMapPoint {
   id: string;
   title: string;
   awardedAmountEur: number;
   postalCode: string | null;
-};
+}
 
-export type ContractMapCluster = {
+export interface ContractMapCluster {
   id: string;
   longitude: number;
   latitude: number;
@@ -16,12 +16,12 @@ export type ContractMapCluster = {
   contractCount: number;
   totalAwardedEur: number;
   contracts: ContractMapPoint[];
-};
+}
 
-export type MunicipalityMapCenter = {
+export interface MunicipalityMapCenter {
   longitude: number;
   latitude: number;
-};
+}
 
 function coordinateKey(longitude: number, latitude: number): string {
   return `${longitude.toFixed(6)},${latitude.toFixed(6)}`;

@@ -1,6 +1,6 @@
-import { ScatterplotLayer, TextLayer } from '@deck.gl/layers';
-
 import type { ContractMapCluster } from './group-contract-map-points';
+
+import { ScatterplotLayer, TextLayer } from '@deck.gl/layers';
 
 interface BuildSpendingDeckLayersOptions {
   clusters: ContractMapCluster[];

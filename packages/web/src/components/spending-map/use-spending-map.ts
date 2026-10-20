@@ -1,6 +1,7 @@
+import type { PublicContract } from '@urban-transparency/shared';
 import type { Ref } from 'vue';
 import type { ContractSpendingTooltipState } from './contract-spending-tooltip-state';
-import type { PublicContract } from '@urban-transparency/shared';
+import type { ContractMapCluster } from './group-contract-map-points';
 import { MapLibreOverlay } from '@deck.gl/maplibre';
 import { Map as MaplibreMap, NavigationControl, setWorkerUrl } from 'maplibre-gl';
 import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
@@ -8,8 +9,8 @@ import { computed, onMounted, onUnmounted, shallowRef, watch } from 'vue';
 import { santanderMunicipality } from '@/config/municipalities/santander';
 import { buildSpendingDeckLayers } from './build-spending-deck-layers';
 import {
+
   groupContractsByCoordinates,
-  type ContractMapCluster,
 } from './group-contract-map-points';
 import 'maplibre-gl/dist/maplibre-gl.css';
 

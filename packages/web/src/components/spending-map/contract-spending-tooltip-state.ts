@@ -1,6 +1,6 @@
 import type { ContractMapPoint } from './group-contract-map-points';
 
-export type ContractSpendingTooltipState = {
+export interface ContractSpendingTooltipState {
   contracts: ContractMapPoint[];
   contractCount: number;
   totalAwardedEur: number;
@@ -8,4 +8,4 @@ export type ContractSpendingTooltipState = {
   hasKnownLocation: boolean;
   x: number;
   y: number;
-};
+}

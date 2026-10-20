@@ -68,7 +68,7 @@ const emit = defineEmits<{
           :key="contract.id"
           class="border-t border-white/10 pt-2"
         >
-          <p class="text-xs leading-snug text-zinc-300 text-balance">
+          <p class="text-xs leading-snug text-balance text-zinc-300">
             {{ contract.title }}
           </p>
           <p class="mt-1 text-sm font-semibold text-orange-300/90">
