@@ -17,8 +17,9 @@ const { mapContainer, tooltip } = useSpendingMap(toRef(props, 'contracts'));
 
     <ContractSpendingTooltip
       v-if="tooltip"
-      :title="tooltip.title"
-      :awarded-amount-eur="tooltip.awardedAmountEur"
+      :contracts="tooltip.contracts"
+      :contract-count="tooltip.contractCount"
+      :total-awarded-eur="tooltip.totalAwardedEur"
       :postal-code="tooltip.postalCode"
       :x="tooltip.x"
       :y="tooltip.y"

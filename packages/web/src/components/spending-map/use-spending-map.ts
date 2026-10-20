@@ -6,11 +6,11 @@ import { Map as MaplibreMap, NavigationControl, setWorkerUrl } from 'maplibre-gl
 import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { computed, onMounted, onUnmounted, shallowRef, watch } from 'vue';
 import { santanderMunicipality } from '@/config/municipalities/santander';
+import { buildSpendingDeckLayers } from './build-spending-deck-layers';
 import {
-  buildSpendingDeckLayers,
-  toContractMapPoints,
-  type ContractMapPoint,
-} from './build-spending-deck-layers';
+  groupContractsByCoordinates,
+  type ContractMapCluster,
+} from './group-contract-map-points';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 setWorkerUrl(maplibreWorkerUrl);
@@ -24,17 +24,18 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
   const mapInstance = shallowRef<MaplibreMap | null>(null);
   const deckOverlay = shallowRef<MapLibreOverlay | null>(null);
 
-  const contractPoints = computed(() => toContractMapPoints(contracts.value));
+  const clusters = computed(() => groupContractsByCoordinates(contracts.value));
 
   function clearTooltip(): void {
     tooltip.value = null;
   }
 
-  function showTooltip(point: ContractMapPoint, x: number, y: number): void {
+  function showTooltip(cluster: ContractMapCluster, x: number, y: number): void {
     tooltip.value = {
-      title: point.title,
-      awardedAmountEur: point.awardedAmountEur,
-      postalCode: point.postalCode,
+      contracts: cluster.contracts,
+      contractCount: cluster.contractCount,
+      totalAwardedEur: cluster.totalAwardedEur,
+      postalCode: cluster.postalCode,
       x,
       y,
     };
@@ -43,14 +44,14 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
   function syncDeckLayers(): void {
     deckOverlay.value?.setProps({
       layers: buildSpendingDeckLayers({
-        contractPoints: contractPoints.value,
+        clusters: clusters.value,
         onShowTooltip: showTooltip,
         onClearTooltip: clearTooltip,
       }),
     });
   }
 
-  watch(contractPoints, () => {
+  watch(clusters, () => {
     syncDeckLayers();
   });
 
@@ -74,7 +75,7 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
     const overlay = new MapLibreOverlay({
       interleaved: false,
       layers: buildSpendingDeckLayers({
-        contractPoints: contractPoints.value,
+        clusters: clusters.value,
         onShowTooltip: showTooltip,
         onClearTooltip: clearTooltip,
       }),
