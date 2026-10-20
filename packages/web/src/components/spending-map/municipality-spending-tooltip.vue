@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { NeighborhoodSpendingTooltipState } from './neighborhood-spending-tooltip-state';
+import type { MunicipalitySpendingTooltipState } from './municipality-spending-tooltip-state';
 import { formatEur } from '@/utils/format-eur';
 
-defineProps<NeighborhoodSpendingTooltipState>();
+defineProps<MunicipalitySpendingTooltipState>();
 </script>
 
 <template>
@@ -21,7 +21,7 @@ defineProps<NeighborhoodSpendingTooltipState>();
       {{ formatEur(totalAwardedEur) }}
     </p>
     <p class="mt-2 text-xs tracking-wide text-zinc-500 uppercase">
-      Gasto en la zona (datos de prueba)
+      Gasto municipal · PLACSP
     </p>
   </div>
 </template>

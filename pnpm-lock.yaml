@@ -249,6 +249,9 @@ importers:
       '@tanstack/vue-query':
         specifier: ^5.104.2
         version: 5.104.4(vue@3.5.44(typescript@6.0.3))
+      '@urban-transparency/db':
+        specifier: workspace:*
+        version: link:../database
       '@urban-transparency/shared':
         specifier: workspace:*
         version: link:../shared

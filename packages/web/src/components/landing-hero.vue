@@ -1,5 +1,27 @@
 <script setup lang="ts">
+import type { PublicContract } from '@urban-transparency/shared';
+import type { MunicipalSpending } from '@/domain/aggregate-municipal-spending';
+import { computed } from 'vue';
+import { santanderMunicipality } from '@/config/municipalities/santander';
+import { matchContractsBySearch } from '@/domain/match-contracts-by-search';
+import { formatEur } from '@/utils/format-eur';
+
 const searchQuery = defineModel<string>('searchQuery', { default: '' });
+
+const props = withDefaults(
+  defineProps<{
+    contracts?: PublicContract[];
+    spending?: MunicipalSpending | null;
+    isLoading?: boolean;
+    isError?: boolean;
+  }>(),
+  {
+    contracts: () => [],
+    spending: null,
+    isLoading: false,
+    isError: false,
+  },
+);
 
 const metrics = [
   { id: 'spending', label: 'Gasto público', enabled: true },
@@ -7,10 +29,27 @@ const metrics = [
   { id: 'income', label: 'Renta', enabled: false },
   { id: 'rent', label: 'Alquiler', enabled: false },
 ] as const;
+
+const filteredContracts = computed(() =>
+  matchContractsBySearch(searchQuery.value, props.contracts),
+);
+
+const statusMessage = computed(() => {
+  if (props.isLoading) {
+    return 'Cargando contratos…';
+  }
+  if (props.isError) {
+    return 'No se pudieron cargar los contratos';
+  }
+  if (props.contracts.length === 0) {
+    return 'Aún no hay contratos scrapeados para este municipio';
+  }
+  return null;
+});
 </script>
 
 <template>
-  <aside class="flex h-full flex-col justify-between gap-8 p-6 text-zinc-100 md:p-8">
+  <aside class="flex h-full flex-col gap-8 overflow-y-auto p-6 text-zinc-100 md:p-8">
     <div class="flex flex-col gap-8">
       <p class="text-sm font-medium tracking-wide text-orange-300 uppercase">
         UrbanClarity 3D
@@ -23,18 +62,32 @@ const metrics = [
           de tu ciudad?
         </h1>
         <p class="max-w-md text-base leading-relaxed text-zinc-400">
-          Explora adjudicaciones municipales sobre el mapa. Ahora mismo ves datos de
-          prueba de Santander inspirados en PLACSP.
+          Adjudicaciones de
+          {{ santanderMunicipality.name }}
+          publicadas en PLACSP.
+        </p>
+      </div>
+
+      <div
+        v-if="spending && spending.contractCount > 0"
+        class="flex flex-col gap-2"
+      >
+        <p class="text-sm text-zinc-400">
+          {{ spending.contractCount }}
+          {{ spending.contractCount === 1 ? 'contrato' : 'contratos' }}
+        </p>
+        <p class="text-3xl font-semibold text-orange-300">
+          {{ formatEur(spending.totalAwardedEur) }}
         </p>
       </div>
 
       <label class="flex flex-col gap-2">
-        <span class="text-sm text-zinc-400">Busca un barrio o contrato</span>
+        <span class="text-sm text-zinc-400">Busca un contrato o adjudicatario</span>
         <input
           v-model="searchQuery"
           type="search"
-          name="neighborhood-search"
-          placeholder="Centro, Sardinero, Obras Norte…"
+          name="contract-search"
+          placeholder="Título, empresa…"
           class="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-4 text-base text-zinc-100 outline-none placeholder:text-zinc-500 focus:border-orange-400/60"
         >
       </label>
@@ -57,12 +110,47 @@ const metrics = [
           <span v-if="!metric.enabled" class="ml-2 text-xs">Próximamente</span>
         </button>
       </div>
+
+      <p v-if="statusMessage" class="text-sm text-zinc-400">
+        {{ statusMessage }}
+      </p>
+
+      <ul
+        v-else
+        class="flex flex-col gap-4"
+      >
+        <li
+          v-for="contract in filteredContracts"
+          :key="contract.id"
+          class="rounded-xl border border-white/10 bg-zinc-900/60 p-4"
+        >
+          <p class="text-sm font-medium text-zinc-100">
+            {{ contract.title }}
+          </p>
+          <p class="mt-2 text-sm text-zinc-400">
+            {{ contract.awardeeName ?? 'Adjudicatario no disponible' }}
+          </p>
+          <p class="mt-2 text-base font-semibold text-orange-300">
+            {{
+              contract.awardedAmountEur == null
+                ? 'Importe no disponible'
+                : formatEur(contract.awardedAmountEur)
+            }}
+          </p>
+        </li>
+        <li
+          v-if="filteredContracts.length === 0"
+          class="text-sm text-zinc-400"
+        >
+          Ningún contrato coincide con la búsqueda
+        </li>
+      </ul>
     </div>
 
     <p
       class="w-fit rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2 text-xs tracking-wide text-zinc-400 uppercase"
     >
-      Datos de prueba · inspirado en PLACSP
+      Datos PLACSP · {{ santanderMunicipality.name }}
     </p>
   </aside>
 </template>
