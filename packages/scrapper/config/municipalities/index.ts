@@ -19,4 +19,5 @@ export function getMunicipalityPlacspFilter(
   return filter;
 }
 
+export { SANTANDER_MUNICIPALITY_CODE };
 export type { MunicipalityPlacspFilter };

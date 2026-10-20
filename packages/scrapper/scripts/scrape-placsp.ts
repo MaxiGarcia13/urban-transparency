@@ -6,7 +6,10 @@ import {
   upsertPublicContracts,
 } from '@urban-transparency/db';
 
-import { getMunicipalityPlacspFilter } from '../config/municipalities';
+import {
+  getMunicipalityPlacspFilter,
+  SANTANDER_MUNICIPALITY_CODE,
+} from '../config/municipalities';
 import {
   applyMunicipalityCode,
   matchesMunicipalityContract,
@@ -19,6 +22,7 @@ import {
 import { delay } from '../utils/delay';
 
 const DEFAULT_REQUEST_DELAY_MS = 1_500;
+const DEFAULT_MAX_PAGES = 5;
 
 interface CliOptions {
   municipalityCode: string;
@@ -27,8 +31,8 @@ interface CliOptions {
 }
 
 function parseCliOptions(argv: string[]): CliOptions {
-  let municipalityCode = '39075';
-  let maxPages = 5;
+  let municipalityCode = SANTANDER_MUNICIPALITY_CODE;
+  let maxPages = DEFAULT_MAX_PAGES;
   let delayMs = DEFAULT_REQUEST_DELAY_MS;
 
   for (let index = 0; index < argv.length; index += 1) {
