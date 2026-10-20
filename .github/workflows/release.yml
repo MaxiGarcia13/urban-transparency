@@ -1,0 +1,76 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  lint:
+    if: ${{ !startsWith(github.event.head_commit.message, 'chore(release):') }}
+    uses: ./.github/workflows/lint.yml
+
+  version:
+    name: Bump versions
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        uses: ./.github/actions/install
+
+      - name: Configure git author
+        uses: MaxiGarcia13/gh-actions/.github/actions/configure-git-author@main
+
+      - name: Bump package versions
+        run: pnpm run release
+
+      - name: Push changes
+        run: git push
+
+      - name: Push tags
+        run: git push --tags
+
+  release-notes:
+    needs: version
+    uses: ./.github/workflows/release-notes.yml
+    secrets: inherit
+
+  deploy:
+    name: Deploy
+    needs: version
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: Production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Pull latest changes
+        run: git pull origin main
+
+      - name: Install dependencies
+        uses: ./.github/actions/install
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Pull Vercel project settings
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
