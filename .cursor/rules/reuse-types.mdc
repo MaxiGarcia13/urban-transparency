@@ -1,0 +1,52 @@
+---
+description: Reuse existing types; avoid parallel shapes for the same data
+alwaysApply: true
+---
+
+# Reuse types
+
+Do not invent a new type when an existing domain type (or a `Pick` / intersection of one) already describes the data.
+
+- Prefer the shared or package **domain** type as the source of truth.
+- Extend with `& { … }` or narrow with `Pick` / `Omit` instead of copying fields into a sibling interface.
+- UI props, tooltips, and layer payloads should reference domain types — not redefine `name`, `id`, totals, etc.
+- Inline `{ id: string; name: string }` is fine for a one-off parameter; do not export a new named type for it unless reused in several places.
+- Before adding a type, search for an existing one with the same fields or meaning.
+
+```typescript
+// ❌ BAD — parallel shapes for the same neighborhood spending
+export type NeighborhoodSpending = {
+  neighborhoodId: string;
+  contractCount: number;
+  totalAwardedEur: number;
+};
+export type NeighborhoodLabel = {
+  neighborhoodId: string;
+  name: string;
+  contractCount: number;
+  totalAwardedEur: number;
+  position: [number, number];
+};
+export type NeighborhoodTooltipPayload = {
+  neighborhoodId: string;
+  name: string;
+  contractCount: number;
+  totalAwardedEur: number;
+};
+
+// ✅ GOOD — one domain type; derive UI shapes
+export type NeighborhoodSpending = {
+  neighborhoodId: string;
+  contractCount: number;
+  totalAwardedEur: number;
+};
+export type NeighborhoodSpendingFeatureProperties = NeighborhoodSpending & {
+  name: string;
+  labelLongitude: number;
+  labelLatitude: number;
+};
+export type NeighborhoodSpendingTooltipState = Pick<
+  NeighborhoodSpendingFeatureProperties,
+  'name' | 'contractCount' | 'totalAwardedEur'
+> & { x: number; y: number };
+```
