@@ -1,0 +1,26 @@
+## 0.0.1 (2026-10-20)
+
+### 🚀 Features
+
+- Add postal code and execution address fields to public contracts, enhance geocoding functionality, and update spending map tooltips ([bc6c968](https://github.com/MaxiGarcia13/urban-transparency/commit/bc6c968))
+- Enhance database and scrapper functionality with new public contracts migration, neighborhood fields, and municipality integration ([54382df](https://github.com/MaxiGarcia13/urban-transparency/commit/54382df))
+- Integrate Santander municipality code into scraping script and refactor CLI options for improved configurability ([448d19e](https://github.com/MaxiGarcia13/urban-transparency/commit/448d19e))
+- Implement scrapper package with PLACSP Atom feed parsing, municipality filtering, and contract upsert functionality ([481654d](https://github.com/MaxiGarcia13/urban-transparency/commit/481654d))
+
+### 🔄 Refactors
+
+- Replace type aliases with interfaces for geocode and contract models, enhance tooltip state with known location, and improve spending map interaction handling ([7719c35](https://github.com/MaxiGarcia13/urban-transparency/commit/7719c35))
+
+### 🧹 Chores
+
+- Add database package and update scrapper dependencies to include workspace reference ([7b2af06](https://github.com/MaxiGarcia13/urban-transparency/commit/7b2af06))
+- Add Nx configuration and workspace setup, including new scrapper package ([0b9cfae](https://github.com/MaxiGarcia13/urban-transparency/commit/0b9cfae))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/db to 0.0.1
+- Updated @urban-transparency/shared to 0.0.1
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo

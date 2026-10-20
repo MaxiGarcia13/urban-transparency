@@ -1,7 +1,7 @@
 {
   "name": "@urban-transparency/scrapper",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "scrape:placsp": "tsx --env-file=../../.env scripts/scrape-placsp.ts",
