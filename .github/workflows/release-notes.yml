@@ -56,7 +56,7 @@ jobs:
               continue
             fi
 
-            if [[ ! "$tag" =~ ^@@urban-transparency/([^@]+)@(.+)$ ]]; then
+            if [[ ! "$tag" =~ ^@urban-transparency/([^@]+)@(.+)$ ]]; then
               echo "::warning::Skipping unrecognized tag: $tag"
               continue
             fi
