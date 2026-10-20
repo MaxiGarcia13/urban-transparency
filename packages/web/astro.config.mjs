@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { loadEnvFile } from 'node:process';
 import { fileURLToPath } from 'node:url';
-import node from '@astrojs/node';
+import vercel from '@astrojs/vercel';
 import vue from '@astrojs/vue';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, envField } from 'astro/config';
@@ -18,9 +18,7 @@ try {
 // https://astro.build/config
 export default defineConfig({
   output: 'server',
-  adapter: node({
-    mode: 'standalone',
-  }),
+  adapter: vercel(),
   prefetch: true,
   integrations: [vue({ appEntrypoint: '/src/vue-app' })],
   vite: {
