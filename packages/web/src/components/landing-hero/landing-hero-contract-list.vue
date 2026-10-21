@@ -7,10 +7,10 @@ import { computed, ref, useTemplateRef, watch } from 'vue';
 import PublicContractCardSkeleton from '@/components/public-contract/public-contract-card-skeleton.vue';
 import PublicContractCard from '@/components/public-contract/public-contract-card.vue';
 import { Badge } from '@/components/ui/badge';
-import { cantabriaRegion } from '@/config/regions/cantabria';
 
 const props = defineProps<{
   contracts: PublicContract[];
+  regionName: string;
   isLoading?: boolean;
   statusMessage: string | null;
   scrollElement: HTMLElement | null;
@@ -131,7 +131,7 @@ watch(
       variant="outline"
       class="mt-6 w-fit rounded-xl border-border bg-card/80 px-4 py-2 text-xs tracking-wide text-muted-foreground uppercase md:mt-8"
     >
-      Datos PLACSP · {{ cantabriaRegion.name }}
+      Datos PLACSP · {{ regionName }}
     </Badge>
   </div>
 </template>

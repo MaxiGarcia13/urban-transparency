@@ -2,6 +2,7 @@ import type { MapLibreOverlay } from '@deck.gl/maplibre';
 import type { PublicContract } from '@urban-transparency/shared';
 import type { Map as MaplibreMap } from 'maplibre-gl';
 import type { Ref } from 'vue';
+import type { MapRegion } from '@/config/regions';
 import { onMounted, onUnmounted, shallowRef, watch } from 'vue';
 import { buildSpendingDeckLayers } from './build-spending-deck-layers';
 import { createSpendingMap } from './create-spending-map';
@@ -10,7 +11,10 @@ import { useFitMapToClusters } from './use-fit-map-to-clusters';
 import { useFocusContractOnMap } from './use-focus-contract-on-map';
 import { useVisibleMapClusters } from './use-visible-map-clusters';
 
-export function useSpendingMap(contracts: Ref<PublicContract[]>) {
+export function useSpendingMap(
+  contracts: Ref<PublicContract[]>,
+  region: Ref<MapRegion>,
+) {
   const mapContainer = shallowRef<HTMLElement | null>(null);
   const mapInstance = shallowRef<MaplibreMap | null>(null);
   const deckOverlay = shallowRef<MapLibreOverlay | null>(null);
@@ -25,6 +29,7 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
     scheduleVisibleClustersSync,
   } = useVisibleMapClusters({
     contracts,
+    region,
     mapInstance,
   });
 
@@ -69,6 +74,7 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
 
     const { map, overlay, destroy } = createSpendingMap({
       container: mapContainer.value,
+      region: region.value,
       initialClusters: visibleClusters.value,
       onSelectCluster: selectCluster,
       onClearSelection: clearTooltip,

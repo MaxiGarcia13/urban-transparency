@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { MunicipalSpending } from '@/domain/aggregate-municipal-spending';
 import { PhCaretDown } from '@phosphor-icons/vue';
+import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
 import { PRODUCT_NAME } from '@/config/product';
-import { cantabriaRegion } from '@/config/regions/cantabria';
+import { getMapRegionByProvinceCode } from '@/config/regions';
 import { cn } from '@/lib/utils';
+import LandingHeroRegionSelect from './landing-hero-region-select.vue';
 import LandingHeroSpendingSummary from './landing-hero-spending-summary.vue';
 
 withDefaults(
@@ -21,6 +23,11 @@ withDefaults(
 const emit = defineEmits<{
   toggleExpanded: [];
 }>();
+
+const provinceCode = defineModel<string>('provinceCode', { required: true });
+const regionName = computed(
+  () => getMapRegionByProvinceCode(provinceCode.value).name,
+);
 </script>
 
 <template>
@@ -43,7 +50,9 @@ const emit = defineEmits<{
       <h1 class="max-w-md text-3xl leading-tight font-semibold text-balance md:text-5xl">
         ¿Dónde va el
         <span class="text-orange-400">gasto público</span>
-        en {{ cantabriaRegion.name }}?
+        en
+        <LandingHeroRegionSelect v-model:province-code="provinceCode" />
+        ?
       </h1>
       <p
         :class="cn(
@@ -52,7 +61,7 @@ const emit = defineEmits<{
         )"
       >
         Adjudicaciones municipales de
-        {{ cantabriaRegion.name }}
+        {{ regionName }}
         publicadas en PLACSP.
       </p>
     </div>

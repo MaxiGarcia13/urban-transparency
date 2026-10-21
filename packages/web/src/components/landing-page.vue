@@ -11,7 +11,10 @@ import { LandingHero } from '@/components/landing-hero';
 import { PublicContractFiltersControl } from '@/components/public-contract-filters';
 import { usePublicContractFilters } from '@/composables/use-public-contract-filters';
 import { usePublicContracts } from '@/composables/use-public-contracts';
-import { cantabriaRegion } from '@/config/regions/cantabria';
+import {
+  CANTABRIA_PROVINCE_CODE,
+  getMapRegionByProvinceCode,
+} from '@/config/regions';
 import { aggregateMunicipalSpending } from '@/domain/aggregate-municipal-spending';
 import {
   availableContractYears,
@@ -30,13 +33,15 @@ const {
   filters,
 } = usePublicContractFilters();
 const pendingFocusContractId = ref<string | null>(null);
+const provinceCode = ref(CANTABRIA_PROVINCE_CODE);
+const selectedRegion = computed(() =>
+  getMapRegionByProvinceCode(provinceCode.value),
+);
 const spendingMap = useTemplateRef<{
   focusContract: (contractId: string) => void;
 }>('spendingMap');
 
-const { contracts, isLoading, isError } = usePublicContracts(
-  cantabriaRegion.provinceCode,
-);
+const { contracts, isLoading, isError } = usePublicContracts(provinceCode);
 
 const availableYears = computed(() => availableContractYears(contracts.value));
 
@@ -73,6 +78,10 @@ function focusContractOnMap(contract: PublicContract): void {
 watch(spendingMap, () => {
   tryFocusPendingContract();
 });
+
+watch(provinceCode, () => {
+  pendingFocusContractId.value = null;
+});
 </script>
 
 <template>
@@ -85,6 +94,7 @@ watch(spendingMap, () => {
       >
         <LandingHero
           v-model:search-query="searchQuery"
+          v-model:province-code="provinceCode"
           :contracts="filteredContracts"
           :all-contract-count="contracts.length"
           :spending="spending"
@@ -97,8 +107,10 @@ watch(spendingMap, () => {
 
     <div class="relative h-full min-h-0 w-full bg-zinc-950 lg:flex-1">
       <SpendingMap
+        :key="selectedRegion.provinceCode"
         ref="spendingMap"
         :contracts="mapContracts"
+        :region="selectedRegion"
       />
 
       <div class="pointer-events-none absolute right-4 bottom-4 z-10">

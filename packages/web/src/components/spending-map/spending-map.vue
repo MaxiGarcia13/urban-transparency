@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import type { PublicContract } from '@urban-transparency/shared';
+import type { MapRegion } from '@/config/regions';
 import { toRef } from 'vue';
 import ContractSpendingTooltip from './contract-spending-tooltip.vue';
 import { useSpendingMap } from './use-spending-map';
 
 const props = defineProps<{
   contracts: PublicContract[];
+  region: MapRegion;
 }>();
 
 const { mapContainer, tooltip, clearTooltip, focusContract } = useSpendingMap(
   toRef(props, 'contracts'),
+  toRef(props, 'region'),
 );
 
 defineExpose({ focusContract });

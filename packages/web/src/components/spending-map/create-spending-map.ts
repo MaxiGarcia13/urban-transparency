@@ -1,13 +1,14 @@
 import type { ContractMapCluster } from './group-contract-map-points';
+import type { MapRegion } from '@/config/regions';
 import { MapLibreOverlay } from '@deck.gl/maplibre';
 import { Map as MaplibreMap, NavigationControl } from 'maplibre-gl';
-import { cantabriaRegion } from '@/config/regions/cantabria';
 import { addRegionBoundaryLayers } from './add-region-boundary-layers';
 import { buildSpendingDeckLayers } from './build-spending-deck-layers';
 import { CARTO_DARK_STYLE } from './spending-map-config';
 
 interface CreateSpendingMapOptions {
   container: HTMLElement;
+  region: MapRegion;
   initialClusters: ContractMapCluster[];
   onSelectCluster: (cluster: ContractMapCluster, x: number, y: number) => void;
   onClearSelection: () => void;
@@ -23,6 +24,7 @@ export interface SpendingMapHandles {
 
 export function createSpendingMap({
   container,
+  region,
   initialClusters,
   onSelectCluster,
   onClearSelection,
@@ -32,10 +34,10 @@ export function createSpendingMap({
   const map = new MaplibreMap({
     container,
     style: CARTO_DARK_STYLE,
-    center: cantabriaRegion.center,
-    zoom: cantabriaRegion.zoom,
-    pitch: cantabriaRegion.pitch,
-    bearing: cantabriaRegion.bearing,
+    center: region.center,
+    zoom: region.zoom,
+    pitch: region.pitch,
+    bearing: region.bearing,
     maxCanvasSize: [8192, 8192],
   });
 
@@ -59,7 +61,7 @@ export function createSpendingMap({
   map.on('moveend', onViewportChange);
   map.on('zoomend', onViewportChange);
   map.once('load', () => {
-    addRegionBoundaryLayers(map, cantabriaRegion.boundary);
+    addRegionBoundaryLayers(map, region.boundary);
     onLoad();
   });
 
