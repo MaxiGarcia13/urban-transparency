@@ -2,16 +2,12 @@
 import type { PublicContract, PublicContractStatus } from '@urban-transparency/shared';
 import type { MunicipalSpending } from '@/domain/aggregate-municipal-spending';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
+import PublicContractCard from '@/components/public-contract/public-contract-card.vue';
 import { santanderMunicipality } from '@/config/municipalities/santander';
 import { PRODUCT_NAME } from '@/config/product';
 import { FILTERABLE_PUBLIC_CONTRACT_STATUSES } from '@/domain/filter-public-contracts';
 import { formatEur } from '@/utils/format-eur';
-import { formatPartyDisplayName } from '@/utils/format-party-display-name';
-import { formatPublicContractCardDate } from '@/utils/format-public-contract-card-date';
-import {
-  formatPublicContractStatus,
-  publicContractStatusTextClass,
-} from '@/utils/public-contract-status-style';
+import { formatPublicContractStatus } from '@/utils/public-contract-status-style';
 
 const props = withDefaults(
   defineProps<{
@@ -271,58 +267,10 @@ onUnmounted(() => {
               v-for="contract in contracts"
               :key="contract.id"
             >
-              <button
-                type="button"
-                class="w-full rounded-xl border border-white/10 bg-zinc-900/60 p-4 text-left transition-colors hover:border-orange-400/40 hover:bg-zinc-900"
-                @click="selectContract(contract)"
-              >
-                <p class="text-sm font-medium text-zinc-100">
-                  {{ contract.title }}
-                </p>
-                <p
-                  class="mt-2 text-xs tracking-wide"
-                  :class="publicContractStatusTextClass(contract.status)"
-                >
-                  {{ formatPublicContractStatus(contract.status) }}
-                </p>
-                <p class="mt-2 text-sm text-zinc-400">
-                  Órgano:
-                  {{
-                    formatPartyDisplayName(
-                      contract.contractingPartyName,
-                      contract.contractingPartyNif,
-                    )
-                  }}
-                </p>
-                <p class="mt-2 text-sm text-zinc-400">
-                  Adjudicatario:
-                  {{
-                    formatPartyDisplayName(
-                      contract.awardeeName,
-                      contract.awardeeNif,
-                    ) ?? 'no disponible'
-                  }}
-                </p>
-                <p
-                  v-if="formatPublicContractCardDate(contract)"
-                  class="mt-2 text-xs text-zinc-500"
-                >
-                  {{ formatPublicContractCardDate(contract) }}
-                </p>
-                <p
-                  v-if="contract.postalCode"
-                  class="mt-2 text-xs tracking-wide text-zinc-500 uppercase"
-                >
-                  CP {{ contract.postalCode }}
-                </p>
-                <p class="mt-2 text-base font-semibold text-orange-300">
-                  {{
-                    contract.awardedAmountEur == null
-                      ? 'Importe no disponible'
-                      : formatEur(contract.awardedAmountEur)
-                  }}
-                </p>
-              </button>
+              <PublicContractCard
+                :contract="contract"
+                @select="selectContract"
+              />
             </li>
             <li
               v-if="contracts.length === 0"

@@ -13,6 +13,8 @@ export type ContractMapPoint = Pick<
   | 'awardeeName'
   | 'awardeeNif'
   | 'postalCode'
+  | 'awardedAt'
+  | 'sourceEntryUpdatedAt'
 > & {
   awardedAmountEur: number;
 };
@@ -66,6 +68,8 @@ export function groupContractsByCoordinates(
       awardeeNif: contract.awardeeNif,
       awardedAmountEur: contract.awardedAmountEur ?? 0,
       postalCode: contract.postalCode,
+      awardedAt: contract.awardedAt,
+      sourceEntryUpdatedAt: contract.sourceEntryUpdatedAt,
     };
 
     const existing = clustersByKey.get(key);

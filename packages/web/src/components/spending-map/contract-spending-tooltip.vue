@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import type { ContractSpendingTooltipState } from './contract-spending-tooltip-state';
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import PublicContractCardBody from '@/components/public-contract/public-contract-card-body.vue';
 import { formatEur } from '@/utils/format-eur';
-import { formatPartyDisplayName } from '@/utils/format-party-display-name';
-import {
-  formatPublicContractStatus,
-  publicContractStatusTextClass,
-} from '@/utils/public-contract-status-style';
 import { clampTooltipPosition } from './clamp-tooltip-position';
 
 const props = defineProps<ContractSpendingTooltipState>();
@@ -93,57 +89,14 @@ onUnmounted(() => {
       </button>
     </div>
 
-    <template v-if="contractCount === 1">
-      <p class="text-sm font-semibold text-balance">
-        {{ contracts[0]?.title }}
-      </p>
-      <p
-        v-if="contracts[0]"
-        class="mt-2 text-xs tracking-wide"
-        :class="publicContractStatusTextClass(contracts[0].status)"
-      >
-        {{ formatPublicContractStatus(contracts[0].status) }}
-      </p>
-      <template v-if="contracts[0]">
-        <p class="mt-2 text-sm text-zinc-400">
-          Órgano:
-          {{
-            formatPartyDisplayName(
-              contracts[0].contractingPartyName,
-              contracts[0].contractingPartyNif,
-            )
-          }}
-        </p>
-        <p class="mt-2 text-sm text-zinc-400">
-          Adjudicatario:
-          {{
-            formatPartyDisplayName(
-              contracts[0].awardeeName,
-              contracts[0].awardeeNif,
-            ) ?? 'no disponible'
-          }}
-        </p>
-      </template>
-      <p
-        v-if="postalCode"
-        class="mt-2 text-xs tracking-wide text-zinc-400 uppercase"
-      >
-        CP {{ postalCode }}
-      </p>
-      <p class="mt-2 text-2xl font-semibold text-orange-300">
-        {{ formatEur(totalAwardedEur) }}
-      </p>
-    </template>
+    <PublicContractCardBody
+      v-if="contractCount === 1 && contracts[0]"
+      :contract="contracts[0]"
+    />
 
     <template v-else>
       <p class="text-sm font-semibold">
         {{ contractCount }} contratos
-      </p>
-      <p
-        v-if="postalCode"
-        class="mt-2 text-xs tracking-wide text-zinc-400 uppercase"
-      >
-        CP {{ postalCode }}
       </p>
       <p class="mt-2 text-2xl font-semibold text-orange-300">
         {{ formatEur(totalAwardedEur) }}
@@ -154,36 +107,7 @@ onUnmounted(() => {
           :key="contract.id"
           class="border-t border-white/10 pt-2"
         >
-          <p class="text-xs leading-snug text-balance text-zinc-300">
-            {{ contract.title }}
-          </p>
-          <p
-            class="mt-2 text-xs tracking-wide"
-            :class="publicContractStatusTextClass(contract.status)"
-          >
-            {{ formatPublicContractStatus(contract.status) }}
-          </p>
-          <p class="mt-2 text-xs text-zinc-400">
-            Órgano:
-            {{
-              formatPartyDisplayName(
-                contract.contractingPartyName,
-                contract.contractingPartyNif,
-              )
-            }}
-          </p>
-          <p class="mt-2 text-xs text-zinc-400">
-            Adjudicatario:
-            {{
-              formatPartyDisplayName(
-                contract.awardeeName,
-                contract.awardeeNif,
-              ) ?? 'no disponible'
-            }}
-          </p>
-          <p class="mt-2 text-sm font-semibold text-orange-300/90">
-            {{ formatEur(contract.awardedAmountEur) }}
-          </p>
+          <PublicContractCardBody :contract="contract" />
         </li>
       </ul>
     </template>
