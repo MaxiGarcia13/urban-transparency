@@ -17,6 +17,10 @@ function normalizeSearchText(value: string): string {
   return value.trim().toLocaleLowerCase('es');
 }
 
+function normalizeNif(value: string): string {
+  return normalizeSearchText(value).replace(/[\s.-]/g, '');
+}
+
 export function contractAwardedYear(
   contract: Pick<PublicContract, 'awardedAt'>,
 ): number | null {
@@ -56,9 +60,21 @@ function matchesSearch(
   if (!normalizedQuery) {
     return true;
   }
-  const title = normalizeSearchText(contract.title);
-  const awardee = normalizeSearchText(contract.awardeeName ?? '');
-  return title.includes(normalizedQuery) || awardee.includes(normalizedQuery);
+
+  const haystacks = [
+    normalizeSearchText(contract.title),
+    normalizeSearchText(contract.awardeeName ?? ''),
+    normalizeSearchText(contract.contractingPartyName),
+    normalizeNif(contract.awardeeNif ?? ''),
+    normalizeNif(contract.contractingPartyNif ?? ''),
+  ];
+  const nifQuery = normalizeNif(normalizedQuery);
+
+  return haystacks.some(
+    (haystack) =>
+      haystack.includes(normalizedQuery)
+      || (nifQuery.length > 0 && haystack.includes(nifQuery)),
+  );
 }
 
 function matchesStatus(

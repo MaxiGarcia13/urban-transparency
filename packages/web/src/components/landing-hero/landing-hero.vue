@@ -85,14 +85,14 @@ onKeyStroke('Escape', () => {
               for="contract-quick-search"
               class="text-sm text-muted-foreground"
             >
-              Busca un contrato o adjudicatario
+              Busca por título, empresa, NIF u organismo
             </Label>
             <Input
               id="contract-quick-search"
               v-model="searchQuery"
               type="search"
               name="contract-quick-search"
-              placeholder="Título, empresa…"
+              placeholder="Título, empresa, NIF u organismo…"
               class="h-auto rounded-xl border-border bg-card px-4 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:border-ring md:py-4"
             />
           </div>
