@@ -1,0 +1,36 @@
+name: Scrape PLACSP Cantabria
+
+on:
+  schedule:
+    # 1st and 16th at 05:00 UTC (~every 15 days; ~06:00 / 07:00 Europe/Madrid).
+    - cron: '0 5 1,16 * *'
+  workflow_dispatch:
+
+concurrency:
+  group: scrape-placsp-cantabria
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  scrape:
+    name: Scrape PLACSP Cantabria
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install
+
+      - name: Write .env
+        run: |
+          cat > .env <<EOF
+          TURSO_URL=${{ secrets.TURSO_URL }}
+          TURSO_AUTH_TOKEN=${{ secrets.TURSO_AUTH_TOKEN }}
+          EOF
+
+      - name: Scrape PLACSP Cantabria
+        run: pnpm scrape:placsp:cantabria
