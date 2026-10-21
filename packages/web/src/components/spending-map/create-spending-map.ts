@@ -2,6 +2,7 @@ import type { ContractMapCluster } from './group-contract-map-points';
 import { MapLibreOverlay } from '@deck.gl/maplibre';
 import { Map as MaplibreMap, NavigationControl } from 'maplibre-gl';
 import { cantabriaRegion } from '@/config/regions/cantabria';
+import { addRegionBoundaryLayers } from './add-region-boundary-layers';
 import { buildSpendingDeckLayers } from './build-spending-deck-layers';
 import { CARTO_DARK_STYLE } from './spending-map-config';
 
@@ -57,7 +58,10 @@ export function createSpendingMap({
   map.addControl(overlay);
   map.on('moveend', onViewportChange);
   map.on('zoomend', onViewportChange);
-  map.once('load', onLoad);
+  map.once('load', () => {
+    addRegionBoundaryLayers(map, cantabriaRegion.boundary);
+    onLoad();
+  });
 
   function destroy(): void {
     map.off('moveend', onViewportChange);

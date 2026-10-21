@@ -1,6 +1,10 @@
+import type { GeoJSONSourceSpecification } from 'maplibre-gl';
 import { listMunicipalitiesByProvinceCode } from '@urban-transparency/shared';
+import cantabriaBoundaryJson from './cantabria-boundary.json';
 
 export const CANTABRIA_PROVINCE_CODE = '39';
+
+type RegionBoundaryData = Exclude<GeoJSONSourceSpecification['data'], string>;
 
 const municipalities = listMunicipalitiesByProvinceCode(CANTABRIA_PROVINCE_CODE);
 const centerLongitude
@@ -17,4 +21,5 @@ export const cantabriaRegion = {
   zoom: 9,
   pitch: 40,
   bearing: -20,
+  boundary: cantabriaBoundaryJson as RegionBoundaryData,
 } as const;
