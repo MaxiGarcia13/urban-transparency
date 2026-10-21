@@ -6,6 +6,7 @@ import { santanderMunicipality } from '@/config/municipalities/santander';
 import { PRODUCT_NAME } from '@/config/product';
 import { matchContractsBySearch } from '@/domain/match-contracts-by-search';
 import { formatEur } from '@/utils/format-eur';
+import { formatPublicContractCardDate } from '@/utils/format-public-contract-card-date';
 import {
   formatPublicContractStatus,
   publicContractStatusTextClass,
@@ -196,6 +197,12 @@ onUnmounted(() => {
                 </p>
                 <p class="mt-2 text-sm text-zinc-400">
                   {{ contract.awardeeName ?? 'Adjudicatario no disponible' }}
+                </p>
+                <p
+                  v-if="formatPublicContractCardDate(contract)"
+                  class="mt-2 text-xs text-zinc-500"
+                >
+                  {{ formatPublicContractCardDate(contract) }}
                 </p>
                 <p
                   v-if="contract.postalCode"
