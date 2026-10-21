@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import type { MunicipalSpending } from '@/domain/aggregate-municipal-spending';
+import { PhCaretDown } from '@phosphor-icons/vue';
+import { Button } from '@/components/ui/button';
 import { PRODUCT_NAME } from '@/config/product';
 import { cantabriaRegion } from '@/config/regions/cantabria';
+import { cn } from '@/lib/utils';
 import { formatEur } from '@/utils/format-eur';
 
 defineProps<{
@@ -36,7 +39,7 @@ const emit = defineEmits<{
         <span class="text-orange-400">gasto público</span>
         en {{ cantabriaRegion.name }}?
       </h1>
-      <p class="max-w-md text-sm leading-relaxed text-zinc-400 md:text-base">
+      <p class="max-w-md text-sm leading-relaxed text-muted-foreground md:text-base">
         Adjudicaciones municipales de
         {{ cantabriaRegion.name }}
         publicadas en PLACSP.
@@ -47,7 +50,7 @@ const emit = defineEmits<{
       v-if="spending && spending.contractCount > 0"
       class="flex flex-col gap-2"
     >
-      <p class="text-sm text-zinc-400">
+      <p class="text-sm text-muted-foreground">
         {{ spending.contractCount }}
         {{ spending.contractCount === 1 ? 'contrato' : 'contratos' }}
       </p>
@@ -56,21 +59,21 @@ const emit = defineEmits<{
       </p>
     </div>
 
-    <button
+    <Button
       type="button"
-      class="flex w-full items-center justify-between rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2 text-sm text-zinc-200 lg:hidden"
+      variant="outline"
+      class="flex h-auto w-full items-center justify-between rounded-xl border-border bg-card/80 px-4 py-2 text-sm text-foreground lg:hidden"
       :aria-expanded="isExpanded"
       aria-controls="landing-hero-details"
       @click="emit('toggleExpanded')"
     >
       <span>{{ isExpanded ? 'Ocultar búsqueda y filtros' : 'Buscar y filtrar' }}</span>
-      <span
-        class="text-zinc-400 transition-transform duration-200"
-        :class="isExpanded ? 'rotate-180' : ''"
-        aria-hidden="true"
-      >
-        ▾
-      </span>
-    </button>
+      <PhCaretDown
+        :class="cn(
+          'size-4 text-muted-foreground transition-transform duration-200',
+          isExpanded ? 'rotate-180' : '',
+        )"
+      />
+    </Button>
   </div>
 </template>

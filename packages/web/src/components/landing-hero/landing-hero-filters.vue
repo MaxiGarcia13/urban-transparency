@@ -1,6 +1,18 @@
 <script setup lang="ts">
 import type { PublicContractStatus } from '@urban-transparency/shared';
+import { computed } from 'vue';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { FILTERABLE_PUBLIC_CONTRACT_STATUSES } from '@/domain/filter-public-contracts';
+import { cn } from '@/lib/utils';
 import { formatPublicContractStatus } from '@/utils/public-contract-status-style';
 
 defineProps<{
@@ -13,6 +25,36 @@ const selectedStatuses = defineModel<PublicContractStatus[]>('selectedStatuses',
 });
 const yearFrom = defineModel<number | null>('yearFrom', { default: null });
 const yearTo = defineModel<number | null>('yearTo', { default: null });
+
+const yearFromValue = computed({
+  get: () => (yearFrom.value == null ? 'all' : String(yearFrom.value)),
+  set: (value: string) => {
+    const year = value === 'all' ? null : Number(value);
+    yearFrom.value = year != null && Number.isFinite(year) ? year : null;
+    if (
+      yearFrom.value != null
+      && yearTo.value != null
+      && yearFrom.value > yearTo.value
+    ) {
+      yearTo.value = yearFrom.value;
+    }
+  },
+});
+
+const yearToValue = computed({
+  get: () => (yearTo.value == null ? 'all' : String(yearTo.value)),
+  set: (value: string) => {
+    const year = value === 'all' ? null : Number(value);
+    yearTo.value = year != null && Number.isFinite(year) ? year : null;
+    if (
+      yearTo.value != null
+      && yearFrom.value != null
+      && yearTo.value < yearFrom.value
+    ) {
+      yearFrom.value = yearTo.value;
+    }
+  },
+});
 
 function isStatusSelected(status: PublicContractStatus): boolean {
   return selectedStatuses.value.includes(status);
@@ -27,112 +69,110 @@ function toggleStatus(status: PublicContractStatus): void {
   }
   selectedStatuses.value = [...selectedStatuses.value, status];
 }
-
-function parseYearSelect(value: string): number | null {
-  if (!value) {
-    return null;
-  }
-  const year = Number(value);
-  return Number.isFinite(year) ? year : null;
-}
-
-function onYearFromChange(event: Event): void {
-  const year = parseYearSelect((event.target as HTMLSelectElement).value);
-  yearFrom.value = year;
-  if (year != null && yearTo.value != null && year > yearTo.value) {
-    yearTo.value = year;
-  }
-}
-
-function onYearToChange(event: Event): void {
-  const year = parseYearSelect((event.target as HTMLSelectElement).value);
-  yearTo.value = year;
-  if (year != null && yearFrom.value != null && year < yearFrom.value) {
-    yearFrom.value = year;
-  }
-}
 </script>
 
 <template>
-  <label class="flex flex-col gap-2">
-    <span class="text-sm text-zinc-400">Busca un contrato o adjudicatario</span>
-    <input
+  <div class="flex flex-col gap-2">
+    <Label
+      for="contract-search"
+      class="text-sm text-muted-foreground"
+    >
+      Busca un contrato o adjudicatario
+    </Label>
+    <Input
+      id="contract-search"
       v-model="searchQuery"
       type="search"
       name="contract-search"
       placeholder="Título, empresa…"
-      class="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-2 text-base text-zinc-100 outline-none placeholder:text-zinc-500 focus:border-orange-400/60 md:py-4"
-    >
-  </label>
+      class="h-auto rounded-xl border-border bg-card px-4 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:border-ring md:py-4"
+    />
+  </div>
 
   <fieldset class="flex flex-col gap-2">
-    <legend class="text-sm text-zinc-400">
+    <legend class="text-sm text-muted-foreground">
       Estado
     </legend>
     <div class="flex flex-wrap gap-2">
-      <button
+      <Button
         v-for="status in FILTERABLE_PUBLIC_CONTRACT_STATUSES"
         :key="status"
         type="button"
-        class="rounded-xl px-4 py-2 text-sm"
-        :class="
-          isStatusSelected(status)
-            ? 'bg-orange-500/20 text-orange-200 ring-1 ring-orange-400/40'
-            : 'bg-zinc-900 text-zinc-400 ring-1 ring-white/5'
-        "
+        variant="outline"
+        size="sm"
         :aria-pressed="isStatusSelected(status)"
+        :class="cn(
+          'h-auto rounded-xl px-4 py-2 text-sm',
+          isStatusSelected(status)
+            ? 'border-transparent bg-accent text-accent-foreground ring-1 ring-orange-400/40'
+            : 'border-transparent bg-card text-muted-foreground ring-1 ring-white/5 hover:bg-card hover:text-muted-foreground',
+        )"
         @click="toggleStatus(status)"
       >
         {{ formatPublicContractStatus(status) }}
-      </button>
+      </Button>
     </div>
   </fieldset>
 
   <div class="flex flex-col gap-2">
-    <p class="text-sm text-zinc-400">
+    <p class="text-sm text-muted-foreground">
       Año
     </p>
     <div class="grid grid-cols-2 gap-4">
-      <label class="flex flex-col gap-2">
-        <span class="text-xs tracking-wide text-zinc-500 uppercase">Desde</span>
-        <select
-          class="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-2 text-sm text-zinc-100 outline-none focus:border-orange-400/60"
-          :value="yearFrom ?? ''"
+      <div class="flex flex-col gap-2">
+        <Label class="text-xs tracking-wide text-muted-foreground uppercase">
+          Desde
+        </Label>
+        <Select
+          v-model="yearFromValue"
           :disabled="availableYears.length === 0"
-          @change="onYearFromChange"
         >
-          <option value="">
-            Todos
-          </option>
-          <option
-            v-for="year in availableYears"
-            :key="`from-${year}`"
-            :value="year"
+          <SelectTrigger
+            class="h-auto w-full rounded-xl border-border bg-card px-4 py-2 text-sm text-foreground"
           >
-            {{ year }}
-          </option>
-        </select>
-      </label>
-      <label class="flex flex-col gap-2">
-        <span class="text-xs tracking-wide text-zinc-500 uppercase">Hasta</span>
-        <select
-          class="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-2 text-sm text-zinc-100 outline-none focus:border-orange-400/60"
-          :value="yearTo ?? ''"
+            <SelectValue placeholder="Todos" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">
+              Todos
+            </SelectItem>
+            <SelectItem
+              v-for="year in availableYears"
+              :key="`from-${year}`"
+              :value="String(year)"
+            >
+              {{ year }}
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div class="flex flex-col gap-2">
+        <Label class="text-xs tracking-wide text-muted-foreground uppercase">
+          Hasta
+        </Label>
+        <Select
+          v-model="yearToValue"
           :disabled="availableYears.length === 0"
-          @change="onYearToChange"
         >
-          <option value="">
-            Todos
-          </option>
-          <option
-            v-for="year in availableYears"
-            :key="`to-${year}`"
-            :value="year"
+          <SelectTrigger
+            class="h-auto w-full rounded-xl border-border bg-card px-4 py-2 text-sm text-foreground"
           >
-            {{ year }}
-          </option>
-        </select>
-      </label>
+            <SelectValue placeholder="Todos" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">
+              Todos
+            </SelectItem>
+            <SelectItem
+              v-for="year in availableYears"
+              :key="`to-${year}`"
+              :value="String(year)"
+            >
+              {{ year }}
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   </div>
 </template>

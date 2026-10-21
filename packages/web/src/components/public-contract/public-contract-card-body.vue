@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { PublicContract } from '@urban-transparency/shared';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { formatEur } from '@/utils/format-eur';
 import { formatPartyDisplayName } from '@/utils/format-party-display-name';
 import { formatPublicContractCardDate } from '@/utils/format-public-contract-card-date';
@@ -28,16 +30,17 @@ defineProps<{
 
 <template>
   <div>
-    <p class="text-sm font-medium text-balance text-zinc-100">
+    <p class="text-sm font-medium text-balance text-card-foreground">
       {{ contract.title }}
     </p>
-    <p
-      class="mt-2 text-xs tracking-wide"
+    <Badge
+      variant="outline"
+      class="mt-2 border-transparent bg-transparent px-0 text-xs tracking-wide"
       :class="publicContractStatusTextClass(contract.status)"
     >
       {{ formatPublicContractStatus(contract.status) }}
-    </p>
-    <p class="mt-2 text-sm text-zinc-400">
+    </Badge>
+    <p class="mt-2 text-sm text-muted-foreground">
       Órgano:
       {{
         formatPartyDisplayName(
@@ -46,7 +49,7 @@ defineProps<{
         )
       }}
     </p>
-    <p class="mt-2 text-sm text-zinc-400">
+    <p class="mt-2 text-sm text-muted-foreground">
       Adjudicatario:
       {{
         formatPartyDisplayName(
@@ -57,13 +60,13 @@ defineProps<{
     </p>
     <p
       v-if="formatPublicContractCardDate(contract)"
-      class="mt-2 text-xs text-zinc-500"
+      class="mt-2 text-xs text-muted-foreground"
     >
       {{ formatPublicContractCardDate(contract) }}
     </p>
     <p
       v-if="contract.postalCode"
-      class="mt-2 text-xs tracking-wide text-zinc-500 uppercase"
+      class="mt-2 text-xs tracking-wide text-muted-foreground uppercase"
     >
       CP {{ contract.postalCode }}
     </p>
@@ -74,16 +77,18 @@ defineProps<{
           : formatEur(contract.awardedAmountEur)
       }}
     </p>
-    <a
+    <Button
       v-if="contract.detailUrl"
+      as="a"
+      variant="link"
       :href="contract.detailUrl"
       target="_blank"
       rel="noopener noreferrer"
-      class="mt-2 inline-block text-sm text-orange-300 underline-offset-2 hover:underline"
+      class="mt-2 h-auto px-0! text-sm text-orange-300"
       @click.stop
       @keydown.stop
     >
       Ver en la Plataforma de Contratación
-    </a>
+    </Button>
   </div>
 </template>

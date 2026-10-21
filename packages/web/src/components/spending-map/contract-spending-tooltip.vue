@@ -2,6 +2,9 @@
 import type { ContractSpendingTooltipState } from './contract-spending-tooltip-state';
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import PublicContractCardBody from '@/components/public-contract/public-contract-card-body.vue';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import { formatEur } from '@/utils/format-eur';
 import { clampTooltipPosition } from './clamp-tooltip-position';
 
@@ -66,52 +69,63 @@ onUnmounted(() => {
 <template>
   <div
     ref="root"
-    class="absolute z-10 flex max-h-[min(20rem,calc(100%-16px))] max-w-[min(20rem,calc(100%-16px))] flex-col overflow-hidden overscroll-contain rounded-xl border border-white/10 bg-zinc-950/95 px-4 py-4 text-white shadow-lg backdrop-blur-sm"
+    class="absolute z-10 max-h-[min(20rem,calc(100%-16px))] max-w-[min(20rem,calc(100%-16px))]"
     :style="{ left: `${left}px`, top: `${top}px` }"
     @click.stop
     @wheel.stop
   >
-    <div class="mb-2 flex shrink-0 items-start justify-between gap-4">
-      <p
-        v-if="!hasKnownLocation"
-        class="text-xs tracking-wide text-zinc-400 uppercase"
-      >
-        Sin ubicación conocida
-      </p>
-      <span v-else class="flex-1" />
-      <button
-        type="button"
-        class="shrink-0 rounded-xl px-2 py-1 text-xs text-zinc-400 hover:bg-white/10 hover:text-white"
-        aria-label="Cerrar"
-        @click="emit('close')"
-      >
-        Cerrar
-      </button>
-    </div>
-
-    <div
-      v-if="contractCount === 1 && contracts[0]"
-      class="min-h-0 flex-1 overflow-y-auto overscroll-contain"
+    <Card
+      class="max-h-[min(20rem,calc(100%-16px))] overflow-hidden bg-background/95 py-0 text-foreground shadow-lg backdrop-blur-sm"
     >
-      <PublicContractCardBody :contract="contracts[0]" />
-    </div>
+      <CardContent class="flex max-h-[min(20rem,calc(100%-16px))] flex-col overflow-hidden overscroll-contain px-4 py-4">
+        <div class="mb-2 flex shrink-0 items-start justify-between gap-4">
+          <p
+            v-if="!hasKnownLocation"
+            class="text-xs tracking-wide text-muted-foreground uppercase"
+          >
+            Sin ubicación conocida
+          </p>
+          <span v-else class="flex-1" />
+          <Button
+            type="button"
+            variant="ghost"
+            size="xs"
+            class="h-auto shrink-0 rounded-xl px-2 py-1 text-xs text-muted-foreground hover:text-foreground"
+            aria-label="Cerrar"
+            @click="emit('close')"
+          >
+            Cerrar
+          </Button>
+        </div>
 
-    <template v-else>
-      <p class="shrink-0 text-sm font-semibold">
-        {{ contractCount }} contratos
-      </p>
-      <p class="mt-2 shrink-0 text-2xl font-semibold text-orange-300">
-        {{ formatEur(totalAwardedEur) }}
-      </p>
-      <ul class="mt-4 flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain">
-        <li
-          v-for="contract in contracts"
-          :key="contract.id"
-          class="border-t border-white/10 pt-2"
+        <div
+          v-if="contractCount === 1 && contracts[0]"
+          class="min-h-0 flex-1 overflow-y-auto overscroll-contain"
         >
-          <PublicContractCardBody :contract="contract" />
-        </li>
-      </ul>
-    </template>
+          <PublicContractCardBody :contract="contracts[0]" />
+        </div>
+
+        <template v-else>
+          <p class="shrink-0 text-sm font-semibold">
+            {{ contractCount }} contratos
+          </p>
+          <p class="mt-2 shrink-0 text-2xl font-semibold text-orange-300">
+            {{ formatEur(totalAwardedEur) }}
+          </p>
+          <ul class="mt-4 flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain">
+            <li
+              v-for="(contract, index) in contracts"
+              :key="contract.id"
+            >
+              <Separator
+                v-if="index > 0"
+                class="mb-2"
+              />
+              <PublicContractCardBody :contract="contract" />
+            </li>
+          </ul>
+        </template>
+      </CardContent>
+    </Card>
   </div>
 </template>

@@ -5,6 +5,7 @@ import { useVirtualizer } from '@tanstack/vue-virtual';
 import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue';
 import PublicContractCardSkeleton from '@/components/public-contract/public-contract-card-skeleton.vue';
 import PublicContractCard from '@/components/public-contract/public-contract-card.vue';
+import { Badge } from '@/components/ui/badge';
 import { cantabriaRegion } from '@/config/regions/cantabria';
 
 const props = defineProps<{
@@ -107,7 +108,7 @@ watch(
 
     <p
       v-else-if="statusMessage"
-      class="text-sm text-zinc-400"
+      class="text-sm text-muted-foreground"
     >
       {{ statusMessage }}
     </p>
@@ -134,17 +135,18 @@ watch(
         />
         <p
           v-else
-          class="text-sm text-zinc-400"
+          class="text-sm text-muted-foreground"
         >
           Ningún contrato coincide con los filtros
         </p>
       </div>
     </div>
 
-    <p
-      class="mt-6 w-fit rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2 text-xs tracking-wide text-zinc-400 uppercase md:mt-8"
+    <Badge
+      variant="outline"
+      class="mt-6 w-fit rounded-xl border-border bg-card/80 px-4 py-2 text-xs tracking-wide text-muted-foreground uppercase md:mt-8"
     >
       Datos PLACSP · {{ cantabriaRegion.name }}
-    </p>
+    </Badge>
   </div>
 </template>

@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 @import './scroll.css';
+@import './shadcn-vue.css';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
 
 html,
 body {

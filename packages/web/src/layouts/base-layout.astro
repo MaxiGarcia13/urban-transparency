@@ -14,7 +14,7 @@ const ogImageUrl = new URL('/og-image.png', Astro.url).href;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" class="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -43,7 +43,7 @@ const ogImageUrl = new URL('/og-image.png', Astro.url).href;
 
     <title>{title}</title>
   </head>
-  <body class="m-0 min-h-dvh bg-zinc-950 text-zinc-100 antialiased">
+  <body class="m-0 min-h-dvh bg-background text-foreground antialiased">
     <slot />
   </body>
 </html>
