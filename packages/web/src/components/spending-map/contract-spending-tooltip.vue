@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ContractSpendingTooltipState } from './contract-spending-tooltip-state';
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import { useResizeObserver } from '@vueuse/core';
+import { nextTick, onMounted, ref, watch } from 'vue';
 import PublicContractCardBody from '@/components/public-contract/public-contract-card-body.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -17,8 +18,6 @@ const emit = defineEmits<{
 const root = ref<HTMLElement | null>(null);
 const left = ref(props.x + 12);
 const top = ref(props.y + 12);
-
-let resizeObserver: ResizeObserver | null = null;
 
 function updatePosition(): void {
   const el = root.value;
@@ -48,21 +47,13 @@ watch(
   },
 );
 
+useResizeObserver(root, () => {
+  updatePosition();
+});
+
 onMounted(async () => {
   await nextTick();
   updatePosition();
-
-  if (root.value) {
-    resizeObserver = new ResizeObserver(() => {
-      updatePosition();
-    });
-    resizeObserver.observe(root.value);
-  }
-});
-
-onUnmounted(() => {
-  resizeObserver?.disconnect();
-  resizeObserver = null;
 });
 </script>
 

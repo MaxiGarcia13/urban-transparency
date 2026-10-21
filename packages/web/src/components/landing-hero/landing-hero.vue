@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { PublicContract, PublicContractStatus } from '@urban-transparency/shared';
 import type { MunicipalSpending } from '@/domain/aggregate-municipal-spending';
-import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue';
+import { onKeyStroke } from '@vueuse/core';
+import { computed, ref, useTemplateRef } from 'vue';
 import LandingHeroContractList from './landing-hero-contract-list.vue';
 import LandingHeroFilters from './landing-hero-filters.vue';
 import LandingHeroIntro from './landing-hero-intro.vue';
@@ -60,18 +61,10 @@ function selectContract(contract: PublicContract): void {
   isExpanded.value = false;
 }
 
-function handleEscapeKey(event: KeyboardEvent): void {
-  if (event.key === 'Escape' && isExpanded.value) {
+onKeyStroke('Escape', () => {
+  if (isExpanded.value) {
     isExpanded.value = false;
   }
-}
-
-onMounted(() => {
-  window.addEventListener('keydown', handleEscapeKey);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleEscapeKey);
 });
 </script>
 

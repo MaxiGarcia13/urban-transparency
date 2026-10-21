@@ -1,6 +1,7 @@
 import type { ContractSpendingTooltipState } from './contract-spending-tooltip-state';
 import type { ContractMapCluster } from './group-contract-map-points';
-import { onMounted, onUnmounted, shallowRef } from 'vue';
+import { onKeyStroke } from '@vueuse/core';
+import { shallowRef } from 'vue';
 
 export function useContractMapTooltip() {
   const tooltip = shallowRef<ContractSpendingTooltipState | null>(null);
@@ -32,18 +33,8 @@ export function useContractMapTooltip() {
     openCluster(cluster, x, y);
   }
 
-  function handleEscapeKey(event: KeyboardEvent): void {
-    if (event.key === 'Escape') {
-      clearTooltip();
-    }
-  }
-
-  onMounted(() => {
-    window.addEventListener('keydown', handleEscapeKey);
-  });
-
-  onUnmounted(() => {
-    window.removeEventListener('keydown', handleEscapeKey);
+  onKeyStroke('Escape', () => {
+    clearTooltip();
   });
 
   return {

@@ -2,7 +2,8 @@
 import type { PublicContract } from '@urban-transparency/shared';
 import type { ComponentPublicInstance } from 'vue';
 import { useVirtualizer } from '@tanstack/vue-virtual';
-import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue';
+import { useResizeObserver } from '@vueuse/core';
+import { computed, ref, useTemplateRef, watch } from 'vue';
 import PublicContractCardSkeleton from '@/components/public-contract/public-contract-card-skeleton.vue';
 import PublicContractCard from '@/components/public-contract/public-contract-card.vue';
 import { Badge } from '@/components/ui/badge';
@@ -27,6 +28,14 @@ const scrollMargin = ref(0);
 function syncScrollMargin(): void {
   scrollMargin.value = listRoot.value?.offsetTop ?? 0;
 }
+
+const scrollLayoutTargets = computed(() => {
+  const scrollParent = props.scrollElement ?? listRoot.value?.parentElement;
+  if (!scrollParent) {
+    return [];
+  }
+  return [...scrollParent.children] as HTMLElement[];
+});
 
 const rowCount = computed(() => {
   if (props.isLoading || props.statusMessage) {
@@ -55,40 +64,16 @@ function measureRow(element: Element | ComponentPublicInstance | null): void {
   }
 }
 
-let resizeObserver: ResizeObserver | null = null;
-
-function observeScrollLayout(): void {
-  resizeObserver?.disconnect();
-  resizeObserver = null;
+useResizeObserver(scrollLayoutTargets, () => {
   syncScrollMargin();
-
-  const scrollParent = props.scrollElement ?? listRoot.value?.parentElement;
-  if (!scrollParent || typeof ResizeObserver === 'undefined') {
-    return;
-  }
-
-  resizeObserver = new ResizeObserver(() => {
-    syncScrollMargin();
-  });
-  for (const child of scrollParent.children) {
-    resizeObserver.observe(child);
-  }
-}
-
-onMounted(() => {
-  observeScrollLayout();
-});
-
-onUnmounted(() => {
-  resizeObserver?.disconnect();
-  resizeObserver = null;
 });
 
 watch(
-  () => props.scrollElement,
+  scrollLayoutTargets,
   () => {
-    observeScrollLayout();
+    syncScrollMargin();
   },
+  { flush: 'post', immediate: true },
 );
 </script>
 
