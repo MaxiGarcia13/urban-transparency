@@ -66,12 +66,12 @@ onUnmounted(() => {
 <template>
   <div
     ref="root"
-    class="absolute z-10 max-h-[min(20rem,calc(100%-16px))] max-w-[min(20rem,calc(100%-16px))] overflow-y-auto overscroll-contain rounded-xl border border-white/10 bg-zinc-950/95 px-4 py-4 text-white shadow-lg backdrop-blur-sm"
+    class="absolute z-10 flex max-h-[min(20rem,calc(100%-16px))] max-w-[min(20rem,calc(100%-16px))] flex-col overflow-hidden overscroll-contain rounded-xl border border-white/10 bg-zinc-950/95 px-4 py-4 text-white shadow-lg backdrop-blur-sm"
     :style="{ left: `${left}px`, top: `${top}px` }"
     @click.stop
     @wheel.stop
   >
-    <div class="mb-2 flex items-start justify-between gap-4">
+    <div class="mb-2 flex shrink-0 items-start justify-between gap-4">
       <p
         v-if="!hasKnownLocation"
         class="text-xs tracking-wide text-zinc-400 uppercase"
@@ -89,19 +89,21 @@ onUnmounted(() => {
       </button>
     </div>
 
-    <PublicContractCardBody
+    <div
       v-if="contractCount === 1 && contracts[0]"
-      :contract="contracts[0]"
-    />
+      class="min-h-0 flex-1 overflow-y-auto overscroll-contain"
+    >
+      <PublicContractCardBody :contract="contracts[0]" />
+    </div>
 
     <template v-else>
-      <p class="text-sm font-semibold">
+      <p class="shrink-0 text-sm font-semibold">
         {{ contractCount }} contratos
       </p>
-      <p class="mt-2 text-2xl font-semibold text-orange-300">
+      <p class="mt-2 shrink-0 text-2xl font-semibold text-orange-300">
         {{ formatEur(totalAwardedEur) }}
       </p>
-      <ul class="mt-4 flex max-h-48 flex-col gap-2 overflow-y-auto overscroll-contain">
+      <ul class="mt-4 flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain">
         <li
           v-for="contract in contracts"
           :key="contract.id"
