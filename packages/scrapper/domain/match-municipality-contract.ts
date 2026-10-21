@@ -1,29 +1,49 @@
 import type { Municipality, PublicContract } from '@urban-transparency/shared';
 
-function equalsIgnoreCase(left: string, right: string): boolean {
-  return left.toLocaleLowerCase('es') === right.toLocaleLowerCase('es');
+function normalizeName(value: string): string {
+  return value.toLocaleLowerCase('es');
 }
 
 function includesIgnoreCase(haystack: string, needle: string): boolean {
-  return haystack.toLocaleLowerCase('es').includes(needle.toLocaleLowerCase('es'));
+  return normalizeName(haystack).includes(normalizeName(needle));
 }
 
-/** Keep contracts whose execution city or contracting party matches the municipality. */
-export function matchesMunicipalityContract(
+export function buildMunicipalityNameIndex(
+  municipalities: readonly Municipality[],
+): Map<string, Municipality> {
+  return new Map(
+    municipalities.map((municipality) => [
+      normalizeName(municipality.name),
+      municipality,
+    ]),
+  );
+}
+
+export function findMatchingMunicipality(
   contract: PublicContract,
-  municipality: Municipality,
-): boolean {
-  if (
-    contract.executionCity
-    && equalsIgnoreCase(contract.executionCity, municipality.name)
-  ) {
-    return true;
+  municipalitiesByNormalizedName: Map<string, Municipality>,
+): Municipality | null {
+  if (contract.executionCity) {
+    const byCity = municipalitiesByNormalizedName.get(
+      normalizeName(contract.executionCity),
+    );
+    if (byCity) {
+      return byCity;
+    }
   }
 
-  return includesIgnoreCase(
-    contract.contractingPartyName,
-    `Ayuntamiento de ${municipality.name}`,
-  );
+  for (const municipality of municipalitiesByNormalizedName.values()) {
+    if (
+      includesIgnoreCase(
+        contract.contractingPartyName,
+        `Ayuntamiento de ${municipality.name}`,
+      )
+    ) {
+      return municipality;
+    }
+  }
+
+  return null;
 }
 
 export function applyMunicipalityCode(
