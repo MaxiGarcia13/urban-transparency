@@ -67,7 +67,7 @@ const emit = defineEmits<{
       aria-controls="landing-hero-details"
       @click="emit('toggleExpanded')"
     >
-      <span>{{ isExpanded ? 'Ocultar búsqueda y filtros' : 'Buscar y filtrar' }}</span>
+      <span>{{ isExpanded ? 'Ocultar búsqueda' : 'Buscar contratos' }}</span>
       <PhCaretDown
         :class="cn(
           'size-4 text-muted-foreground transition-transform duration-200',

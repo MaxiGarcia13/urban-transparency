@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { PublicContract, PublicContractStatus } from '@urban-transparency/shared';
+import type { PublicContract } from '@urban-transparency/shared';
 import type { MunicipalSpending } from '@/domain/aggregate-municipal-spending';
 import { onKeyStroke } from '@vueuse/core';
 import { computed, ref, useTemplateRef } from 'vue';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import LandingHeroContractList from './landing-hero-contract-list.vue';
-import LandingHeroFilters from './landing-hero-filters.vue';
 import LandingHeroIntro from './landing-hero-intro.vue';
 
 const props = withDefaults(
   defineProps<{
     contracts?: PublicContract[];
-    availableYears?: number[];
     allContractCount?: number;
     spending?: MunicipalSpending | null;
     isLoading?: boolean;
@@ -18,7 +18,6 @@ const props = withDefaults(
   }>(),
   {
     contracts: () => [],
-    availableYears: () => [],
     allContractCount: 0,
     spending: null,
     isLoading: false,
@@ -31,11 +30,6 @@ const emit = defineEmits<{
 }>();
 
 const searchQuery = defineModel<string>('searchQuery', { default: '' });
-const selectedStatuses = defineModel<PublicContractStatus[]>('selectedStatuses', {
-  default: () => [],
-});
-const yearFrom = defineModel<number | null>('yearFrom', { default: null });
-const yearTo = defineModel<number | null>('yearTo', { default: null });
 const isExpanded = ref(false);
 const detailsScroll = useTemplateRef<HTMLElement>('detailsScroll');
 
@@ -86,13 +80,22 @@ onKeyStroke('Escape', () => {
           ref="detailsScroll"
           class="flex max-h-[min(48dvh,100%)] min-h-0 flex-col gap-6 overflow-y-auto overscroll-contain px-4 pb-4 md:gap-8 md:px-8 md:pb-8 lg:h-full lg:max-h-none"
         >
-          <LandingHeroFilters
-            v-model:search-query="searchQuery"
-            v-model:selected-statuses="selectedStatuses"
-            v-model:year-from="yearFrom"
-            v-model:year-to="yearTo"
-            :available-years="availableYears"
-          />
+          <div class="flex flex-col gap-2">
+            <Label
+              for="contract-quick-search"
+              class="text-sm text-muted-foreground"
+            >
+              Busca un contrato o adjudicatario
+            </Label>
+            <Input
+              id="contract-quick-search"
+              v-model="searchQuery"
+              type="search"
+              name="contract-quick-search"
+              placeholder="Título, empresa…"
+              class="h-auto rounded-xl border-border bg-card px-4 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:border-ring md:py-4"
+            />
+          </div>
 
           <LandingHeroContractList
             :contracts="contracts"

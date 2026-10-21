@@ -106,3 +106,22 @@ export function filterPublicContracts(
       && matchesYearRange(contract, filters.yearFrom, filters.yearTo),
   );
 }
+
+export function countActivePublicContractFilters(
+  filters: PublicContractFilters,
+): number {
+  let count = 0;
+  if (normalizeSearchText(filters.searchQuery)) {
+    count += 1;
+  }
+  if (filters.statuses.length > 0) {
+    count += 1;
+  }
+  if (filters.yearFrom != null) {
+    count += 1;
+  }
+  if (filters.yearTo != null) {
+    count += 1;
+  }
+  return count;
+}

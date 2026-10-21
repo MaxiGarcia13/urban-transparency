@@ -8,6 +8,7 @@ import {
   watch,
 } from 'vue';
 import { LandingHero } from '@/components/landing-hero';
+import { PublicContractFiltersControl } from '@/components/public-contract-filters';
 import { usePublicContracts } from '@/composables/use-public-contracts';
 import { cantabriaRegion } from '@/config/regions/cantabria';
 import { aggregateMunicipalSpending } from '@/domain/aggregate-municipal-spending';
@@ -85,11 +86,7 @@ watch(spendingMap, () => {
       >
         <LandingHero
           v-model:search-query="searchQuery"
-          v-model:selected-statuses="selectedStatuses"
-          v-model:year-from="yearFrom"
-          v-model:year-to="yearTo"
           :contracts="filteredContracts"
-          :available-years="availableYears"
           :all-contract-count="contracts.length"
           :spending="spending"
           :is-loading="isLoading"
@@ -99,11 +96,21 @@ watch(spendingMap, () => {
       </div>
     </div>
 
-    <div class="h-full min-h-0 w-full bg-zinc-950 lg:flex-1">
+    <div class="relative h-full min-h-0 w-full bg-zinc-950 lg:flex-1">
       <SpendingMap
         ref="spendingMap"
         :contracts="mapContracts"
       />
+
+      <div class="pointer-events-none absolute right-4 bottom-4 z-10">
+        <PublicContractFiltersControl
+          v-model:search-query="searchQuery"
+          v-model:selected-statuses="selectedStatuses"
+          v-model:year-from="yearFrom"
+          v-model:year-to="yearTo"
+          :available-years="availableYears"
+        />
+      </div>
     </div>
   </div>
 </template>
