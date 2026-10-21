@@ -60,15 +60,15 @@ onMounted(async () => {
 <template>
   <div
     ref="root"
-    class="absolute z-10 max-h-[min(20rem,calc(100%-16px))] max-w-[min(20rem,calc(100%-16px))]"
+    class="absolute z-10 flex max-h-[min(20rem,calc(100%-16px))] max-w-[min(20rem,calc(100%-16px))] flex-col"
     :style="{ left: `${left}px`, top: `${top}px` }"
     @click.stop
     @wheel.stop
   >
     <Card
-      class="max-h-[min(20rem,calc(100%-16px))] overflow-hidden bg-background/95 py-0 text-foreground shadow-lg backdrop-blur-sm"
+      class="flex min-h-0 max-h-full flex-col overflow-hidden bg-background/95 py-0 text-foreground shadow-lg backdrop-blur-sm"
     >
-      <CardContent class="flex max-h-[min(20rem,calc(100%-16px))] flex-col overflow-hidden overscroll-contain px-4 py-4">
+      <CardContent class="flex min-h-0 flex-1 flex-col overflow-hidden overscroll-contain px-4 py-4">
         <div class="mb-2 flex shrink-0 items-start justify-between gap-4">
           <p
             v-if="!hasKnownLocation"
