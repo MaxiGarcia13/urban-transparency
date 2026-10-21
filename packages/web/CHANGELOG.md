@@ -1,3 +1,20 @@
+## 0.0.7 (2026-10-21)
+
+### 🚀 Features
+
+- Enhance contract spending tooltip and add custom scrollbar styles ([629b500](https://github.com/MaxiGarcia13/urban-transparency/commit/629b500))
+- Refactor landing hero component structure for improved modularity ([5cd904f](https://github.com/MaxiGarcia13/urban-transparency/commit/5cd904f))
+- Refactor public contract display components for improved modularity ([16af7ae](https://github.com/MaxiGarcia13/urban-transparency/commit/16af7ae))
+- Add party display name formatting to contract components ([17a6252](https://github.com/MaxiGarcia13/urban-transparency/commit/17a6252))
+
+### 🐞 Fixes
+
+- Correct import path for scroll.css in global styles ([18667e3](https://github.com/MaxiGarcia13/urban-transparency/commit/18667e3))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.6 (2026-10-21)
 
 ### 🧱 Updated Dependencies
