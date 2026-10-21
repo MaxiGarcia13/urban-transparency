@@ -1,12 +1,15 @@
 import type { ContractMapCluster } from './group-contract-map-points';
 import type { RgbaColor } from '@/utils/public-contract-status-style';
-import { ScatterplotLayer, TextLayer } from '@deck.gl/layers';
+import { IconLayer } from '@deck.gl/layers';
 import {
   MIXED_STATUS_RGBA,
   publicContractStatusRgba,
-
   UNKNOWN_LOCATION_RGBA,
 } from '@/utils/public-contract-status-style';
+import {
+  createClusterMarkerIcon,
+  type ClusterMarkerLabelPlacement,
+} from './create-cluster-marker-icon';
 
 interface BuildSpendingDeckLayersOptions {
   clusters: ContractMapCluster[];
@@ -23,73 +26,65 @@ function clusterFillColor(cluster: ContractMapCluster): RgbaColor {
   return publicContractStatusRgba(cluster.status);
 }
 
+function clusterRadiusPx(cluster: ContractMapCluster): number {
+  return cluster.contractCount > 1 ? 14 : 10;
+}
+
+function clusterLabel(cluster: ContractMapCluster): {
+  text: string;
+  placement: ClusterMarkerLabelPlacement;
+} {
+  if (!cluster.hasKnownLocation) {
+    return {
+      text: cluster.contractCount > 1 ? String(cluster.contractCount) : '?',
+      placement: 'center',
+    };
+  }
+  if (cluster.contractCount > 1) {
+    return {
+      text: String(cluster.contractCount),
+      placement: 'center',
+    };
+  }
+  return {
+    text: cluster.postalCode ?? '',
+    placement: 'end',
+  };
+}
+
 export function buildSpendingDeckLayers({
   clusters,
   onSelectCluster,
-}: BuildSpendingDeckLayersOptions): Array<
-  ScatterplotLayer<ContractMapCluster> | TextLayer<ContractMapCluster>
-> {
+}: BuildSpendingDeckLayersOptions): Array<IconLayer<ContractMapCluster>> {
   if (clusters.length === 0) {
     return [];
   }
 
-  const markerLayer = new ScatterplotLayer<ContractMapCluster>({
-    id: 'contract-markers',
-    data: clusters,
-    pickable: true,
-    autoHighlight: true,
-    radiusUnits: 'pixels',
-    getPosition: (cluster) => [cluster.longitude, cluster.latitude],
-    getRadius: (cluster) => (cluster.contractCount > 1 ? 14 : 10),
-    getFillColor: clusterFillColor,
-    getLineColor: [255, 255, 255, 200],
-    lineWidthMinPixels: 1,
-    stroked: true,
-    onClick: (info) => {
-      const cluster = info.object as ContractMapCluster | undefined;
-      if (!cluster || info.x == null || info.y == null) {
-        return;
-      }
-      onSelectCluster(cluster, info.x, info.y);
-    },
-  });
-
-  const labelLayer = new TextLayer<ContractMapCluster>({
-    id: 'contract-cluster-labels',
-    data: clusters,
-    pickable: false,
-    billboard: true,
-    sizeUnits: 'pixels',
-    getPosition: (cluster) => [cluster.longitude, cluster.latitude],
-    getText: (cluster) => {
-      if (!cluster.hasKnownLocation) {
-        return cluster.contractCount > 1
-          ? String(cluster.contractCount)
-          : '?';
-      }
-      if (cluster.contractCount > 1) {
-        return String(cluster.contractCount);
-      }
-      return cluster.postalCode ?? '';
-    },
-    getSize: 11,
-    getColor: [255, 255, 255, 220],
-    getTextAnchor: (cluster) => {
-      if (!cluster.hasKnownLocation || cluster.contractCount > 1) {
-        return 'middle';
-      }
-      return 'start';
-    },
-    getAlignmentBaseline: 'center',
-    getPixelOffset: (cluster) => {
-      if (!cluster.hasKnownLocation || cluster.contractCount > 1) {
-        return [0, 0];
-      }
-      return [14, 0];
-    },
-    fontFamily: 'system-ui, sans-serif',
-    fontWeight: 600,
-  });
-
-  return [markerLayer, labelLayer];
+  return [
+    new IconLayer<ContractMapCluster>({
+      id: 'contract-markers',
+      data: clusters,
+      pickable: true,
+      autoHighlight: true,
+      sizeUnits: 'pixels',
+      getPosition: (cluster) => [cluster.longitude, cluster.latitude],
+      getIcon: (cluster) => {
+        const { text, placement } = clusterLabel(cluster);
+        return createClusterMarkerIcon({
+          fill: clusterFillColor(cluster),
+          radiusPx: clusterRadiusPx(cluster),
+          label: text,
+          labelPlacement: placement,
+        });
+      },
+      getSize: (cluster) => clusterRadiusPx(cluster) * 2,
+      onClick: (info) => {
+        const cluster = info.object as ContractMapCluster | undefined;
+        if (!cluster || info.x == null || info.y == null) {
+          return;
+        }
+        onSelectCluster(cluster, info.x, info.y);
+      },
+    }),
+  ];
 }
