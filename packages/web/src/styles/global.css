@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import 'scroll.css';
+@import './scroll.css';
 
 html,
 body {
