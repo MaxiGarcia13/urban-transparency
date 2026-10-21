@@ -1,3 +1,13 @@
+## 0.0.11 (2026-10-21)
+
+### 🚀 Features
+
+- Enhance region handling and scraping capabilities ([2fd3bcc](https://github.com/MaxiGarcia13/urban-transparency/commit/2fd3bcc))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.10 (2026-10-21)
 
 This was a version bump only for @urban-transparency/shared to align it with other projects, there were no code changes.

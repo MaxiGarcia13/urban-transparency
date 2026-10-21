@@ -1,3 +1,28 @@
+## 0.0.20 (2026-10-21)
+
+### 🚀 Features
+
+- Enhance region handling and scraping capabilities ([2fd3bcc](https://github.com/MaxiGarcia13/urban-transparency/commit/2fd3bcc))
+- Refactor landing page and hero components for region selection ([fb8bf82](https://github.com/MaxiGarcia13/urban-transparency/commit/fb8bf82))
+- Add Vizcaya region support and update scraping scripts ([c46e695](https://github.com/MaxiGarcia13/urban-transparency/commit/c46e695))
+
+### 🔄 Refactors
+
+- Update region boundary type definitions for consistency ([950eda4](https://github.com/MaxiGarcia13/urban-transparency/commit/950eda4))
+
+### 🧹 Chores
+
+- Refactor TypeScript configuration for web package ([7315bdf](https://github.com/MaxiGarcia13/urban-transparency/commit/7315bdf))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/database to 0.0.11
+- Updated @urban-transparency/shared to 0.0.11
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.19 (2026-10-21)
 
 ### 🧹 Chores

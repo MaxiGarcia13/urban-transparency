@@ -1,3 +1,19 @@
+## 0.0.11 (2026-10-21)
+
+### 🚀 Features
+
+- Enhance region handling and scraping capabilities ([2fd3bcc](https://github.com/MaxiGarcia13/urban-transparency/commit/2fd3bcc))
+- Add Vizcaya region support and update scraping scripts ([c46e695](https://github.com/MaxiGarcia13/urban-transparency/commit/c46e695))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/database to 0.0.11
+- Updated @urban-transparency/shared to 0.0.11
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.10 (2026-10-21)
 
 ### 🧱 Updated Dependencies
