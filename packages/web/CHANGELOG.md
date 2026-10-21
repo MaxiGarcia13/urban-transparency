@@ -1,3 +1,26 @@
+## 0.0.14 (2026-10-21)
+
+### 🚀 Features
+
+- Introduce public contract filters and refactor landing page components ([146d324](https://github.com/MaxiGarcia13/urban-transparency/commit/146d324))
+- Update dependencies and introduce new UI components ([25c7d32](https://github.com/MaxiGarcia13/urban-transparency/commit/25c7d32))
+
+### 🔄 Refactors
+
+- Integrate public contract filters into landing page and create filter utility ([57999ea](https://github.com/MaxiGarcia13/urban-transparency/commit/57999ea))
+- Enhance layout and responsiveness of contract spending tooltip ([b1b5f06](https://github.com/MaxiGarcia13/urban-transparency/commit/b1b5f06))
+- Update search functionality and labels in contract components ([b1a5f67](https://github.com/MaxiGarcia13/urban-transparency/commit/b1a5f67))
+- Simplify component logic and enhance responsiveness ([c1a2cd3](https://github.com/MaxiGarcia13/urban-transparency/commit/c1a2cd3))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/db to 0.0.8
+- Updated @urban-transparency/shared to 0.0.8
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.13 (2026-10-21)
 
 ### 🧱 Updated Dependencies

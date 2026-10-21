@@ -1,3 +1,10 @@
+## 0.0.8 (2026-10-21)
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/db to 0.0.8
+- Updated @urban-transparency/shared to 0.0.8
+
 ## 0.0.7 (2026-10-21)
 
 ### 🔄 Refactors
