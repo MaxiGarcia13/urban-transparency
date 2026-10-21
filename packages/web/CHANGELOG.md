@@ -1,3 +1,13 @@
+## 0.0.17 (2026-10-21)
+
+### 🔄 Refactors
+
+- Improve visibility handling in landing hero intro component ([caa4ece](https://github.com/MaxiGarcia13/urban-transparency/commit/caa4ece))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.16 (2026-10-21)
 
 ### 🔄 Refactors
