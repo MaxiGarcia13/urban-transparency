@@ -3,7 +3,7 @@ import type { PublicContract, PublicContractStatus } from '@urban-transparency/s
 import { computed, onMounted, ref, useTemplateRef } from 'vue';
 import { LandingHero } from '@/components/landing-hero';
 import SpendingMap from '@/components/spending-map/spending-map.vue';
-import { santanderMunicipality } from '@/config/municipalities/santander';
+import { cantabriaRegion } from '@/config/regions/cantabria';
 import { aggregateMunicipalSpending } from '@/domain/aggregate-municipal-spending';
 import {
   availableContractYears,
@@ -47,7 +47,7 @@ function focusContractOnMap(contract: PublicContract): void {
 onMounted(async () => {
   try {
     const response = await fetch(
-      `/api/public-contracts?municipality=${santanderMunicipality.municipalityCode}`,
+      `/api/public-contracts?province=${cantabriaRegion.provinceCode}`,
     );
     if (!response.ok) {
       isError.value = true;

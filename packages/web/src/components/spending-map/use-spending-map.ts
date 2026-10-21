@@ -6,7 +6,7 @@ import { MapLibreOverlay } from '@deck.gl/maplibre';
 import { Map as MaplibreMap, NavigationControl, setWorkerUrl } from 'maplibre-gl';
 import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { computed, onMounted, onUnmounted, shallowRef, watch } from 'vue';
-import { santanderMunicipality } from '@/config/municipalities/santander';
+import { cantabriaRegion } from '@/config/regions/cantabria';
 import { buildSpendingDeckLayers } from './build-spending-deck-layers';
 import {
 
@@ -19,9 +19,9 @@ setWorkerUrl(maplibreWorkerUrl);
 const CARTO_DARK_STYLE
   = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
 
-const MUNICIPALITY_FALLBACK_CENTER = {
-  longitude: santanderMunicipality.center[0],
-  latitude: santanderMunicipality.center[1],
+const REGION_FALLBACK_CENTER = {
+  longitude: cantabriaRegion.center[0],
+  latitude: cantabriaRegion.center[1],
 };
 
 export function useSpendingMap(contracts: Ref<PublicContract[]>) {
@@ -32,7 +32,7 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
   const deckOverlay = shallowRef<MapLibreOverlay | null>(null);
 
   const clusters = computed(() =>
-    groupContractsByCoordinates(contracts.value, MUNICIPALITY_FALLBACK_CENTER),
+    groupContractsByCoordinates(contracts.value, REGION_FALLBACK_CENTER),
   );
 
   function clearTooltip(): void {
@@ -147,10 +147,10 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
     const map = new MaplibreMap({
       container: mapContainer.value,
       style: CARTO_DARK_STYLE,
-      center: santanderMunicipality.center,
-      zoom: santanderMunicipality.zoom,
-      pitch: santanderMunicipality.pitch,
-      bearing: santanderMunicipality.bearing,
+      center: cantabriaRegion.center,
+      zoom: cantabriaRegion.zoom,
+      pitch: cantabriaRegion.pitch,
+      bearing: cantabriaRegion.bearing,
       maxCanvasSize: [8192, 8192],
     });
 

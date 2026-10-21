@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { MunicipalSpending } from '@/domain/aggregate-municipal-spending';
-import { santanderMunicipality } from '@/config/municipalities/santander';
 import { PRODUCT_NAME } from '@/config/product';
+import { cantabriaRegion } from '@/config/regions/cantabria';
 import { formatEur } from '@/utils/format-eur';
 
 defineProps<{
@@ -24,11 +24,11 @@ const emit = defineEmits<{
       <h1 class="max-w-md text-3xl leading-tight font-semibold text-balance md:text-5xl">
         ¿Dónde va el
         <span class="text-orange-400">gasto público</span>
-        de tu ciudad?
+        en {{ cantabriaRegion.name }}?
       </h1>
       <p class="max-w-md text-sm leading-relaxed text-zinc-400 md:text-base">
-        Adjudicaciones de
-        {{ santanderMunicipality.name }}
+        Adjudicaciones municipales de
+        {{ cantabriaRegion.name }}
         publicadas en PLACSP.
       </p>
     </div>

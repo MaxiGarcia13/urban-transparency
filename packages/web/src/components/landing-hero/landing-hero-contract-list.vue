@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PublicContract } from '@urban-transparency/shared';
 import PublicContractCard from '@/components/public-contract/public-contract-card.vue';
-import { santanderMunicipality } from '@/config/municipalities/santander';
+import { cantabriaRegion } from '@/config/regions/cantabria';
 
 defineProps<{
   contracts: PublicContract[];
@@ -42,6 +42,6 @@ const emit = defineEmits<{
   <p
     class="w-fit rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2 text-xs tracking-wide text-zinc-400 uppercase"
   >
-    Datos PLACSP · {{ santanderMunicipality.name }}
+    Datos PLACSP · {{ cantabriaRegion.name }}
   </p>
 </template>
