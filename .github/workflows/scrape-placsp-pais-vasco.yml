@@ -1,0 +1,36 @@
+name: Scrape PLACSP País Vasco
+
+on:
+  schedule:
+    # 1st and 16th at 07:00 UTC (same days as Cantabria at 05:00).
+    - cron: '0 7 1,16 * *'
+  workflow_dispatch:
+
+concurrency:
+  group: scrape-placsp-pais-vasco
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  scrape:
+    name: Scrape PLACSP País Vasco
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install
+
+      - name: Write .env
+        run: |
+          cat > .env <<EOF
+          TURSO_URL=${{ secrets.TURSO_URL }}
+          TURSO_AUTH_TOKEN=${{ secrets.TURSO_AUTH_TOKEN }}
+          EOF
+
+      - name: Scrape PLACSP País Vasco
+        run: pnpm scrape:placsp:pais-vasco
