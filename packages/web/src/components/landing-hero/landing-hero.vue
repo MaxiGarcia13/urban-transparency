@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PublicContract, PublicContractStatus } from '@urban-transparency/shared';
 import type { MunicipalSpending } from '@/domain/aggregate-municipal-spending';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue';
 import LandingHeroContractList from './landing-hero-contract-list.vue';
 import LandingHeroFilters from './landing-hero-filters.vue';
 import LandingHeroIntro from './landing-hero-intro.vue';
@@ -36,6 +36,7 @@ const selectedStatuses = defineModel<PublicContractStatus[]>('selectedStatuses',
 const yearFrom = defineModel<number | null>('yearFrom', { default: null });
 const yearTo = defineModel<number | null>('yearTo', { default: null });
 const isExpanded = ref(false);
+const detailsScroll = useTemplateRef<HTMLElement>('detailsScroll');
 
 const statusMessage = computed(() => {
   if (props.isLoading) {
@@ -88,7 +89,10 @@ onUnmounted(() => {
       :class="isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr] lg:grid-rows-[1fr]'"
     >
       <div class="min-h-0 overflow-hidden">
-        <div class="flex max-h-[min(48dvh,100%)] flex-col gap-6 overflow-y-auto overscroll-contain px-4 pb-4 md:gap-8 md:px-8 md:pb-8 lg:h-full lg:max-h-none">
+        <div
+          ref="detailsScroll"
+          class="flex max-h-[min(48dvh,100%)] min-h-0 flex-col gap-6 overflow-y-auto overscroll-contain px-4 pb-4 md:gap-8 md:px-8 md:pb-8 lg:h-full lg:max-h-none"
+        >
           <LandingHeroFilters
             v-model:search-query="searchQuery"
             v-model:selected-statuses="selectedStatuses"
@@ -100,6 +104,7 @@ onUnmounted(() => {
           <LandingHeroContractList
             :contracts="contracts"
             :status-message="statusMessage"
+            :scroll-element="detailsScroll"
             @select="selectContract"
           />
         </div>
