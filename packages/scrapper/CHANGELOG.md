@@ -1,3 +1,18 @@
+## 0.0.7 (2026-10-21)
+
+### 🔄 Refactors
+
+- Remove default municipality code and enforce parameter requirement ([1843329](https://github.com/MaxiGarcia13/urban-transparency/commit/1843329))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/db to 0.0.7
+- Updated @urban-transparency/shared to 0.0.7
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.6 (2026-10-21)
 
 ### 🧱 Updated Dependencies

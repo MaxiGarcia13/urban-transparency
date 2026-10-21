@@ -1,3 +1,9 @@
+## 0.0.7 (2026-10-21)
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/shared to 0.0.7
+
 ## 0.0.6 (2026-10-21)
 
 ### 🧱 Updated Dependencies

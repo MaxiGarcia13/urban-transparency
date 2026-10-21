@@ -1,3 +1,10 @@
+## 0.0.13 (2026-10-21)
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/db to 0.0.7
+- Updated @urban-transparency/shared to 0.0.7
+
 ## 0.0.12 (2026-10-21)
 
 ### 🚀 Features
