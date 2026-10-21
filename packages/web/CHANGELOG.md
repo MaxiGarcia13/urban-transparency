@@ -1,3 +1,17 @@
+## 0.0.11 (2026-10-21)
+
+### 🚀 Features
+
+- Add new icons and web manifest for improved branding and PWA support ([6058059](https://github.com/MaxiGarcia13/urban-transparency/commit/6058059))
+
+### 🐞 Fixes
+
+- Correct closing tag in landing hero intro component and streamline base layout destructuring ([6dce76d](https://github.com/MaxiGarcia13/urban-transparency/commit/6dce76d))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.10 (2026-10-21)
 
 ### 🚀 Features
