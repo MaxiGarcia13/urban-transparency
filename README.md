@@ -2,7 +2,7 @@
 
 Spatial intelligence platform for **Spain**. Maps four core urban metrics in 3D so citizens, journalists, and researchers can see how money, business, income, and rent shape cities.
 
-**Current focus:** Santander (Cantabria) as the first municipality. The product and data model are national; Santander is a pilot, not the permanent geographic identity of the platform.
+**Current focus:** Cantabria (province `39`) as the first region. The product and data model are national; Cantabria is a pilot, not the permanent geographic identity of the platform.
 
 ## Core metrics
 
@@ -13,19 +13,26 @@ Spatial intelligence platform for **Spain**. Maps four core urban metrics in 3D 
 | **Salary & Household Income** | What households earn — census-tract income                        |
 | **Rent Costs**                | What housing costs — official rent indices and market listings    |
 
+## Status
+
+- **Public Spending** — in progress (Cantabria pilot)
+- Business Power — not started
+- Salary & Household Income — not started
+- Rent Costs — not started
+
 ## Geographic scope
 
-- **Target:** all Spanish municipalities (INE municipal codes)
-- **Pilot:** Santander (`39075`), with Cantabria regional supplements where useful
-- Geography keys should stay generic: municipality → census tract (sección censal) → neighborhood → coordinates
+- **Target:** all Spanish municipalities (INE municipal codes), filterable by province
+- **Pilot:** Cantabria (`39`)
+- Geography keys should stay generic: province → municipality → census tract (sección censal) → neighborhood → coordinates
 
 ## Data sources
 
-Prefer **national** sources that scale to any municipality. Regional portals and city-specific listing URLs are supplements for the pilot.
+Prefer **national** sources that scale to any municipality or province. Regional portals and city-specific listing URLs are supplements for the pilot.
 
 ### 1. Public Spending
 
-- [PLACSP](https://contrataciondelestado.es) — national public procurement; [Atom syndication (CODICE)](https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom) (paginate via `rel="next"`). Filter by municipality / organism and autonomous community. Fields: tender title, awarded amount (€), awardee, execution location, awarding date.
+- [PLACSP](https://contrataciondelestado.es) — national public procurement; [Atom syndication (CODICE)](https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom) (paginate via `rel="next"`). Pilot ingest filters by province (`39` Cantabria). Fields: tender title, awarded amount (€), awardee, execution location, awarding date.
 
 ### 2. Business Power
 
@@ -45,8 +52,4 @@ Prefer **national** sources that scale to any municipality. Regional portals and
 
 ## Product goal
 
-Ingest national (and optional regional) sources into a unified spatial model keyed by municipality, then expose them as a 3D map and analytics layer. New cities should mostly mean new geo filters and configs — not new product assumptions.
-
-## Status
-
-Early stage. Pilot: Santander. Stack and app architecture TBD.
+Ingest national (and optional regional) sources into a unified spatial model keyed by province and municipality, then expose them as a 3D map and analytics layer. New regions should mostly mean new geo filters and configs — not new product assumptions.
