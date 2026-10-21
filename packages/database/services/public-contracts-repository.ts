@@ -9,7 +9,6 @@ import {
 const UPSERT_PUBLIC_CONTRACT_SQL = `
 INSERT INTO public_contracts (
   id,
-  contract_folder_id,
   title,
   status,
   contracting_party_name,
@@ -28,11 +27,11 @@ INSERT INTO public_contracts (
   execution_longitude,
   execution_latitude,
   source_system,
+  source_entry_id,
   source_entry_updated_at,
   fetched_at
 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ON CONFLICT(id) DO UPDATE SET
-  contract_folder_id = excluded.contract_folder_id,
   title = excluded.title,
   status = excluded.status,
   contracting_party_name = excluded.contracting_party_name,
@@ -51,6 +50,7 @@ ON CONFLICT(id) DO UPDATE SET
   execution_longitude = excluded.execution_longitude,
   execution_latitude = excluded.execution_latitude,
   source_system = excluded.source_system,
+  source_entry_id = excluded.source_entry_id,
   source_entry_updated_at = excluded.source_entry_updated_at,
   fetched_at = excluded.fetched_at
 `;
@@ -58,7 +58,6 @@ ON CONFLICT(id) DO UPDATE SET
 const LIST_BY_MUNICIPALITY_SQL = `
 SELECT
   id,
-  contract_folder_id AS contractFolderId,
   title,
   status,
   contracting_party_name AS contractingPartyName,
@@ -77,6 +76,7 @@ SELECT
   execution_longitude AS executionLongitude,
   execution_latitude AS executionLatitude,
   source_system AS sourceSystem,
+  source_entry_id AS sourceEntryId,
   source_entry_updated_at AS sourceEntryUpdatedAt,
   fetched_at AS fetchedAt
 FROM public_contracts
@@ -89,7 +89,6 @@ const UPSERT_BATCH_SIZE = 50;
 function toUpsertArgs(contract: PublicContract): unknown[] {
   return [
     contract.id,
-    contract.contractFolderId,
     contract.title,
     contract.status,
     contract.contractingPartyName,
@@ -108,6 +107,7 @@ function toUpsertArgs(contract: PublicContract): unknown[] {
     contract.executionLongitude,
     contract.executionLatitude,
     contract.sourceSystem,
+    contract.sourceEntryId,
     contract.sourceEntryUpdatedAt,
     contract.fetchedAt,
   ];
@@ -116,7 +116,6 @@ function toUpsertArgs(contract: PublicContract): unknown[] {
 function mapRowToPublicContract(row: Record<string, unknown>): PublicContract {
   return {
     id: String(row.id),
-    contractFolderId: (row.contractFolderId as string | null) ?? null,
     title: String(row.title),
     status: parsePublicContractStatus(String(row.status)),
     contractingPartyName: String(row.contractingPartyName),
@@ -135,6 +134,7 @@ function mapRowToPublicContract(row: Record<string, unknown>): PublicContract {
     executionLongitude: (row.executionLongitude as number | null) ?? null,
     executionLatitude: (row.executionLatitude as number | null) ?? null,
     sourceSystem: 'placsp',
+    sourceEntryId: (row.sourceEntryId as string | null) ?? null,
     sourceEntryUpdatedAt: (row.sourceEntryUpdatedAt as string | null) ?? null,
     fetchedAt: String(row.fetchedAt),
   };

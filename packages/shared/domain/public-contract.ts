@@ -25,7 +25,6 @@ export function parsePublicContractStatus(
 
 export interface PublicContract {
   id: string;
-  contractFolderId: string | null;
   title: string;
   status: PublicContractStatus;
   contractingPartyName: string;
@@ -44,6 +43,7 @@ export interface PublicContract {
   executionLongitude: number | null;
   executionLatitude: number | null;
   sourceSystem: 'placsp';
+  sourceEntryId: string | null;
   sourceEntryUpdatedAt: string | null;
   fetchedAt: string;
 }

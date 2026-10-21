@@ -138,9 +138,10 @@ function parseEntry(
     return null;
   }
 
-  const id = xmlText(entry.id);
+  const contractFolderId = xmlText(status.ContractFolderID);
+  const sourceEntryId = xmlText(entry.id);
   const title = xmlText(entry.title);
-  if (!id || !title) {
+  if (!contractFolderId || !sourceEntryId || !title) {
     return null;
   }
 
@@ -156,8 +157,7 @@ function parseEntry(
   const awardee = findWinningParty(status);
 
   return {
-    id,
-    contractFolderId: xmlText(status.ContractFolderID),
+    id: contractFolderId,
     title,
     status: parsePublicContractStatus(xmlText(status.ContractFolderStatusCode)),
     contractingPartyName,
@@ -176,6 +176,7 @@ function parseEntry(
     executionLongitude: null,
     executionLatitude: null,
     sourceSystem: 'placsp',
+    sourceEntryId,
     sourceEntryUpdatedAt: xmlText(entry.updated),
     fetchedAt,
   };
