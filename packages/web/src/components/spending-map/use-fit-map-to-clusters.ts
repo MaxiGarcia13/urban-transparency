@@ -58,35 +58,22 @@ export function useFitMapToClusters({
   clusters,
   onBeforeFit,
 }: UseFitMapToClustersOptions) {
-  let hasLoaded = false;
-
-  watch(mapInstance, (map) => {
-    if (map && !hasLoaded && clusters.value.length > 0) {
-      hasLoaded = true;
-    }
-  });
-
-  watch(clusters, () => {
-    const map = mapInstance.value;
-    if (!map) {
-      return;
-    }
-
-    if (!hasLoaded) {
-      if (clusters.value.length > 0) {
-        hasLoaded = true;
+  watch(
+    [mapInstance, clusters],
+    ([map]) => {
+      if (!map) {
+        return;
       }
-      return;
-    }
 
-    const hasKnownLocation = clusters.value.some(
-      (cluster) => cluster.hasKnownLocation,
-    );
-    if (!hasKnownLocation) {
-      return;
-    }
+      const hasKnownLocation = clusters.value.some(
+        (cluster) => cluster.hasKnownLocation,
+      );
+      if (!hasKnownLocation) {
+        return;
+      }
 
-    onBeforeFit?.();
-    fitMapToClusters(map, clusters.value);
-  });
+      onBeforeFit?.();
+      fitMapToClusters(map, clusters.value);
+    },
+  );
 }
