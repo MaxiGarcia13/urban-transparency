@@ -20,7 +20,10 @@
     "phoenix": "pnpm clean && pnpm install",
 
     "release": "nx release --skip-publish",
-    "release:dry": "nx release --dry-run"
+    "release:dry": "nx release --dry-run",
+
+    "scrape:placsp": "pnpm --filter=@urban-transparency/scrapper scrape:placsp",
+    "scrape:placsp:cantabria": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:cantabria"
   },
   "devEngines": {
     "packageManager": {

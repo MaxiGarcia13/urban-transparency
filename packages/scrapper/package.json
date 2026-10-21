@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "scrape:placsp": "tsx --env-file=../../.env scripts/scrape-placsp.ts",
+    "scrape:placsp:cantabria": "tsx --env-file=../../.env scripts/scrape-placsp.ts --province 39 --max-pages 50 --delay-ms 1500",
     "clean": "rm -rf node_modules dist"
   },
   "dependencies": {
