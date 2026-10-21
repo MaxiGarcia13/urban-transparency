@@ -28,8 +28,8 @@
     "clean": "rm -rf node_modules dist && pnpm -r run clean",
     "phoenix": "pnpm clean && pnpm install",
 
-    "release": "nx release --skip-publish",
-    "release:dry": "nx release --dry-run",
+    "release": "nx release --skip-publish --first-release",
+    "release:dry": "nx release --dry-run --first-release",
 
     "scrape:placsp": "pnpm --filter=@urban-transparency/scrapper scrape:placsp",
     "scrape:placsp:cantabria": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:cantabria"
