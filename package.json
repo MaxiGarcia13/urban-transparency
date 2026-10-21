@@ -6,7 +6,16 @@
   "description": "",
   "author": "",
   "license": "ISC",
-  "keywords": [],
+  "keywords": [
+    "urban",
+    "transparency",
+    "public",
+    "contracts",
+    "spending",
+    "map",
+    "data",
+    "visualization"
+  ],
   "main": "index.js",
   "scripts": {
     "build": "pnpm --filter=@urban-transparency/web build",
