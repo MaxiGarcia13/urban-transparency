@@ -23,7 +23,6 @@ import {
 } from '../services/placsp-atom-client';
 import { delay } from '../utils/delay';
 
-const DEFAULT_MUNICIPALITY_CODE = '39075';
 const DEFAULT_REQUEST_DELAY_MS = 1_500;
 const DEFAULT_MAX_PAGES = 5;
 
@@ -75,7 +74,7 @@ function parseCliOptions(argv: string[]): CliOptions {
   }
 
   if (!municipalityCode && !provinceCode) {
-    municipalityCode = DEFAULT_MUNICIPALITY_CODE;
+    throw new Error('Provide --municipality <ineCode> or --province <2-digit>');
   }
 
   return { municipalityCode, provinceCode, maxPages, delayMs };

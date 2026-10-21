@@ -8,12 +8,10 @@ const municipalitiesByCode = new Map(
   ]),
 );
 
-/** Look up a municipality by INE code (e.g. `39075`). */
 export function getMunicipalityByCode(municipalityCode: string): Municipality | null {
   return municipalitiesByCode.get(municipalityCode) ?? null;
 }
 
-/** Require a municipality by INE code or throw. */
 export function requireMunicipalityByCode(municipalityCode: string): Municipality {
   const municipality = getMunicipalityByCode(municipalityCode);
   if (!municipality) {
