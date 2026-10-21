@@ -3,13 +3,19 @@ import type {
   PublicContractStatus,
 } from '@urban-transparency/shared';
 
-export interface ContractMapPoint {
-  id: string;
-  title: string;
-  status: PublicContractStatus;
+export type ContractMapPoint = Pick<
+  PublicContract,
+  | 'id'
+  | 'title'
+  | 'status'
+  | 'contractingPartyName'
+  | 'contractingPartyNif'
+  | 'awardeeName'
+  | 'awardeeNif'
+  | 'postalCode'
+> & {
   awardedAmountEur: number;
-  postalCode: string | null;
-}
+};
 
 export interface ContractMapCluster {
   id: string;
@@ -54,6 +60,10 @@ export function groupContractsByCoordinates(
       id: contract.id,
       title: contract.title,
       status: contract.status,
+      contractingPartyName: contract.contractingPartyName,
+      contractingPartyNif: contract.contractingPartyNif,
+      awardeeName: contract.awardeeName,
+      awardeeNif: contract.awardeeNif,
       awardedAmountEur: contract.awardedAmountEur ?? 0,
       postalCode: contract.postalCode,
     };

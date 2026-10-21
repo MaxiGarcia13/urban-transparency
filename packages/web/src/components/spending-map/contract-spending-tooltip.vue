@@ -2,6 +2,7 @@
 import type { ContractSpendingTooltipState } from './contract-spending-tooltip-state';
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { formatEur } from '@/utils/format-eur';
+import { formatPartyDisplayName } from '@/utils/format-party-display-name';
 import {
   formatPublicContractStatus,
   publicContractStatusTextClass,
@@ -103,6 +104,26 @@ onUnmounted(() => {
       >
         {{ formatPublicContractStatus(contracts[0].status) }}
       </p>
+      <template v-if="contracts[0]">
+        <p class="mt-2 text-sm text-zinc-400">
+          Órgano:
+          {{
+            formatPartyDisplayName(
+              contracts[0].contractingPartyName,
+              contracts[0].contractingPartyNif,
+            )
+          }}
+        </p>
+        <p class="mt-2 text-sm text-zinc-400">
+          Adjudicatario:
+          {{
+            formatPartyDisplayName(
+              contracts[0].awardeeName,
+              contracts[0].awardeeNif,
+            ) ?? 'no disponible'
+          }}
+        </p>
+      </template>
       <p
         v-if="postalCode"
         class="mt-2 text-xs tracking-wide text-zinc-400 uppercase"
@@ -141,6 +162,24 @@ onUnmounted(() => {
             :class="publicContractStatusTextClass(contract.status)"
           >
             {{ formatPublicContractStatus(contract.status) }}
+          </p>
+          <p class="mt-2 text-xs text-zinc-400">
+            Órgano:
+            {{
+              formatPartyDisplayName(
+                contract.contractingPartyName,
+                contract.contractingPartyNif,
+              )
+            }}
+          </p>
+          <p class="mt-2 text-xs text-zinc-400">
+            Adjudicatario:
+            {{
+              formatPartyDisplayName(
+                contract.awardeeName,
+                contract.awardeeNif,
+              ) ?? 'no disponible'
+            }}
           </p>
           <p class="mt-2 text-sm font-semibold text-orange-300/90">
             {{ formatEur(contract.awardedAmountEur) }}

@@ -6,6 +6,7 @@ import { santanderMunicipality } from '@/config/municipalities/santander';
 import { PRODUCT_NAME } from '@/config/product';
 import { FILTERABLE_PUBLIC_CONTRACT_STATUSES } from '@/domain/filter-public-contracts';
 import { formatEur } from '@/utils/format-eur';
+import { formatPartyDisplayName } from '@/utils/format-party-display-name';
 import { formatPublicContractCardDate } from '@/utils/format-public-contract-card-date';
 import {
   formatPublicContractStatus,
@@ -285,7 +286,22 @@ onUnmounted(() => {
                   {{ formatPublicContractStatus(contract.status) }}
                 </p>
                 <p class="mt-2 text-sm text-zinc-400">
-                  {{ contract.awardeeName ?? 'Adjudicatario no disponible' }}
+                  Órgano:
+                  {{
+                    formatPartyDisplayName(
+                      contract.contractingPartyName,
+                      contract.contractingPartyNif,
+                    )
+                  }}
+                </p>
+                <p class="mt-2 text-sm text-zinc-400">
+                  Adjudicatario:
+                  {{
+                    formatPartyDisplayName(
+                      contract.awardeeName,
+                      contract.awardeeNif,
+                    ) ?? 'no disponible'
+                  }}
                 </p>
                 <p
                   v-if="formatPublicContractCardDate(contract)"
