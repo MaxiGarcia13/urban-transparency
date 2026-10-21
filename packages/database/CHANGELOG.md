@@ -1,3 +1,17 @@
+## 0.0.5 (2026-10-21)
+
+### 🚀 Features
+
+- Introduce province-based public contracts retrieval and refactor repository structure ([b0c7ae4](https://github.com/MaxiGarcia13/urban-transparency/commit/b0c7ae4))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/shared to 0.0.5
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.4 (2026-10-21)
 
 ### 🚀 Features

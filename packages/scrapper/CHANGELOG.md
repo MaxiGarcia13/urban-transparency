@@ -1,3 +1,19 @@
+## 0.0.5 (2026-10-21)
+
+### 🚀 Features
+
+- Add scraping scripts for province-specific data retrieval ([ee509cc](https://github.com/MaxiGarcia13/urban-transparency/commit/ee509cc))
+- Refactor municipality matching logic and enhance CLI options ([718af52](https://github.com/MaxiGarcia13/urban-transparency/commit/718af52))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/db to 0.0.5
+- Updated @urban-transparency/shared to 0.0.5
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.4 (2026-10-21)
 
 ### 🚀 Features

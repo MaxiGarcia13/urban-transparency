@@ -1,3 +1,24 @@
+## 0.0.8 (2026-10-21)
+
+### 🚀 Features
+
+- Refactor spending map layers to use IconLayer for cluster markers ([059df3f](https://github.com/MaxiGarcia13/urban-transparency/commit/059df3f))
+- Update landing page and hero components for Cantabria region ([77e482f](https://github.com/MaxiGarcia13/urban-transparency/commit/77e482f))
+- Introduce province-based public contracts retrieval and refactor repository structure ([b0c7ae4](https://github.com/MaxiGarcia13/urban-transparency/commit/b0c7ae4))
+
+### 🐞 Fixes
+
+- Adjust import and formatting in spending map components ([08f4e13](https://github.com/MaxiGarcia13/urban-transparency/commit/08f4e13))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/db to 0.0.5
+- Updated @urban-transparency/shared to 0.0.5
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.7 (2026-10-21)
 
 ### 🚀 Features

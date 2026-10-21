@@ -1,3 +1,13 @@
+## 0.0.5 (2026-10-21)
+
+### 🚀 Features
+
+- Add function to list municipalities by province code ([3ccae15](https://github.com/MaxiGarcia13/urban-transparency/commit/3ccae15))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.4 (2026-10-21)
 
 ### 🚀 Features
