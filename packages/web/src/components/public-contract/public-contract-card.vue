@@ -12,11 +12,14 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <button
-    type="button"
-    class="w-full rounded-xl border border-white/10 bg-zinc-900/60 p-4 text-left transition-colors hover:border-orange-400/40 hover:bg-zinc-900"
+  <div
+    role="button"
+    tabindex="0"
+    class="w-full cursor-pointer rounded-xl border border-white/10 bg-zinc-900/60 p-4 text-left transition-colors hover:border-orange-400/40 hover:bg-zinc-900"
     @click="emit('select', contract)"
+    @keydown.enter="emit('select', contract)"
+    @keydown.space.prevent="emit('select', contract)"
   >
     <PublicContractCardBody :contract="contract" />
-  </button>
+  </div>
 </template>

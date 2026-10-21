@@ -15,6 +15,7 @@ export type ContractMapPoint = Pick<
   | 'postalCode'
   | 'awardedAt'
   | 'sourceEntryUpdatedAt'
+  | 'detailUrl'
 > & {
   awardedAmountEur: number;
 };
@@ -70,6 +71,7 @@ export function groupContractsByCoordinates(
       postalCode: contract.postalCode,
       awardedAt: contract.awardedAt,
       sourceEntryUpdatedAt: contract.sourceEntryUpdatedAt,
+      detailUrl: contract.detailUrl,
     };
 
     const existing = clustersByKey.get(key);

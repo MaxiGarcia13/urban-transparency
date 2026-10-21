@@ -21,6 +21,7 @@ defineProps<{
     | 'awardedAmountEur'
     | 'awardedAt'
     | 'sourceEntryUpdatedAt'
+    | 'detailUrl'
   >;
 }>();
 </script>
@@ -73,5 +74,16 @@ defineProps<{
           : formatEur(contract.awardedAmountEur)
       }}
     </p>
+    <a
+      v-if="contract.detailUrl"
+      :href="contract.detailUrl"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-2 inline-block text-sm text-orange-300 underline-offset-2 hover:underline"
+      @click.stop
+      @keydown.stop
+    >
+      Ver en la Plataforma de Contratación
+    </a>
   </div>
 </template>
