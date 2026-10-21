@@ -1,3 +1,15 @@
+## 0.0.5 (2026-10-21)
+
+### 🚀 Features
+
+- Implement contract filtering and status selection in landing components ([a2af07c](https://github.com/MaxiGarcia13/urban-transparency/commit/a2af07c))
+- Add date formatting utility for public contracts and integrate into landing hero component ([092a544](https://github.com/MaxiGarcia13/urban-transparency/commit/092a544))
+- Enhance landing components with contract selection and map focus functionality ([8861135](https://github.com/MaxiGarcia13/urban-transparency/commit/8861135))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.4 (2026-10-21)
 
 ### 🚀 Features
