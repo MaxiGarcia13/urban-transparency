@@ -1,3 +1,13 @@
+## 0.0.18 (2026-10-21)
+
+### 🚀 Features
+
+- Add loading state and spending summary component to landing hero ([81ffb7b](https://github.com/MaxiGarcia13/urban-transparency/commit/81ffb7b))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.17 (2026-10-21)
 
 ### 🔄 Refactors
