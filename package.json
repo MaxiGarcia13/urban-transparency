@@ -32,7 +32,8 @@
     "release:dry": "nx release --dry-run",
 
     "scrape:placsp": "pnpm --filter=@urban-transparency/scrapper scrape:placsp",
-    "scrape:placsp:cantabria": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:cantabria"
+    "scrape:placsp:cantabria": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:cantabria",
+    "scrape:placsp:vizcaya": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:vizcaya"
   },
   "devEngines": {
     "packageManager": {
