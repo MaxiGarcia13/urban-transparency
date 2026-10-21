@@ -7,10 +7,7 @@ type Props = {
   description?: string;
 };
 
-const {
-  title,
-  description = 'Gasto público y datos urbanos sobre el mapa de España',
-} = Astro.props;
+const { title, description = 'Gasto público y datos urbanos sobre el mapa de España' } = Astro.props;
 
 const canonicalUrl = Astro.url.href;
 const ogImageUrl = new URL('/og-image.png', Astro.url).href;

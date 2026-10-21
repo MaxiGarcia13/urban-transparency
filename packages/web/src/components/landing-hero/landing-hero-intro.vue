@@ -24,7 +24,7 @@ const emit = defineEmits<{
         height="32"
         class="size-8 shrink-0"
         decoding="async"
-      />
+      >
       <p class="text-sm font-medium tracking-wide text-orange-300 uppercase">
         {{ PRODUCT_NAME }}
       </p>
