@@ -39,7 +39,12 @@ const emit = defineEmits<{
         <span class="text-orange-400">gasto público</span>
         en {{ cantabriaRegion.name }}?
       </h1>
-      <p class="max-w-md text-sm leading-relaxed text-muted-foreground md:text-base">
+      <p
+        :class="cn(
+          'max-w-md text-sm leading-relaxed text-muted-foreground md:text-base',
+          isExpanded ? 'block' : 'hidden lg:block',
+        )"
+      >
         Adjudicaciones municipales de
         {{ cantabriaRegion.name }}
         publicadas en PLACSP.
