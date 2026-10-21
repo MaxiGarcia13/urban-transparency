@@ -4,20 +4,27 @@ import {
   listPublicContractsByMunicipality,
   listPublicContractsByProvince,
 } from '@urban-transparency/db';
-import { SANTANDER_MUNICIPALITY_CODE } from '@/config/municipalities/santander';
 
 export const GET: APIRoute = async ({ url }) => {
   const municipalityCode = url.searchParams.get('municipality');
   const provinceCode = url.searchParams.get('province');
 
+  // municipality wins when both query params are present
+  if (!municipalityCode && !provinceCode) {
+    return new Response(
+      JSON.stringify({ error: 'Missing municipality or province query parameter' }),
+      {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      },
+    );
+  }
+
   const client = createDatabaseClient();
   try {
-    // municipality wins when both query params are present
     const contracts = municipalityCode
       ? await listPublicContractsByMunicipality(client, municipalityCode)
-      : provinceCode
-        ? await listPublicContractsByProvince(client, provinceCode)
-        : await listPublicContractsByMunicipality(client, SANTANDER_MUNICIPALITY_CODE);
+      : await listPublicContractsByProvince(client, provinceCode!);
 
     return new Response(JSON.stringify(contracts), {
       status: 200,
