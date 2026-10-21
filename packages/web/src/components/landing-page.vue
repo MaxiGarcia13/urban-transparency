@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PublicContract, PublicContractStatus } from '@urban-transparency/shared';
 import { computed, onMounted, ref, useTemplateRef } from 'vue';
-import LandingHero from '@/components/landing-hero.vue';
+import { LandingHero } from '@/components/landing-hero';
 import SpendingMap from '@/components/spending-map/spending-map.vue';
 import { santanderMunicipality } from '@/config/municipalities/santander';
 import { aggregateMunicipalSpending } from '@/domain/aggregate-municipal-spending';
