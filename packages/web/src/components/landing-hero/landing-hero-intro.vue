@@ -5,12 +5,18 @@ import { Button } from '@/components/ui/button';
 import { PRODUCT_NAME } from '@/config/product';
 import { cantabriaRegion } from '@/config/regions/cantabria';
 import { cn } from '@/lib/utils';
-import { formatEur } from '@/utils/format-eur';
+import LandingHeroSpendingSummary from './landing-hero-spending-summary.vue';
 
-defineProps<{
-  spending: MunicipalSpending | null;
-  isExpanded: boolean;
-}>();
+withDefaults(
+  defineProps<{
+    spending: MunicipalSpending | null;
+    isExpanded: boolean;
+    isLoading?: boolean;
+  }>(),
+  {
+    isLoading: false,
+  },
+);
 
 const emit = defineEmits<{
   toggleExpanded: [];
@@ -51,18 +57,10 @@ const emit = defineEmits<{
       </p>
     </div>
 
-    <div
-      v-if="spending && spending.contractCount > 0"
-      class="flex flex-col gap-2"
-    >
-      <p class="text-sm text-muted-foreground">
-        {{ spending.contractCount }}
-        {{ spending.contractCount === 1 ? 'contrato' : 'contratos' }}
-      </p>
-      <p class="text-2xl font-semibold text-orange-300 md:text-3xl">
-        {{ formatEur(spending.totalAwardedEur) }}
-      </p>
-    </div>
+    <LandingHeroSpendingSummary
+      :spending="spending"
+      :is-loading="isLoading"
+    />
 
     <Button
       type="button"

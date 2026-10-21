@@ -66,6 +66,7 @@ onKeyStroke('Escape', () => {
   <aside class="flex h-full min-h-0 flex-col text-zinc-100">
     <LandingHeroIntro
       :spending="spending"
+      :is-loading="isLoading"
       :is-expanded="isExpanded"
       @toggle-expanded="toggleExpanded"
     />
