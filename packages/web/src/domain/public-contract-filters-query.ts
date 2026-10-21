@@ -16,6 +16,13 @@ export interface PublicContractFiltersQuery {
   yearTo?: string;
 }
 
+export type PublicContractFiltersUrlParams = {
+  [K in (typeof PUBLIC_CONTRACT_FILTER_QUERY_KEYS)[keyof typeof PUBLIC_CONTRACT_FILTER_QUERY_KEYS]]?:
+    | string
+    | string[]
+    | null;
+};
+
 const FILTERABLE_STATUS_SET = new Set<string>(FILTERABLE_PUBLIC_CONTRACT_STATUSES);
 
 function firstParamValue(
@@ -67,7 +74,7 @@ function parseStatusParam(
 }
 
 export function parsePublicContractFiltersQuery(
-  params: Record<string, string | string[] | null | undefined>,
+  params: PublicContractFiltersUrlParams,
 ): PublicContractFilters {
   let yearFrom = parseYearParam(params[PUBLIC_CONTRACT_FILTER_QUERY_KEYS.yearFrom]);
   let yearTo = parseYearParam(params[PUBLIC_CONTRACT_FILTER_QUERY_KEYS.yearTo]);

@@ -1,23 +1,18 @@
 import type { PublicContractStatus } from '@urban-transparency/shared';
 import type { PublicContractFilters } from '@/domain/filter-public-contracts';
+import type { PublicContractFiltersUrlParams } from '@/domain/public-contract-filters-query';
 import { useUrlSearchParams, watchDebounced } from '@vueuse/core';
 import { computed, ref, watch } from 'vue';
 import {
   parsePublicContractFiltersQuery,
+
   serializePublicContractFiltersQuery,
 } from '@/domain/public-contract-filters-query';
 
 const SEARCH_QUERY_DEBOUNCE_MS = 300;
 
-interface FilterUrlParams {
-  q?: string | string[] | null;
-  status?: string | string[] | null;
-  yearFrom?: string | string[] | null;
-  yearTo?: string | string[] | null;
-}
-
 function writeFiltersToParams(
-  params: FilterUrlParams,
+  params: PublicContractFiltersUrlParams,
   filters: PublicContractFilters,
 ): void {
   const serialized = serializePublicContractFiltersQuery(filters);
@@ -28,7 +23,7 @@ function writeFiltersToParams(
 }
 
 export function usePublicContractFilters() {
-  const params = useUrlSearchParams<FilterUrlParams>('history', {
+  const params = useUrlSearchParams<PublicContractFiltersUrlParams>('history', {
     removeNullishValues: true,
     removeFalsyValues: true,
     writeMode: 'replace',
