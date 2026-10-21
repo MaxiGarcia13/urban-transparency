@@ -1,3 +1,18 @@
+## 0.0.21 (2026-10-21)
+
+### 🚀 Features
+
+- Introduce map region handling and URL search parameters ([88f4b2a](https://github.com/MaxiGarcia13/urban-transparency/commit/88f4b2a))
+- Enhance public contracts caching strategy ([64a5414](https://github.com/MaxiGarcia13/urban-transparency/commit/64a5414))
+
+### 🔄 Refactors
+
+- Update public contract filters to use new URL parameters type ([59bf0c6](https://github.com/MaxiGarcia13/urban-transparency/commit/59bf0c6))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.20 (2026-10-21)
 
 ### 🚀 Features
