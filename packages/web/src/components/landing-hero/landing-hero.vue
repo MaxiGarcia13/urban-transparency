@@ -40,7 +40,7 @@ const detailsScroll = useTemplateRef<HTMLElement>('detailsScroll');
 
 const statusMessage = computed(() => {
   if (props.isLoading) {
-    return 'Cargando contratos…';
+    return null;
   }
   if (props.isError) {
     return 'No se pudieron cargar los contratos';
@@ -103,6 +103,7 @@ onUnmounted(() => {
 
           <LandingHeroContractList
             :contracts="contracts"
+            :is-loading="isLoading"
             :status-message="statusMessage"
             :scroll-element="detailsScroll"
             @select="selectContract"

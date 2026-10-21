@@ -3,11 +3,13 @@ import type { PublicContract } from '@urban-transparency/shared';
 import type { ComponentPublicInstance } from 'vue';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue';
+import PublicContractCardSkeleton from '@/components/public-contract/public-contract-card-skeleton.vue';
 import PublicContractCard from '@/components/public-contract/public-contract-card.vue';
 import { cantabriaRegion } from '@/config/regions/cantabria';
 
 const props = defineProps<{
   contracts: PublicContract[];
+  isLoading?: boolean;
   statusMessage: string | null;
   scrollElement: HTMLElement | null;
 }>();
@@ -15,6 +17,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   select: [contract: PublicContract];
 }>();
+
+const SKELETON_ROW_COUNT = 4;
 
 const listRoot = useTemplateRef<HTMLElement>('listRoot');
 const scrollMargin = ref(0);
@@ -24,7 +28,7 @@ function syncScrollMargin(): void {
 }
 
 const rowCount = computed(() => {
-  if (props.statusMessage) {
+  if (props.isLoading || props.statusMessage) {
     return 0;
   }
   return Math.max(props.contracts.length, 1);
@@ -89,7 +93,22 @@ watch(
 
 <template>
   <div ref="listRoot">
-    <p v-if="statusMessage" class="text-sm text-zinc-400">
+    <div
+      v-if="isLoading"
+      class="flex flex-col gap-4"
+      aria-busy="true"
+      aria-label="Cargando contratos"
+    >
+      <PublicContractCardSkeleton
+        v-for="index in SKELETON_ROW_COUNT"
+        :key="index"
+      />
+    </div>
+
+    <p
+      v-else-if="statusMessage"
+      class="text-sm text-zinc-400"
+    >
       {{ statusMessage }}
     </p>
 
