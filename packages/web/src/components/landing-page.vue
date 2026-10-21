@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import type { PublicContract } from '@urban-transparency/shared';
+import type { PublicContract, PublicContractStatus } from '@urban-transparency/shared';
 import { computed, onMounted, ref, useTemplateRef } from 'vue';
 import LandingHero from '@/components/landing-hero.vue';
 import SpendingMap from '@/components/spending-map/spending-map.vue';
 import { santanderMunicipality } from '@/config/municipalities/santander';
 import { aggregateMunicipalSpending } from '@/domain/aggregate-municipal-spending';
-import { matchContractsBySearch } from '@/domain/match-contracts-by-search';
+import {
+  availableContractYears,
+  filterPublicContracts,
+} from '@/domain/filter-public-contracts';
 
 const searchQuery = ref('');
+const selectedStatuses = ref<PublicContractStatus[]>([]);
+const yearFrom = ref<number | null>(null);
+const yearTo = ref<number | null>(null);
 const contracts = ref<PublicContract[]>([]);
 const isLoading = ref(true);
 const isError = ref(false);
@@ -15,8 +21,15 @@ const spendingMap = useTemplateRef<{
   focusContract: (contractId: string) => void;
 }>('spendingMap');
 
+const availableYears = computed(() => availableContractYears(contracts.value));
+
 const filteredContracts = computed(() =>
-  matchContractsBySearch(searchQuery.value, contracts.value),
+  filterPublicContracts(contracts.value, {
+    searchQuery: searchQuery.value,
+    statuses: selectedStatuses.value,
+    yearFrom: yearFrom.value,
+    yearTo: yearTo.value,
+  }),
 );
 
 const spending = computed(() =>
@@ -59,7 +72,12 @@ onMounted(async () => {
       >
         <LandingHero
           v-model:search-query="searchQuery"
-          :contracts="contracts"
+          v-model:selected-statuses="selectedStatuses"
+          v-model:year-from="yearFrom"
+          v-model:year-to="yearTo"
+          :contracts="filteredContracts"
+          :available-years="availableYears"
+          :all-contract-count="contracts.length"
           :spending="spending"
           :is-loading="isLoading"
           :is-error="isError"
