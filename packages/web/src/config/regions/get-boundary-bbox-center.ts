@@ -1,4 +1,6 @@
-import type { FeatureCollection, Position } from 'geojson';
+import type { RegionBoundaryFeatureCollection } from './region-boundary';
+
+type Position = number[];
 
 function walkPositions(
   node: unknown,
@@ -19,7 +21,7 @@ function walkPositions(
 }
 
 export function getBoundaryBboxCenter(
-  boundary: FeatureCollection,
+  boundary: RegionBoundaryFeatureCollection,
 ): [number, number] {
   let minLongitude = Number.POSITIVE_INFINITY;
   let maxLongitude = Number.NEGATIVE_INFINITY;

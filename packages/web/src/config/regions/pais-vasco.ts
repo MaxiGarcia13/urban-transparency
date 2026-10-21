@@ -1,11 +1,11 @@
-import type { FeatureCollection } from 'geojson';
+import type { RegionBoundaryFeatureCollection } from './region-boundary';
 import { getBoundaryBboxCenter } from './get-boundary-bbox-center';
 import paisVascoBoundaryJson from './pais-vasco-boundary.json';
 
 export const PAIS_VASCO_REGION_ID = 'pais-vasco';
 export const PAIS_VASCO_PROVINCE_CODES = ['01', '20', '48'] as const;
 
-const boundary = paisVascoBoundaryJson as FeatureCollection;
+const boundary = paisVascoBoundaryJson as RegionBoundaryFeatureCollection;
 
 export const paisVascoRegion = {
   id: PAIS_VASCO_REGION_ID,
