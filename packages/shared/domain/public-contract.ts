@@ -1,12 +1,33 @@
-/**
- * Public procurement record from PLACSP Atom / CODICE syndication.
- * Aligned with `public_contracts` columns; nulls mirror missing Atom / geo fields.
- */
+export const PUBLIC_CONTRACT_STATUSES = [
+  'PRE',
+  'PUB',
+  'EV',
+  'ADJ',
+  'RES',
+  'ANUL',
+] as const;
+
+export type PublicContractStatus
+  = | (typeof PUBLIC_CONTRACT_STATUSES)[number]
+    | 'UNKNOWN';
+
+export function parsePublicContractStatus(
+  value: string | null | undefined,
+): PublicContractStatus {
+  if (
+    value
+    && (PUBLIC_CONTRACT_STATUSES as readonly string[]).includes(value)
+  ) {
+    return value as (typeof PUBLIC_CONTRACT_STATUSES)[number];
+  }
+  return 'UNKNOWN';
+}
+
 export interface PublicContract {
   id: string;
   contractFolderId: string | null;
   title: string;
-  status: string;
+  status: PublicContractStatus;
   contractingPartyName: string;
   contractingPartyNif: string | null;
   awardedAmountEur: number | null;

@@ -1,4 +1,8 @@
 import type { PublicContract } from '@urban-transparency/shared';
+import {
+  parsePublicContractStatus,
+
+} from '@urban-transparency/shared';
 import { XMLParser } from 'fast-xml-parser';
 
 import { asArray, xmlText } from '../utils/xml-text';
@@ -155,7 +159,7 @@ function parseEntry(
     id,
     contractFolderId: xmlText(status.ContractFolderID),
     title,
-    status: xmlText(status.ContractFolderStatusCode) ?? 'UNKNOWN',
+    status: parsePublicContractStatus(xmlText(status.ContractFolderStatusCode)),
     contractingPartyName,
     contractingPartyNif: findNif(party),
     awardedAmountEur: findAwardedAmountEur(status),

@@ -2,6 +2,10 @@
 import type { ContractSpendingTooltipState } from './contract-spending-tooltip-state';
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { formatEur } from '@/utils/format-eur';
+import {
+  formatPublicContractStatus,
+  publicContractStatusTextClass,
+} from '@/utils/public-contract-status-style';
 import { clampTooltipPosition } from './clamp-tooltip-position';
 
 const props = defineProps<ContractSpendingTooltipState>();
@@ -93,6 +97,13 @@ onUnmounted(() => {
         {{ contracts[0]?.title }}
       </p>
       <p
+        v-if="contracts[0]"
+        class="mt-2 text-xs tracking-wide"
+        :class="publicContractStatusTextClass(contracts[0].status)"
+      >
+        {{ formatPublicContractStatus(contracts[0].status) }}
+      </p>
+      <p
         v-if="postalCode"
         class="mt-2 text-xs tracking-wide text-zinc-400 uppercase"
       >
@@ -125,7 +136,13 @@ onUnmounted(() => {
           <p class="text-xs leading-snug text-balance text-zinc-300">
             {{ contract.title }}
           </p>
-          <p class="mt-1 text-sm font-semibold text-orange-300/90">
+          <p
+            class="mt-2 text-xs tracking-wide"
+            :class="publicContractStatusTextClass(contract.status)"
+          >
+            {{ formatPublicContractStatus(contract.status) }}
+          </p>
+          <p class="mt-2 text-sm font-semibold text-orange-300/90">
             {{ formatEur(contract.awardedAmountEur) }}
           </p>
         </li>

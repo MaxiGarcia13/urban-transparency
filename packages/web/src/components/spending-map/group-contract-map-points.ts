@@ -1,8 +1,12 @@
-import type { PublicContract } from '@urban-transparency/shared';
+import type {
+  PublicContract,
+  PublicContractStatus,
+} from '@urban-transparency/shared';
 
 export interface ContractMapPoint {
   id: string;
   title: string;
+  status: PublicContractStatus;
   awardedAmountEur: number;
   postalCode: string | null;
 }
@@ -13,6 +17,8 @@ export interface ContractMapCluster {
   latitude: number;
   postalCode: string | null;
   hasKnownLocation: boolean;
+  // Shared status when every contract matches; null when mixed.
+  status: PublicContractStatus | null;
   contractCount: number;
   totalAwardedEur: number;
   contracts: ContractMapPoint[];
@@ -47,6 +53,7 @@ export function groupContractsByCoordinates(
     const point: ContractMapPoint = {
       id: contract.id,
       title: contract.title,
+      status: contract.status,
       awardedAmountEur: contract.awardedAmountEur ?? 0,
       postalCode: contract.postalCode,
     };
@@ -56,6 +63,9 @@ export function groupContractsByCoordinates(
       existing.contracts.push(point);
       existing.contractCount += 1;
       existing.totalAwardedEur += point.awardedAmountEur;
+      if (existing.status !== point.status) {
+        existing.status = null;
+      }
       if (!existing.postalCode && point.postalCode) {
         existing.postalCode = point.postalCode;
       }
@@ -68,6 +78,7 @@ export function groupContractsByCoordinates(
       latitude,
       postalCode: point.postalCode,
       hasKnownLocation,
+      status: point.status,
       contractCount: 1,
       totalAwardedEur: point.awardedAmountEur,
       contracts: [point],

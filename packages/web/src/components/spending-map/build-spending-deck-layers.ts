@@ -1,14 +1,27 @@
 import type { ContractMapCluster } from './group-contract-map-points';
-
+import type { RgbaColor } from '@/utils/public-contract-status-style';
 import { ScatterplotLayer, TextLayer } from '@deck.gl/layers';
+import {
+  MIXED_STATUS_RGBA,
+  publicContractStatusRgba,
+
+  UNKNOWN_LOCATION_RGBA,
+} from '@/utils/public-contract-status-style';
 
 interface BuildSpendingDeckLayersOptions {
   clusters: ContractMapCluster[];
   onSelectCluster: (cluster: ContractMapCluster, x: number, y: number) => void;
 }
 
-const KNOWN_FILL: [number, number, number, number] = [251, 146, 60, 220];
-const UNKNOWN_FILL: [number, number, number, number] = [113, 113, 122, 200];
+function clusterFillColor(cluster: ContractMapCluster): RgbaColor {
+  if (!cluster.hasKnownLocation) {
+    return UNKNOWN_LOCATION_RGBA;
+  }
+  if (cluster.status == null) {
+    return MIXED_STATUS_RGBA;
+  }
+  return publicContractStatusRgba(cluster.status);
+}
 
 export function buildSpendingDeckLayers({
   clusters,
@@ -28,7 +41,7 @@ export function buildSpendingDeckLayers({
     radiusUnits: 'pixels',
     getPosition: (cluster) => [cluster.longitude, cluster.latitude],
     getRadius: (cluster) => (cluster.contractCount > 1 ? 14 : 10),
-    getFillColor: (cluster) => (cluster.hasKnownLocation ? KNOWN_FILL : UNKNOWN_FILL),
+    getFillColor: clusterFillColor,
     getLineColor: [255, 255, 255, 200],
     lineWidthMinPixels: 1,
     stroked: true,

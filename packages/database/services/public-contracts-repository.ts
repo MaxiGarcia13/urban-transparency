@@ -1,6 +1,10 @@
 import type { PublicContract } from '@urban-transparency/shared';
 
 import type { DatabaseClient } from './client';
+import {
+  parsePublicContractStatus,
+
+} from '@urban-transparency/shared';
 
 const UPSERT_PUBLIC_CONTRACT_SQL = `
 INSERT INTO public_contracts (
@@ -114,7 +118,7 @@ function mapRowToPublicContract(row: Record<string, unknown>): PublicContract {
     id: String(row.id),
     contractFolderId: (row.contractFolderId as string | null) ?? null,
     title: String(row.title),
-    status: String(row.status),
+    status: parsePublicContractStatus(String(row.status)),
     contractingPartyName: String(row.contractingPartyName),
     contractingPartyNif: (row.contractingPartyNif as string | null) ?? null,
     awardedAmountEur: (row.awardedAmountEur as number | null) ?? null,

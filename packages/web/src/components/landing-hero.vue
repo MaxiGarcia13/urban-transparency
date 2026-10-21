@@ -6,6 +6,10 @@ import { santanderMunicipality } from '@/config/municipalities/santander';
 import { PRODUCT_NAME } from '@/config/product';
 import { matchContractsBySearch } from '@/domain/match-contracts-by-search';
 import { formatEur } from '@/utils/format-eur';
+import {
+  formatPublicContractStatus,
+  publicContractStatusTextClass,
+} from '@/utils/public-contract-status-style';
 
 const props = withDefaults(
   defineProps<{
@@ -172,12 +176,18 @@ onUnmounted(() => {
               <p class="text-sm font-medium text-zinc-100">
                 {{ contract.title }}
               </p>
+              <p
+                class="mt-2 text-xs tracking-wide"
+                :class="publicContractStatusTextClass(contract.status)"
+              >
+                {{ formatPublicContractStatus(contract.status) }}
+              </p>
               <p class="mt-2 text-sm text-zinc-400">
                 {{ contract.awardeeName ?? 'Adjudicatario no disponible' }}
               </p>
               <p
                 v-if="contract.postalCode"
-                class="mt-1 text-xs tracking-wide text-zinc-500 uppercase"
+                class="mt-2 text-xs tracking-wide text-zinc-500 uppercase"
               >
                 CP {{ contract.postalCode }}
               </p>
