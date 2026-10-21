@@ -11,6 +11,8 @@ export function usePublicContracts(
       () => ['public-contracts', [...toValue(provinceCodes)]] as const,
     ),
     queryFn: () => fetchPublicContractsByProvinces(toValue(provinceCodes)),
+    staleTime: 60 * 60_000, // treat as fresh for 1 h
+    gcTime: 2 * 60 * 60_000, // keep unused cache for 2 h
   });
 
   const contracts = computed(() => query.data.value ?? []);
