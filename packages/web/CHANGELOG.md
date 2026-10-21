@@ -1,3 +1,18 @@
+## 0.0.19 (2026-10-21)
+
+### 🧹 Chores
+
+- Update dependencies and refactor utility functions ([bf079ed](https://github.com/MaxiGarcia13/urban-transparency/commit/bf079ed))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/database to 0.0.10
+- Updated @urban-transparency/shared to 0.0.10
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.18 (2026-10-21)
 
 ### 🚀 Features
