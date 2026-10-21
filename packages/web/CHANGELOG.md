@@ -1,3 +1,14 @@
+## 0.0.10 (2026-10-21)
+
+### 🚀 Features
+
+- Refactor landing page and spending map components for improved contract handling ([de943b4](https://github.com/MaxiGarcia13/urban-transparency/commit/de943b4))
+- Enhance landing hero contract list with loading state and skeleton UI ([5697b97](https://github.com/MaxiGarcia13/urban-transparency/commit/5697b97))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.9 (2026-10-21)
 
 ### 🚀 Features
