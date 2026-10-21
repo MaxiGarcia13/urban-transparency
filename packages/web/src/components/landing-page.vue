@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PublicContract } from '@urban-transparency/shared';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, useTemplateRef } from 'vue';
 import LandingHero from '@/components/landing-hero.vue';
 import SpendingMap from '@/components/spending-map/spending-map.vue';
 import { santanderMunicipality } from '@/config/municipalities/santander';
@@ -11,6 +11,9 @@ const searchQuery = ref('');
 const contracts = ref<PublicContract[]>([]);
 const isLoading = ref(true);
 const isError = ref(false);
+const spendingMap = useTemplateRef<{
+  focusContract: (contractId: string) => void;
+}>('spendingMap');
 
 const filteredContracts = computed(() =>
   matchContractsBySearch(searchQuery.value, contracts.value),
@@ -23,6 +26,10 @@ const spending = computed(() =>
 );
 
 const mapContracts = computed(() => filteredContracts.value);
+
+function focusContractOnMap(contract: PublicContract): void {
+  spendingMap.value?.focusContract(contract.id);
+}
 
 onMounted(async () => {
   try {
@@ -56,12 +63,16 @@ onMounted(async () => {
           :spending="spending"
           :is-loading="isLoading"
           :is-error="isError"
+          @select-contract="focusContractOnMap"
         />
       </div>
     </div>
 
     <div class="h-full min-h-0 w-full lg:flex-1">
-      <SpendingMap :contracts="mapContracts" />
+      <SpendingMap
+        ref="spendingMap"
+        :contracts="mapContracts"
+      />
     </div>
   </div>
 </template>

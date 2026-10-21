@@ -8,7 +8,11 @@ const props = defineProps<{
   contracts: PublicContract[];
 }>();
 
-const { mapContainer, tooltip, clearTooltip } = useSpendingMap(toRef(props, 'contracts'));
+const { mapContainer, tooltip, clearTooltip, focusContract } = useSpendingMap(
+  toRef(props, 'contracts'),
+);
+
+defineExpose({ focusContract });
 </script>
 
 <template>

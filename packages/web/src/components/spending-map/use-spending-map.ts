@@ -40,12 +40,7 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
     selectedClusterId.value = null;
   }
 
-  function selectCluster(cluster: ContractMapCluster, x: number, y: number): void {
-    if (selectedClusterId.value === cluster.id) {
-      clearTooltip();
-      return;
-    }
-
+  function openCluster(cluster: ContractMapCluster, x: number, y: number): void {
     selectedClusterId.value = cluster.id;
     tooltip.value = {
       contracts: cluster.contracts,
@@ -56,6 +51,67 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
       x,
       y,
     };
+  }
+
+  function selectCluster(cluster: ContractMapCluster, x: number, y: number): void {
+    if (selectedClusterId.value === cluster.id) {
+      clearTooltip();
+      return;
+    }
+    openCluster(cluster, x, y);
+  }
+
+  const FOCUS_MIN_ZOOM = 14;
+  let pendingFocusOnMoveEnd: (() => void) | null = null;
+
+  function clearPendingFocus(): void {
+    const map = mapInstance.value;
+    if (map && pendingFocusOnMoveEnd) {
+      map.off('moveend', pendingFocusOnMoveEnd);
+    }
+    pendingFocusOnMoveEnd = null;
+  }
+
+  function focusContract(contractId: string): void {
+    const map = mapInstance.value;
+    if (!map) {
+      return;
+    }
+
+    const cluster = clusters.value.find((candidate) =>
+      candidate.contracts.some((point) => point.id === contractId),
+    );
+    if (!cluster) {
+      return;
+    }
+
+    clearPendingFocus();
+
+    const targetZoom = Math.max(map.getZoom(), FOCUS_MIN_ZOOM);
+    const center = map.getCenter();
+    const alreadyFocused
+      = Math.abs(center.lng - cluster.longitude) < 1e-5
+        && Math.abs(center.lat - cluster.latitude) < 1e-5
+        && Math.abs(map.getZoom() - targetZoom) < 0.05;
+
+    const showAtCluster = (): void => {
+      pendingFocusOnMoveEnd = null;
+      const point = map.project([cluster.longitude, cluster.latitude]);
+      openCluster(cluster, point.x, point.y);
+    };
+
+    if (alreadyFocused) {
+      showAtCluster();
+      return;
+    }
+
+    pendingFocusOnMoveEnd = showAtCluster;
+    map.once('moveend', showAtCluster);
+    map.flyTo({
+      center: [cluster.longitude, cluster.latitude],
+      zoom: targetZoom,
+      essential: true,
+    });
   }
 
   function syncDeckLayers(): void {
@@ -122,6 +178,7 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
 
   onUnmounted(() => {
     window.removeEventListener('keydown', handleEscapeKey);
+    clearPendingFocus();
     deckOverlay.value?.finalize();
     mapInstance.value?.remove();
     deckOverlay.value = null;
@@ -132,5 +189,6 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
     mapContainer,
     tooltip,
     clearTooltip,
+    focusContract,
   };
 }

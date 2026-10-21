@@ -27,6 +27,9 @@ const props = withDefaults(
 );
 
 const searchQuery = defineModel<string>('searchQuery', { default: '' });
+const emit = defineEmits<{
+  'select-contract': [contract: PublicContract];
+}>();
 const isExpanded = ref(false);
 
 const metrics = [
@@ -55,6 +58,11 @@ const statusMessage = computed(() => {
 
 function toggleExpanded(): void {
   isExpanded.value = !isExpanded.value;
+}
+
+function selectContract(contract: PublicContract): void {
+  emit('select-contract', contract);
+  isExpanded.value = false;
 }
 
 function handleEscapeKey(event: KeyboardEvent): void {
@@ -171,33 +179,38 @@ onUnmounted(() => {
             <li
               v-for="contract in filteredContracts"
               :key="contract.id"
-              class="rounded-xl border border-white/10 bg-zinc-900/60 p-4"
             >
-              <p class="text-sm font-medium text-zinc-100">
-                {{ contract.title }}
-              </p>
-              <p
-                class="mt-2 text-xs tracking-wide"
-                :class="publicContractStatusTextClass(contract.status)"
+              <button
+                type="button"
+                class="w-full rounded-xl border border-white/10 bg-zinc-900/60 p-4 text-left transition-colors hover:border-orange-400/40 hover:bg-zinc-900"
+                @click="selectContract(contract)"
               >
-                {{ formatPublicContractStatus(contract.status) }}
-              </p>
-              <p class="mt-2 text-sm text-zinc-400">
-                {{ contract.awardeeName ?? 'Adjudicatario no disponible' }}
-              </p>
-              <p
-                v-if="contract.postalCode"
-                class="mt-2 text-xs tracking-wide text-zinc-500 uppercase"
-              >
-                CP {{ contract.postalCode }}
-              </p>
-              <p class="mt-2 text-base font-semibold text-orange-300">
-                {{
-                  contract.awardedAmountEur == null
-                    ? 'Importe no disponible'
-                    : formatEur(contract.awardedAmountEur)
-                }}
-              </p>
+                <p class="text-sm font-medium text-zinc-100">
+                  {{ contract.title }}
+                </p>
+                <p
+                  class="mt-2 text-xs tracking-wide"
+                  :class="publicContractStatusTextClass(contract.status)"
+                >
+                  {{ formatPublicContractStatus(contract.status) }}
+                </p>
+                <p class="mt-2 text-sm text-zinc-400">
+                  {{ contract.awardeeName ?? 'Adjudicatario no disponible' }}
+                </p>
+                <p
+                  v-if="contract.postalCode"
+                  class="mt-2 text-xs tracking-wide text-zinc-500 uppercase"
+                >
+                  CP {{ contract.postalCode }}
+                </p>
+                <p class="mt-2 text-base font-semibold text-orange-300">
+                  {{
+                    contract.awardedAmountEur == null
+                      ? 'Importe no disponible'
+                      : formatEur(contract.awardedAmountEur)
+                  }}
+                </p>
+              </button>
             </li>
             <li
               v-if="filteredContracts.length === 0"
