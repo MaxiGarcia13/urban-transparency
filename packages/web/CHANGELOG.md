@@ -1,3 +1,22 @@
+## 0.0.15 (2026-10-21)
+
+### 🚀 Features
+
+- Implement useFitMapToClusters composable for map clustering ([51d2c6f](https://github.com/MaxiGarcia13/urban-transparency/commit/51d2c6f))
+
+### 🔄 Refactors
+
+- Rename database package and update references ([8b82d38](https://github.com/MaxiGarcia13/urban-transparency/commit/8b82d38))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/database to 0.0.9
+- Updated @urban-transparency/shared to 0.0.9
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.14 (2026-10-21)
 
 ### 🚀 Features

@@ -1,3 +1,18 @@
+## 0.0.9 (2026-10-21)
+
+### 🔄 Refactors
+
+- Rename database package and update references ([8b82d38](https://github.com/MaxiGarcia13/urban-transparency/commit/8b82d38))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/database to 0.0.9
+- Updated @urban-transparency/shared to 0.0.9
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.8 (2026-10-21)
 
 ### 🧱 Updated Dependencies
