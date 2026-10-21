@@ -1,3 +1,25 @@
+## 0.0.9 (2026-10-21)
+
+### 🚀 Features
+
+- Add region boundary layers for Cantabria in spending map ([2d9c043](https://github.com/MaxiGarcia13/urban-transparency/commit/2d9c043))
+- Enhance landing hero contract list with virtual scrolling and dynamic rendering ([a32661d](https://github.com/MaxiGarcia13/urban-transparency/commit/a32661d))
+- Implement contract map tooltip and focus functionality ([2f387ac](https://github.com/MaxiGarcia13/urban-transparency/commit/2f387ac))
+- Add @tanstack/vue-virtual dependency and update pnpm-lock.yaml ([48cbe7b](https://github.com/MaxiGarcia13/urban-transparency/commit/48cbe7b))
+
+### 🔄 Refactors
+
+- Remove Santander municipality configuration and update public contracts API logic ([dc3cb69](https://github.com/MaxiGarcia13/urban-transparency/commit/dc3cb69))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/db to 0.0.6
+- Updated @urban-transparency/shared to 0.0.6
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.8 (2026-10-21)
 
 ### 🚀 Features
