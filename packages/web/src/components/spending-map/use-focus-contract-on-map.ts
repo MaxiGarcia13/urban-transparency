@@ -1,7 +1,7 @@
 import type { Map as MaplibreMap } from 'maplibre-gl';
 import type { ComputedRef, ShallowRef } from 'vue';
 import type { ContractMapCluster } from './group-contract-map-points';
-import { onUnmounted } from 'vue';
+import { onUnmounted, watch } from 'vue';
 import { FOCUS_MIN_ZOOM } from './spending-map-config';
 
 interface UseFocusContractOnMapOptions {
@@ -18,6 +18,7 @@ export function useFocusContractOnMap({
   syncVisibleClusters,
 }: UseFocusContractOnMapOptions) {
   let pendingFocusOnMoveEnd: (() => void) | null = null;
+  let pendingContractId: string | null = null;
 
   function clearPendingFocus(): void {
     const map = mapInstance.value;
@@ -30,6 +31,7 @@ export function useFocusContractOnMap({
   function focusContract(contractId: string): void {
     const map = mapInstance.value;
     if (!map) {
+      pendingContractId = contractId;
       return;
     }
 
@@ -40,6 +42,7 @@ export function useFocusContractOnMap({
       return;
     }
 
+    pendingContractId = null;
     clearPendingFocus();
 
     const targetZoom = Math.max(map.getZoom(), FOCUS_MIN_ZOOM);
@@ -70,8 +73,18 @@ export function useFocusContractOnMap({
     });
   }
 
+  watch(mapInstance, (map) => {
+    if (!map || !pendingContractId) {
+      return;
+    }
+    const contractId = pendingContractId;
+    pendingContractId = null;
+    focusContract(contractId);
+  });
+
   onUnmounted(() => {
     clearPendingFocus();
+    pendingContractId = null;
   });
 
   return {

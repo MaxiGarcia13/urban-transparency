@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import type { PublicContract, PublicContractStatus } from '@urban-transparency/shared';
-import { computed, onMounted, ref, useTemplateRef } from 'vue';
+import {
+  computed,
+  defineAsyncComponent,
+  ref,
+  useTemplateRef,
+  watch,
+} from 'vue';
 import { LandingHero } from '@/components/landing-hero';
-import SpendingMap from '@/components/spending-map/spending-map.vue';
+import { usePublicContracts } from '@/composables/use-public-contracts';
 import { cantabriaRegion } from '@/config/regions/cantabria';
 import { aggregateMunicipalSpending } from '@/domain/aggregate-municipal-spending';
 import {
@@ -10,16 +16,22 @@ import {
   filterPublicContracts,
 } from '@/domain/filter-public-contracts';
 
+const SpendingMap = defineAsyncComponent(
+  () => import('@/components/spending-map/spending-map.vue'),
+);
+
 const searchQuery = ref('');
 const selectedStatuses = ref<PublicContractStatus[]>([]);
 const yearFrom = ref<number | null>(null);
 const yearTo = ref<number | null>(null);
-const contracts = ref<PublicContract[]>([]);
-const isLoading = ref(true);
-const isError = ref(false);
+const pendingFocusContractId = ref<string | null>(null);
 const spendingMap = useTemplateRef<{
   focusContract: (contractId: string) => void;
 }>('spendingMap');
+
+const { contracts, isLoading, isError } = usePublicContracts(
+  cantabriaRegion.provinceCode,
+);
 
 const availableYears = computed(() => availableContractYears(contracts.value));
 
@@ -40,25 +52,26 @@ const spending = computed(() =>
 
 const mapContracts = computed(() => filteredContracts.value);
 
-function focusContractOnMap(contract: PublicContract): void {
-  spendingMap.value?.focusContract(contract.id);
+function tryFocusPendingContract(): void {
+  const contractId = pendingFocusContractId.value;
+  const map = spendingMap.value;
+  if (!contractId || !map) {
+    return;
+  }
+  pendingFocusContractId.value = null;
+  map.focusContract(contractId);
 }
 
-onMounted(async () => {
-  try {
-    const response = await fetch(
-      `/api/public-contracts?province=${cantabriaRegion.provinceCode}`,
-    );
-    if (!response.ok) {
-      isError.value = true;
-      return;
-    }
-    contracts.value = (await response.json()) as PublicContract[];
-  } catch {
-    isError.value = true;
-  } finally {
-    isLoading.value = false;
+function focusContractOnMap(contract: PublicContract): void {
+  if (spendingMap.value) {
+    spendingMap.value.focusContract(contract.id);
+    return;
   }
+  pendingFocusContractId.value = contract.id;
+}
+
+watch(spendingMap, () => {
+  tryFocusPendingContract();
 });
 </script>
 
@@ -86,7 +99,7 @@ onMounted(async () => {
       </div>
     </div>
 
-    <div class="h-full min-h-0 w-full lg:flex-1">
+    <div class="h-full min-h-0 w-full bg-zinc-950 lg:flex-1">
       <SpendingMap
         ref="spendingMap"
         :contracts="mapContracts"
