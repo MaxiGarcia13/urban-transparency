@@ -56,8 +56,8 @@ export function createClusterMarkerIcon(
   measureCtx.font = LABEL_FONT;
   const textWidth = label.length > 0 ? measureCtx.measureText(label).width : 0;
 
-  const width =
-    labelPlacement === 'end' && label.length > 0
+  const width
+    = labelPlacement === 'end' && label.length > 0
       ? Math.ceil(diameter + LABEL_GAP_PX + textWidth + 2)
       : diameter;
   const height = diameter;

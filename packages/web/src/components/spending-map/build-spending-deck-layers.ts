@@ -1,3 +1,4 @@
+import type { ClusterMarkerLabelPlacement } from './create-cluster-marker-icon';
 import type { ContractMapCluster } from './group-contract-map-points';
 import type { RgbaColor } from '@/utils/public-contract-status-style';
 import { IconLayer } from '@deck.gl/layers';
@@ -7,8 +8,8 @@ import {
   UNKNOWN_LOCATION_RGBA,
 } from '@/utils/public-contract-status-style';
 import {
+
   createClusterMarkerIcon,
-  type ClusterMarkerLabelPlacement,
 } from './create-cluster-marker-icon';
 
 interface BuildSpendingDeckLayersOptions {
