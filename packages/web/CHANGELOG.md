@@ -1,3 +1,13 @@
+## 0.0.12 (2026-10-21)
+
+### 🚀 Features
+
+- Add detail URL to public contract components and enhance skeleton UI ([ec1c025](https://github.com/MaxiGarcia13/urban-transparency/commit/ec1c025))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.11 (2026-10-21)
 
 ### 🚀 Features
