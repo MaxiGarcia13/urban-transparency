@@ -16,9 +16,19 @@ const emit = defineEmits<{
 
 <template>
   <div class="flex shrink-0 flex-col gap-4 p-4 md:gap-6 md:p-8">
-    <p class="text-sm font-medium tracking-wide text-orange-300 uppercase">
-      {{ PRODUCT_NAME }}
-    </p>
+    <div class="flex items-center gap-2">
+      <img
+        src="/android-chrome-192x192.png"
+        alt=""
+        width="32"
+        height="32"
+        class="size-8 shrink-0"
+        decoding="async"
+      />
+      <p class="text-sm font-medium tracking-wide text-orange-300 uppercase">
+        {{ PRODUCT_NAME }}
+      </p>
+    </div>
 
     <div class="flex flex-col gap-2 md:gap-4">
       <h1 class="max-w-md text-3xl leading-tight font-semibold text-balance md:text-5xl">

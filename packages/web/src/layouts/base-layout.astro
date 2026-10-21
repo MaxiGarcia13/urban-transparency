@@ -1,0 +1,52 @@
+---
+import { PRODUCT_NAME } from '@/config/product';
+import '@/styles/global.css';
+
+type Props = {
+  title: string;
+  description?: string;
+};
+
+const {
+  title,
+  description = 'Gasto público y datos urbanos sobre el mapa de España',
+} = Astro.props;
+
+const canonicalUrl = Astro.url.href;
+const ogImageUrl = new URL('/og-image.png', Astro.url).href;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#09090b" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={PRODUCT_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="es_ES" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <title>{title}</title>
+  </head>
+  <body class="m-0 min-h-dvh bg-zinc-950 text-zinc-100 antialiased">
+    <slot />
+  </body>
+</html>

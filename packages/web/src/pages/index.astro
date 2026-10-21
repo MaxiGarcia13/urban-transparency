@@ -1,20 +1,12 @@
 ---
 import LandingPage from '@/components/landing-page.vue';
 import { PRODUCT_NAME } from '@/config/product';
-import '@/styles/global.css';
+import BaseLayout from '@/layouts/base-layout.astro';
 
 const title = `${PRODUCT_NAME} - Spain`;
 const description = 'Gasto público y datos urbanos sobre el mapa de España';
 ---
 
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={description} />
-    <title>{title}</title>
-  </head>
-  <body class="m-0 min-h-dvh bg-zinc-950 text-zinc-100 antialiased">
-    <LandingPage client:only="vue" />
-  </body>
-</html>
+<BaseLayout title={title} description={description}>
+  <LandingPage client:only="vue" />
+</BaseLayout>
