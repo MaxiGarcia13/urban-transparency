@@ -8,7 +8,6 @@ export {
   PUBLIC_CONTRACT_STATUSES,
 } from './domain/public-contract';
 export {
-  getMunicipalityByCode,
-  listMunicipalitiesByProvinceCode,
+  listMunicipalitiesByProvinceCodes,
   requireMunicipalityByCode,
 } from './services/get-municipality-by-code';

@@ -25,11 +25,11 @@ withDefaults(
   },
 );
 
-const provinceCode = defineModel<string>('provinceCode', { required: true });
+const regionId = defineModel<string>('regionId', { required: true });
 </script>
 
 <template>
-  <SelectRoot v-model="provinceCode">
+  <SelectRoot v-model="regionId">
     <SelectTrigger
       :class="cn(
         'inline-flex items-center gap-2 align-baseline',
@@ -61,8 +61,8 @@ const provinceCode = defineModel<string>('provinceCode', { required: true });
         <SelectViewport class="flex flex-col gap-2">
           <SelectItem
             v-for="region in regions"
-            :key="region.provinceCode"
-            :value="region.provinceCode"
+            :key="region.id"
+            :value="region.id"
             :class="cn(
               'relative flex cursor-pointer items-center rounded-xl px-4 py-2 pr-10 text-base outline-none select-none',
               'data-[highlighted]:bg-white/10 data-[state=checked]:text-orange-400',

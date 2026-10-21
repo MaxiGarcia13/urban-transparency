@@ -5,7 +5,7 @@ import { onKeyStroke } from '@vueuse/core';
 import { computed, ref, useTemplateRef } from 'vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { getMapRegionByProvinceCode } from '@/config/regions';
+import { getMapRegionById } from '@/config/regions';
 import LandingHeroContractList from './landing-hero-contract-list.vue';
 import LandingHeroIntro from './landing-hero-intro.vue';
 
@@ -31,12 +31,10 @@ const emit = defineEmits<{
 }>();
 
 const searchQuery = defineModel<string>('searchQuery', { default: '' });
-const provinceCode = defineModel<string>('provinceCode', { required: true });
+const regionId = defineModel<string>('regionId', { required: true });
 const isExpanded = ref(false);
 const detailsScroll = useTemplateRef<HTMLElement>('detailsScroll');
-const regionName = computed(
-  () => getMapRegionByProvinceCode(provinceCode.value).name,
-);
+const regionName = computed(() => getMapRegionById(regionId.value).name);
 
 const statusMessage = computed(() => {
   if (props.isLoading) {
@@ -70,7 +68,7 @@ onKeyStroke('Escape', () => {
 <template>
   <aside class="flex h-full min-h-0 flex-col text-zinc-100">
     <LandingHeroIntro
-      v-model:province-code="provinceCode"
+      v-model:region-id="regionId"
       :spending="spending"
       :is-loading="isLoading"
       :is-expanded="isExpanded"

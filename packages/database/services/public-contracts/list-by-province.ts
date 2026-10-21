@@ -7,22 +7,34 @@ import {
   PUBLIC_CONTRACT_SELECT_SQL,
 } from './select-sql';
 
-const LIST_BY_PROVINCE_SQL = `
-${PUBLIC_CONTRACT_SELECT_SQL}
-WHERE municipality_code LIKE ?
-${PUBLIC_CONTRACT_ORDER_BY_SQL}
-`;
-
 const PROVINCE_CODE_PATTERN = /^\d{2}$/;
 
-export async function listPublicContractsByProvince(
+export async function listPublicContractsByProvinces(
   client: DatabaseClient,
-  provinceCode: string,
+  provinceCodes: readonly string[],
 ): Promise<PublicContract[]> {
-  if (!PROVINCE_CODE_PATTERN.test(provinceCode)) {
-    throw new Error(`Invalid province code: ${provinceCode}`);
+  if (provinceCodes.length === 0) {
+    throw new Error('At least one province code is required');
   }
 
-  const rows = await client.all(LIST_BY_PROVINCE_SQL, [`${provinceCode}%`]);
+  const uniqueProvinceCodes = [...new Set(provinceCodes)];
+  for (const provinceCode of uniqueProvinceCodes) {
+    if (!PROVINCE_CODE_PATTERN.test(provinceCode)) {
+      throw new Error(`Invalid province code: ${provinceCode}`);
+    }
+  }
+
+  const whereClause = uniqueProvinceCodes
+    .map(() => 'municipality_code LIKE ?')
+    .join(' OR ');
+  const sql = `
+${PUBLIC_CONTRACT_SELECT_SQL}
+WHERE ${whereClause}
+${PUBLIC_CONTRACT_ORDER_BY_SQL}
+`;
+  const rows = await client.all(
+    sql,
+    uniqueProvinceCodes.map((provinceCode) => `${provinceCode}%`),
+  );
   return rows.map((row) => mapRowToPublicContract(row as Record<string, unknown>));
 }

@@ -1,25 +1,19 @@
-import type { GeoJSONSourceSpecification } from 'maplibre-gl';
-import { listMunicipalitiesByProvinceCode } from '@urban-transparency/shared';
+import type { FeatureCollection } from 'geojson';
 import cantabriaBoundaryJson from './cantabria-boundary.json';
+import { getBoundaryBboxCenter } from './get-boundary-bbox-center';
 
-export const CANTABRIA_PROVINCE_CODE = '39';
+export const CANTABRIA_REGION_ID = 'cantabria';
+export const CANTABRIA_PROVINCE_CODES = ['39'] as const;
 
-type RegionBoundaryData = Exclude<GeoJSONSourceSpecification['data'], string>;
-
-const municipalities = listMunicipalitiesByProvinceCode(CANTABRIA_PROVINCE_CODE);
-const centerLongitude
-  = municipalities.reduce((sum, municipality) => sum + municipality.longitude, 0)
-    / municipalities.length;
-const centerLatitude
-  = municipalities.reduce((sum, municipality) => sum + municipality.latitude, 0)
-    / municipalities.length;
+const boundary = cantabriaBoundaryJson as FeatureCollection;
 
 export const cantabriaRegion = {
-  provinceCode: CANTABRIA_PROVINCE_CODE,
+  id: CANTABRIA_REGION_ID,
   name: 'Cantabria',
-  center: [centerLongitude, centerLatitude] as [number, number],
+  provinceCodes: CANTABRIA_PROVINCE_CODES,
+  center: getBoundaryBboxCenter(boundary),
   zoom: 9,
   pitch: 40,
   bearing: -20,
-  boundary: cantabriaBoundaryJson as RegionBoundaryData,
+  boundary,
 } as const;

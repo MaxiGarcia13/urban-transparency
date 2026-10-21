@@ -1,6 +1,6 @@
 export { createDatabaseClient, type DatabaseClient } from './services/client';
 export {
   listPublicContractsByMunicipality,
-  listPublicContractsByProvince,
+  listPublicContractsByProvinces,
   upsertPublicContracts,
 } from './services/public-contracts';

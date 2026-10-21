@@ -8,7 +8,7 @@ const municipalitiesByCode = new Map(
   ]),
 );
 
-export function getMunicipalityByCode(municipalityCode: string): Municipality | null {
+function getMunicipalityByCode(municipalityCode: string): Municipality | null {
   return municipalitiesByCode.get(municipalityCode) ?? null;
 }
 
@@ -22,14 +22,23 @@ export function requireMunicipalityByCode(municipalityCode: string): Municipalit
 
 const PROVINCE_CODE_PATTERN = /^\d{2}$/;
 
-export function listMunicipalitiesByProvinceCode(
-  provinceCode: string,
+export function listMunicipalitiesByProvinceCodes(
+  provinceCodes: readonly string[],
 ): Municipality[] {
-  if (!PROVINCE_CODE_PATTERN.test(provinceCode)) {
-    throw new Error(`Invalid province code: ${provinceCode}`);
+  if (provinceCodes.length === 0) {
+    throw new Error('At least one province code is required');
+  }
+
+  const uniqueProvinceCodes = [...new Set(provinceCodes)];
+  for (const provinceCode of uniqueProvinceCodes) {
+    if (!PROVINCE_CODE_PATTERN.test(provinceCode)) {
+      throw new Error(`Invalid province code: ${provinceCode}`);
+    }
   }
 
   return (spainMunicipalities as Municipality[]).filter((municipality) =>
-    municipality.id.startsWith(provinceCode),
+    uniqueProvinceCodes.some((provinceCode) =>
+      municipality.id.startsWith(provinceCode),
+    ),
   );
 }

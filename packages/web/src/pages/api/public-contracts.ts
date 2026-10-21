@@ -2,15 +2,15 @@ import type { APIRoute } from 'astro';
 import {
   createDatabaseClient,
   listPublicContractsByMunicipality,
-  listPublicContractsByProvince,
+  listPublicContractsByProvinces,
 } from '@urban-transparency/database';
 
 export const GET: APIRoute = async ({ url }) => {
   const municipalityCode = url.searchParams.get('municipality');
-  const provinceCode = url.searchParams.get('province');
+  const provinceCodes = url.searchParams.getAll('province');
 
   // municipality wins when both query params are present
-  if (!municipalityCode && !provinceCode) {
+  if (!municipalityCode && provinceCodes.length === 0) {
     return new Response(
       JSON.stringify({ error: 'Missing municipality or province query parameter' }),
       {
@@ -24,7 +24,7 @@ export const GET: APIRoute = async ({ url }) => {
   try {
     const contracts = municipalityCode
       ? await listPublicContractsByMunicipality(client, municipalityCode)
-      : await listPublicContractsByProvince(client, provinceCode!);
+      : await listPublicContractsByProvinces(client, provinceCodes);
 
     return new Response(JSON.stringify(contracts), {
       status: 200,

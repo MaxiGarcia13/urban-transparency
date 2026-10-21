@@ -6,7 +6,7 @@ import {
   upsertPublicContracts,
 } from '@urban-transparency/database';
 import {
-  listMunicipalitiesByProvinceCode,
+  listMunicipalitiesByProvinceCodes,
   requireMunicipalityByCode,
 } from '@urban-transparency/shared';
 
@@ -28,14 +28,14 @@ const DEFAULT_MAX_PAGES = 5;
 
 interface CliOptions {
   municipalityCode: string | null;
-  provinceCode: string | null;
+  provinceCodes: string[];
   maxPages: number;
   delayMs: number;
 }
 
 function parseCliOptions(argv: string[]): CliOptions {
   let municipalityCode: string | null = null;
-  let provinceCode: string | null = null;
+  const provinceCodes: string[] = [];
   let maxPages = DEFAULT_MAX_PAGES;
   let delayMs = DEFAULT_REQUEST_DELAY_MS;
 
@@ -50,7 +50,10 @@ function parseCliOptions(argv: string[]): CliOptions {
       continue;
     }
     if (arg === '--province') {
-      provinceCode = argv[index + 1] ?? provinceCode;
+      const provinceCode = argv[index + 1];
+      if (provinceCode) {
+        provinceCodes.push(provinceCode);
+      }
       index += 1;
       continue;
     }
@@ -73,11 +76,13 @@ function parseCliOptions(argv: string[]): CliOptions {
     }
   }
 
-  if (!municipalityCode && !provinceCode) {
-    throw new Error('Provide --municipality <ineCode> or --province <2-digit>');
+  if (!municipalityCode && provinceCodes.length === 0) {
+    throw new Error(
+      'Provide --municipality <ineCode> or one or more --province <2-digit>',
+    );
   }
 
-  return { municipalityCode, provinceCode, maxPages, delayMs };
+  return { municipalityCode, provinceCodes, maxPages, delayMs };
 }
 
 function resolveMunicipalities(options: CliOptions): Municipality[] {
@@ -86,13 +91,17 @@ function resolveMunicipalities(options: CliOptions): Municipality[] {
     return [requireMunicipalityByCode(options.municipalityCode)];
   }
 
-  if (!options.provinceCode) {
-    throw new Error('Provide --municipality <ineCode> or --province <2-digit>');
+  if (options.provinceCodes.length === 0) {
+    throw new Error(
+      'Provide --municipality <ineCode> or one or more --province <2-digit>',
+    );
   }
 
-  const municipalities = listMunicipalitiesByProvinceCode(options.provinceCode);
+  const municipalities = listMunicipalitiesByProvinceCodes(options.provinceCodes);
   if (municipalities.length === 0) {
-    throw new Error(`No municipalities found for province: ${options.provinceCode}`);
+    throw new Error(
+      `No municipalities found for provinces: ${options.provinceCodes.join(', ')}`,
+    );
   }
 
   return municipalities;
@@ -119,7 +128,7 @@ async function scrapePlacsp(): Promise<void> {
     );
   } else {
     console.log(
-      `Scraping PLACSP for province ${options.provinceCode} (${municipalities.length} municipalities)`,
+      `Scraping PLACSP for provinces ${options.provinceCodes.join(', ')} (${municipalities.length} municipalities)`,
     );
   }
 

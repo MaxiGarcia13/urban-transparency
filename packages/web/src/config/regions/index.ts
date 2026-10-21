@@ -1,19 +1,25 @@
 import { cantabriaRegion } from './cantabria';
-import { vizcayaRegion } from './vizcaya';
+import { paisVascoRegion } from './pais-vasco';
 
-export { CANTABRIA_PROVINCE_CODE, cantabriaRegion } from './cantabria';
-export { VIZCAYA_PROVINCE_CODE, vizcayaRegion } from './vizcaya';
+export {
+  CANTABRIA_PROVINCE_CODES,
+  CANTABRIA_REGION_ID,
+  cantabriaRegion,
+} from './cantabria';
+export {
+  PAIS_VASCO_PROVINCE_CODES,
+  PAIS_VASCO_REGION_ID,
+  paisVascoRegion,
+} from './pais-vasco';
 
-export const MAP_REGIONS = [cantabriaRegion, vizcayaRegion] as const;
+export const MAP_REGIONS = [cantabriaRegion, paisVascoRegion] as const;
 
 export type MapRegion = (typeof MAP_REGIONS)[number];
 
-export function getMapRegionByProvinceCode(provinceCode: string): MapRegion {
-  const region = MAP_REGIONS.find(
-    (candidate) => candidate.provinceCode === provinceCode,
-  );
+export function getMapRegionById(regionId: string): MapRegion {
+  const region = MAP_REGIONS.find((candidate) => candidate.id === regionId);
   if (!region) {
-    throw new Error(`Unknown map region province code: ${provinceCode}`);
+    throw new Error(`Unknown map region id: ${regionId}`);
   }
   return region;
 }

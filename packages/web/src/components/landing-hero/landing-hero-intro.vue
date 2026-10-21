@@ -4,7 +4,7 @@ import { PhCaretDown } from '@phosphor-icons/vue';
 import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
 import { PRODUCT_NAME } from '@/config/product';
-import { getMapRegionByProvinceCode } from '@/config/regions';
+import { getMapRegionById } from '@/config/regions';
 import { cn } from '@/lib/utils';
 import LandingHeroRegionSelect from './landing-hero-region-select.vue';
 import LandingHeroSpendingSummary from './landing-hero-spending-summary.vue';
@@ -24,10 +24,8 @@ const emit = defineEmits<{
   toggleExpanded: [];
 }>();
 
-const provinceCode = defineModel<string>('provinceCode', { required: true });
-const regionName = computed(
-  () => getMapRegionByProvinceCode(provinceCode.value).name,
-);
+const regionId = defineModel<string>('regionId', { required: true });
+const regionName = computed(() => getMapRegionById(regionId.value).name);
 </script>
 
 <template>
@@ -51,7 +49,7 @@ const regionName = computed(
         ¿Dónde va el
         <span class="text-orange-400">gasto público</span>
         en
-        <LandingHeroRegionSelect v-model:province-code="provinceCode" />
+        <LandingHeroRegionSelect v-model:region-id="regionId" />
         ?
       </h1>
       <p

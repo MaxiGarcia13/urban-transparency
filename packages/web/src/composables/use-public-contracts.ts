@@ -1,14 +1,16 @@
 import type { MaybeRefOrGetter } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, toValue } from 'vue';
-import { fetchPublicContractsByProvince } from '@/services/fetch-public-contracts';
+import { fetchPublicContractsByProvinces } from '@/services/fetch-public-contracts';
 
 export function usePublicContracts(
-  provinceCode: MaybeRefOrGetter<string>,
+  provinceCodes: MaybeRefOrGetter<readonly string[]>,
 ) {
   const query = useQuery({
-    queryKey: computed(() => ['public-contracts', toValue(provinceCode)] as const),
-    queryFn: () => fetchPublicContractsByProvince(toValue(provinceCode)),
+    queryKey: computed(
+      () => ['public-contracts', [...toValue(provinceCodes)]] as const,
+    ),
+    queryFn: () => fetchPublicContractsByProvinces(toValue(provinceCodes)),
   });
 
   const contracts = computed(() => query.data.value ?? []);

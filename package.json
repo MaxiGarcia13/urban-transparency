@@ -33,7 +33,11 @@
 
     "scrape:placsp": "pnpm --filter=@urban-transparency/scrapper scrape:placsp",
     "scrape:placsp:cantabria": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:cantabria",
-    "scrape:placsp:vizcaya": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:vizcaya"
+    "scrape:placsp:pais-vasco": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:pais-vasco",
+
+    "fetch:region-boundary": "pnpm --filter=@urban-transparency/web fetch:region-boundary",
+    "fetch:region-boundary:cantabria": "pnpm --filter=@urban-transparency/web fetch:region-boundary:cantabria",
+    "fetch:region-boundary:pais-vasco": "pnpm --filter=@urban-transparency/web fetch:region-boundary:pais-vasco"
   },
   "devEngines": {
     "packageManager": {

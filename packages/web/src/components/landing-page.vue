@@ -12,8 +12,8 @@ import { PublicContractFiltersControl } from '@/components/public-contract-filte
 import { usePublicContractFilters } from '@/composables/use-public-contract-filters';
 import { usePublicContracts } from '@/composables/use-public-contracts';
 import {
-  CANTABRIA_PROVINCE_CODE,
-  getMapRegionByProvinceCode,
+  CANTABRIA_REGION_ID,
+  getMapRegionById,
 } from '@/config/regions';
 import { aggregateMunicipalSpending } from '@/domain/aggregate-municipal-spending';
 import {
@@ -33,15 +33,15 @@ const {
   filters,
 } = usePublicContractFilters();
 const pendingFocusContractId = ref<string | null>(null);
-const provinceCode = ref(CANTABRIA_PROVINCE_CODE);
-const selectedRegion = computed(() =>
-  getMapRegionByProvinceCode(provinceCode.value),
-);
+const regionId = ref(CANTABRIA_REGION_ID);
+const selectedRegion = computed(() => getMapRegionById(regionId.value));
 const spendingMap = useTemplateRef<{
   focusContract: (contractId: string) => void;
 }>('spendingMap');
 
-const { contracts, isLoading, isError } = usePublicContracts(provinceCode);
+const { contracts, isLoading, isError } = usePublicContracts(
+  () => selectedRegion.value.provinceCodes,
+);
 
 const availableYears = computed(() => availableContractYears(contracts.value));
 
@@ -79,7 +79,7 @@ watch(spendingMap, () => {
   tryFocusPendingContract();
 });
 
-watch(provinceCode, () => {
+watch(regionId, () => {
   pendingFocusContractId.value = null;
 });
 </script>
@@ -94,7 +94,7 @@ watch(provinceCode, () => {
       >
         <LandingHero
           v-model:search-query="searchQuery"
-          v-model:province-code="provinceCode"
+          v-model:region-id="regionId"
           :contracts="filteredContracts"
           :all-contract-count="contracts.length"
           :spending="spending"
@@ -107,7 +107,7 @@ watch(provinceCode, () => {
 
     <div class="relative h-full min-h-0 w-full bg-zinc-950 lg:flex-1">
       <SpendingMap
-        :key="selectedRegion.provinceCode"
+        :key="selectedRegion.id"
         ref="spendingMap"
         :contracts="mapContracts"
         :region="selectedRegion"
