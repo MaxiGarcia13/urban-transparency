@@ -9,5 +9,6 @@ export {
 } from './domain/public-contract';
 export {
   getMunicipalityByCode,
+  listMunicipalitiesByProvinceCode,
   requireMunicipalityByCode,
 } from './services/get-municipality-by-code';

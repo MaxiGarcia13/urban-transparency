@@ -21,3 +21,17 @@ export function requireMunicipalityByCode(municipalityCode: string): Municipalit
   }
   return municipality;
 }
+
+const PROVINCE_CODE_PATTERN = /^\d{2}$/;
+
+export function listMunicipalitiesByProvinceCode(
+  provinceCode: string,
+): Municipality[] {
+  if (!PROVINCE_CODE_PATTERN.test(provinceCode)) {
+    throw new Error(`Invalid province code: ${provinceCode}`);
+  }
+
+  return (spainMunicipalities as Municipality[]).filter((municipality) =>
+    municipality.id.startsWith(provinceCode),
+  );
+}
