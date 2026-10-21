@@ -200,7 +200,7 @@ importers:
 
   packages/scrapper:
     dependencies:
-      '@urban-transparency/db':
+      '@urban-transparency/database':
         specifier: workspace:*
         version: link:../database
       '@urban-transparency/shared':
@@ -255,7 +255,7 @@ importers:
       '@tanstack/vue-virtual':
         specifier: ^3.13.47
         version: 3.13.47(vue@3.5.44(typescript@6.0.3))
-      '@urban-transparency/db':
+      '@urban-transparency/database':
         specifier: workspace:*
         version: link:../database
       '@urban-transparency/shared':

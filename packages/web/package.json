@@ -22,7 +22,7 @@
     "@phosphor-icons/vue": "^2.2.1",
     "@tanstack/vue-query": "^5.104.2",
     "@tanstack/vue-virtual": "^3.13.47",
-    "@urban-transparency/db": "workspace:*",
+    "@urban-transparency/database": "workspace:*",
     "@urban-transparency/shared": "workspace:*",
     "@vueuse/core": "^15.0.0",
     "astro": "^7.3.8",

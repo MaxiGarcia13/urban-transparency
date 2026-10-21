@@ -27,13 +27,13 @@ export default defineConfig({
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),
-        '@urban-transparency/db': path.resolve(__dirname, '../database/index.ts'),
+        '@urban-transparency/database': path.resolve(__dirname, '../database/index.ts'),
         '@urban-transparency/shared': path.resolve(__dirname, '../shared/index.ts'),
       },
     },
     ssr: {
       noExternal: [
-        '@urban-transparency/db',
+        '@urban-transparency/database',
         '@urban-transparency/shared',
       ],
     },

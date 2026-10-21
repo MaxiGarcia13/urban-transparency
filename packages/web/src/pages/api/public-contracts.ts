@@ -3,7 +3,7 @@ import {
   createDatabaseClient,
   listPublicContractsByMunicipality,
   listPublicContractsByProvince,
-} from '@urban-transparency/db';
+} from '@urban-transparency/database';
 
 export const GET: APIRoute = async ({ url }) => {
   const municipalityCode = url.searchParams.get('municipality');

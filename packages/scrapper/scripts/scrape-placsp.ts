@@ -4,7 +4,7 @@ import process from 'node:process';
 import {
   createDatabaseClient,
   upsertPublicContracts,
-} from '@urban-transparency/db';
+} from '@urban-transparency/database';
 import {
   listMunicipalitiesByProvinceCode,
   requireMunicipalityByCode,
