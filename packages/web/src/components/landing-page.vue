@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PublicContract, PublicContractStatus } from '@urban-transparency/shared';
+import type { PublicContract } from '@urban-transparency/shared';
 import {
   computed,
   defineAsyncComponent,
@@ -9,6 +9,7 @@ import {
 } from 'vue';
 import { LandingHero } from '@/components/landing-hero';
 import { PublicContractFiltersControl } from '@/components/public-contract-filters';
+import { usePublicContractFilters } from '@/composables/use-public-contract-filters';
 import { usePublicContracts } from '@/composables/use-public-contracts';
 import { cantabriaRegion } from '@/config/regions/cantabria';
 import { aggregateMunicipalSpending } from '@/domain/aggregate-municipal-spending';
@@ -21,10 +22,13 @@ const SpendingMap = defineAsyncComponent(
   () => import('@/components/spending-map/spending-map.vue'),
 );
 
-const searchQuery = ref('');
-const selectedStatuses = ref<PublicContractStatus[]>([]);
-const yearFrom = ref<number | null>(null);
-const yearTo = ref<number | null>(null);
+const {
+  searchQuery,
+  selectedStatuses,
+  yearFrom,
+  yearTo,
+  filters,
+} = usePublicContractFilters();
 const pendingFocusContractId = ref<string | null>(null);
 const spendingMap = useTemplateRef<{
   focusContract: (contractId: string) => void;
@@ -37,12 +41,7 @@ const { contracts, isLoading, isError } = usePublicContracts(
 const availableYears = computed(() => availableContractYears(contracts.value));
 
 const filteredContracts = computed(() =>
-  filterPublicContracts(contracts.value, {
-    searchQuery: searchQuery.value,
-    statuses: selectedStatuses.value,
-    yearFrom: yearFrom.value,
-    yearTo: yearTo.value,
-  }),
+  filterPublicContracts(contracts.value, filters.value),
 );
 
 const spending = computed(() =>

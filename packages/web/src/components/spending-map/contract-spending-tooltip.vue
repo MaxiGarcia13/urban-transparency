@@ -66,7 +66,7 @@ onMounted(async () => {
     @wheel.stop
   >
     <Card
-      class="flex min-h-0 max-h-full flex-col overflow-hidden bg-background/95 py-0 text-foreground shadow-lg backdrop-blur-sm"
+      class="flex max-h-full min-h-0 flex-col overflow-hidden bg-background/95 py-0 text-foreground shadow-lg backdrop-blur-sm"
     >
       <CardContent class="flex min-h-0 flex-1 flex-col overflow-hidden overscroll-contain px-4 py-4">
         <div class="mb-2 flex shrink-0 items-start justify-between gap-4">
