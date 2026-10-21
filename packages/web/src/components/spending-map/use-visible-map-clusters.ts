@@ -58,8 +58,9 @@ export function useVisibleMapClusters({
     }, BOUNDS_SYNC_DEBOUNCE_MS);
   }
 
-  watch(clusters, () => {
-    syncVisibleClusters();
+  watch(clusters, (next) => {
+    // Full filtered set so off-screen markers render while the camera fits.
+    visibleClusters.value = next;
   });
 
   onUnmounted(() => {

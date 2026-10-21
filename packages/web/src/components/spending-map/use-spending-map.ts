@@ -6,6 +6,7 @@ import { onMounted, onUnmounted, shallowRef, watch } from 'vue';
 import { buildSpendingDeckLayers } from './build-spending-deck-layers';
 import { createSpendingMap } from './create-spending-map';
 import { useContractMapTooltip } from './use-contract-map-tooltip';
+import { useFitMapToClusters } from './use-fit-map-to-clusters';
 import { useFocusContractOnMap } from './use-focus-contract-on-map';
 import { useVisibleMapClusters } from './use-visible-map-clusters';
 
@@ -32,6 +33,12 @@ export function useSpendingMap(contracts: Ref<PublicContract[]>) {
     clusters,
     openCluster,
     syncVisibleClusters,
+  });
+
+  useFitMapToClusters({
+    mapInstance,
+    clusters,
+    onBeforeFit: clearTooltip,
   });
 
   function syncDeckLayers(): void {
