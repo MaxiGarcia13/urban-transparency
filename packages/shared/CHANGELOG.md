@@ -1,3 +1,13 @@
+## 0.0.4 (2026-10-21)
+
+### 🚀 Features
+
+- Update public contracts schema and repository logic ([84389d0](https://github.com/MaxiGarcia13/urban-transparency/commit/84389d0))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.3 (2026-10-21)
 
 ### 🚀 Features
