@@ -1,3 +1,17 @@
+## 0.0.3 (2026-10-21)
+
+### 🚀 Features
+
+- Introduce public contract status parsing and styling utilities ([79d42bf](https://github.com/MaxiGarcia13/urban-transparency/commit/79d42bf))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/shared to 0.0.3
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.2 (2026-10-20)
 
 ### 🧱 Updated Dependencies
