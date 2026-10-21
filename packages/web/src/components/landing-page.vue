@@ -9,12 +9,10 @@ import {
 } from 'vue';
 import { LandingHero } from '@/components/landing-hero';
 import { PublicContractFiltersControl } from '@/components/public-contract-filters';
+import { useMapRegion } from '@/composables/use-map-region';
 import { usePublicContractFilters } from '@/composables/use-public-contract-filters';
 import { usePublicContracts } from '@/composables/use-public-contracts';
-import {
-  CANTABRIA_REGION_ID,
-  getMapRegionById,
-} from '@/config/regions';
+import { getMapRegionById } from '@/config/regions';
 import { aggregateMunicipalSpending } from '@/domain/aggregate-municipal-spending';
 import {
   availableContractYears,
@@ -32,8 +30,8 @@ const {
   yearTo,
   filters,
 } = usePublicContractFilters();
+const { regionId } = useMapRegion();
 const pendingFocusContractId = ref<string | null>(null);
-const regionId = ref(CANTABRIA_REGION_ID);
 const selectedRegion = computed(() => getMapRegionById(regionId.value));
 const spendingMap = useTemplateRef<{
   focusContract: (contractId: string) => void;
