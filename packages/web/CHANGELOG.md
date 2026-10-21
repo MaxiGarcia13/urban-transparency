@@ -1,3 +1,13 @@
+## 0.0.16 (2026-10-21)
+
+### 🔄 Refactors
+
+- Simplify map fitting logic in useFitMapToClusters composable ([3c8cc0f](https://github.com/MaxiGarcia13/urban-transparency/commit/3c8cc0f))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.15 (2026-10-21)
 
 ### 🚀 Features
