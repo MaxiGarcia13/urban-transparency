@@ -1,5 +1,5 @@
 ---
-import LandingPage from '@/components/landing-page.vue';
+import MetricApp from '@/components/metric-app.vue';
 import { PRODUCT_NAME } from '@/config/product';
 import BaseLayout from '@/layouts/base-layout.astro';
 
@@ -8,5 +8,5 @@ const description = 'Gasto público y datos urbanos sobre el mapa de España';
 ---
 
 <BaseLayout title={title} description={description}>
-  <LandingPage client:only="vue" />
+  <MetricApp client:only="vue" />
 </BaseLayout>

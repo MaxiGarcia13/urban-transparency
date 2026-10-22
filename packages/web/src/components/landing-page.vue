@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PublicContract } from '@urban-transparency/shared';
+import type { MetricId } from '@/config/metrics';
 import {
   computed,
   defineAsyncComponent,
@@ -8,20 +9,31 @@ import {
   watch,
 } from 'vue';
 import { LandingHero } from '@/components/landing-hero';
-import { PublicContractFiltersControl } from '@/components/public-contract-filters';
+import LandingHeroContractList from '@/components/landing-hero/landing-hero-contract-list.vue';
+import { MetricNav } from '@/components/metric-nav';
+import { Button } from '@/components/ui/button';
 import { useMapRegion } from '@/composables/use-map-region';
+import { useMetricView } from '@/composables/use-metric-view';
 import { usePublicContractFilters } from '@/composables/use-public-contract-filters';
 import { usePublicContracts } from '@/composables/use-public-contracts';
+import { getMetricById } from '@/config/metrics';
 import { getMapRegionById } from '@/config/regions';
 import { aggregateMunicipalSpending } from '@/domain/aggregate-municipal-spending';
 import {
   availableContractYears,
   filterPublicContracts,
 } from '@/domain/filter-public-contracts';
+import { cn } from '@/lib/utils';
+
+const emit = defineEmits<{
+  navigateMetric: [metricId: MetricId];
+}>();
 
 const SpendingMap = defineAsyncComponent(
   () => import('@/components/spending-map/spending-map.vue'),
 );
+
+const metric = getMetricById('public-spending');
 
 const {
   searchQuery,
@@ -31,11 +43,13 @@ const {
   filters,
 } = usePublicContractFilters();
 const { regionId } = useMapRegion();
+const { view } = useMetricView(metric.defaultView, metric.supportsMap);
 const pendingFocusContractId = ref<string | null>(null);
 const selectedRegion = computed(() => getMapRegionById(regionId.value));
 const spendingMap = useTemplateRef<{
   focusContract: (contractId: string) => void;
 }>('spendingMap');
+const listScroll = useTemplateRef<HTMLElement>('listScroll');
 
 const { contracts, isLoading, isError } = usePublicContracts(
   () => selectedRegion.value.provinceCodes,
@@ -55,6 +69,19 @@ const spending = computed(() =>
 
 const mapContracts = computed(() => filteredContracts.value);
 
+const statusMessage = computed(() => {
+  if (isLoading.value) {
+    return null;
+  }
+  if (isError.value) {
+    return 'No se pudieron cargar los contratos';
+  }
+  if (contracts.value.length === 0) {
+    return 'Aún no hay contratos scrapeados para este municipio';
+  }
+  return null;
+});
+
 function tryFocusPendingContract(): void {
   const contractId = pendingFocusContractId.value;
   const map = spendingMap.value;
@@ -66,6 +93,11 @@ function tryFocusPendingContract(): void {
 }
 
 function focusContractOnMap(contract: PublicContract): void {
+  if (view.value !== 'map') {
+    view.value = 'map';
+    pendingFocusContractId.value = contract.id;
+    return;
+  }
   if (spendingMap.value) {
     spendingMap.value.focusContract(contract.id);
     return;
@@ -75,6 +107,12 @@ function focusContractOnMap(contract: PublicContract): void {
 
 watch(spendingMap, () => {
   tryFocusPendingContract();
+});
+
+watch(view, (nextView) => {
+  if (nextView === 'map') {
+    tryFocusPendingContract();
+  }
 });
 
 watch(regionId, () => {
@@ -90,35 +128,91 @@ watch(regionId, () => {
       <div
         class="pointer-events-auto flex max-h-[min(70dvh,100%)] flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-950/90 shadow-lg backdrop-blur-md lg:h-full lg:max-h-none lg:rounded-none lg:border-0 lg:bg-zinc-950 lg:shadow-none lg:backdrop-blur-none"
       >
-        <LandingHero
-          v-model:search-query="searchQuery"
-          v-model:region-id="regionId"
-          :contracts="filteredContracts"
-          :all-contract-count="contracts.length"
-          :spending="spending"
-          :is-loading="isLoading"
-          :is-error="isError"
-          @select-contract="focusContractOnMap"
+        <MetricNav
+          active-metric-id="public-spending"
+          :region-id="regionId"
+          @navigate="emit('navigateMetric', $event)"
         />
-      </div>
-    </div>
-
-    <div class="relative h-full min-h-0 w-full bg-zinc-950 lg:flex-1">
-      <SpendingMap
-        :key="selectedRegion.id"
-        ref="spendingMap"
-        :contracts="mapContracts"
-        :region="selectedRegion"
-      />
-
-      <div class="pointer-events-none absolute right-4 bottom-4 z-2">
-        <PublicContractFiltersControl
+        <LandingHero
           v-model:search-query="searchQuery"
           v-model:selected-statuses="selectedStatuses"
           v-model:year-from="yearFrom"
           v-model:year-to="yearTo"
+          v-model:region-id="regionId"
+          :spending="spending"
+          :is-loading="isLoading"
           :available-years="availableYears"
+          :title-highlight="metric.titleHighlight"
+          :title-highlight-class="metric.titleHighlightClass"
         />
+      </div>
+    </div>
+
+    <div class="relative flex h-full min-h-0 w-full flex-col bg-zinc-950 lg:flex-1">
+      <div
+        class="pointer-events-none absolute bottom-4 left-4 z-2 flex gap-2 lg:top-4 lg:bottom-auto"
+      >
+        <div
+          class="pointer-events-auto flex gap-2 rounded-xl border border-white/10 bg-zinc-950/90 p-2 backdrop-blur-md"
+        >
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            :aria-pressed="view === 'list'"
+            :class="cn(
+              'rounded-xl px-4',
+              view === 'list' ? 'bg-white/10 text-foreground' : 'text-muted-foreground',
+            )"
+            @click="view = 'list'"
+          >
+            Lista
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            :aria-pressed="view === 'map'"
+            :class="cn(
+              'rounded-xl px-4',
+              view === 'map' ? 'bg-white/10 text-foreground' : 'text-muted-foreground',
+            )"
+            @click="view = 'map'"
+          >
+            Mapa
+          </Button>
+        </div>
+      </div>
+
+      <div
+        v-show="view === 'map'"
+        class="h-full min-h-0 w-full"
+      >
+        <SpendingMap
+          :key="selectedRegion.id"
+          ref="spendingMap"
+          :contracts="mapContracts"
+          :region="selectedRegion"
+        />
+      </div>
+
+      <div
+        v-show="view === 'list'"
+        class="flex h-full min-h-0 flex-col pb-16 lg:pt-16 lg:pb-0"
+      >
+        <div
+          ref="listScroll"
+          class="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 md:p-8"
+        >
+          <LandingHeroContractList
+            :contracts="filteredContracts"
+            :region-name="selectedRegion.name"
+            :is-loading="isLoading"
+            :status-message="statusMessage"
+            :scroll-element="listScroll"
+            @select="focusContractOnMap"
+          />
+        </div>
       </div>
     </div>
   </div>

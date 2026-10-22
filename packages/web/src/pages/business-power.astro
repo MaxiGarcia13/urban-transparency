@@ -1,0 +1,12 @@
+---
+import MetricApp from '@/components/metric-app.vue';
+import { PRODUCT_NAME } from '@/config/product';
+import BaseLayout from '@/layouts/base-layout.astro';
+
+const title = `${PRODUCT_NAME} - Poder empresarial`;
+const description = 'Actividad empresarial por municipio en España';
+---
+
+<BaseLayout title={title} description={description}>
+  <MetricApp client:only="vue" />
+</BaseLayout>

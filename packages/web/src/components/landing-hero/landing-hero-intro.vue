@@ -3,7 +3,6 @@ import type { MunicipalSpending } from '@/domain/aggregate-municipal-spending';
 import { PhCaretDown } from '@phosphor-icons/vue';
 import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
-import { PRODUCT_NAME } from '@/config/product';
 import { getMapRegionById } from '@/config/regions';
 import { cn } from '@/lib/utils';
 import LandingHeroRegionSelect from './landing-hero-region-select.vue';
@@ -14,6 +13,8 @@ withDefaults(
     spending: MunicipalSpending | null;
     isExpanded: boolean;
     isLoading?: boolean;
+    titleHighlight: string;
+    titleHighlightClass: string;
   }>(),
   {
     isLoading: false,
@@ -30,24 +31,10 @@ const regionName = computed(() => getMapRegionById(regionId.value).name);
 
 <template>
   <div class="flex shrink-0 flex-col gap-2 p-4 sm:gap-4 md:gap-6 md:p-8">
-    <div class="flex items-center gap-2">
-      <img
-        src="/android-chrome-192x192.png"
-        alt=""
-        width="32"
-        height="32"
-        class="size-6 shrink-0 md:size-8"
-        decoding="async"
-      >
-      <p class="text-xs font-medium tracking-wide text-orange-300 uppercase md:text-sm">
-        {{ PRODUCT_NAME }}
-      </p>
-    </div>
-
     <div class="flex flex-col gap-2 md:gap-4">
       <h1 class="max-w-md text-2xl leading-tight font-semibold text-balance md:text-5xl">
         ¿Dónde va el
-        <span class="text-orange-400">gasto público</span>
+        <span :class="titleHighlightClass">{{ titleHighlight }}</span>
         en
         <LandingHeroRegionSelect v-model:region-id="regionId" />
         ?
@@ -77,7 +64,7 @@ const regionName = computed(() => getMapRegionById(regionId.value).name);
       aria-controls="landing-hero-details"
       @click="emit('toggleExpanded')"
     >
-      <span>{{ isExpanded ? 'Ocultar búsqueda' : 'Buscar contratos' }}</span>
+      <span>{{ isExpanded ? 'Ocultar filtros' : 'Filtros' }}</span>
       <PhCaretDown
         :class="cn(
           'size-4 text-muted-foreground transition-transform duration-200',
