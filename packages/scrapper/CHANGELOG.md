@@ -1,3 +1,13 @@
+## 0.0.12 (2026-10-22)
+
+### 🚀 Features
+
+- Add Asturias region support in scraping and fetching workflows ([c3d881e](https://github.com/MaxiGarcia13/urban-transparency/commit/c3d881e))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.11 (2026-10-21)
 
 ### 🚀 Features

@@ -1,3 +1,17 @@
+## 0.0.25 (2026-10-22)
+
+### 🚀 Features
+
+- Add Asturias region support in scraping and fetching workflows ([c3d881e](https://github.com/MaxiGarcia13/urban-transparency/commit/c3d881e))
+
+### 🐞 Fixes
+
+- Update zoom levels for Asturias and Cantabria regions ([de0381c](https://github.com/MaxiGarcia13/urban-transparency/commit/de0381c))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.24 (2026-10-22)
 
 ### 🎨 Styles
