@@ -12,7 +12,7 @@ export const cantabriaRegion = {
   name: 'Cantabria',
   provinceCodes: CANTABRIA_PROVINCE_CODES,
   center: getBoundaryBboxCenter(boundary),
-  zoom: 9,
+  zoom: 7,
   pitch: 40,
   bearing: -20,
   boundary,

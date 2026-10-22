@@ -12,7 +12,7 @@ export const asturiasRegion = {
   name: 'Asturias',
   provinceCodes: ASTURIAS_PROVINCE_CODES,
   center: getBoundaryBboxCenter(boundary),
-  zoom: 8,
+  zoom: 8.5,
   pitch: 40,
   bearing: -20,
   boundary,
