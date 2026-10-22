@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PublicContract } from '@urban-transparency/shared';
 import type { MetricId } from '@/config/metrics';
+import { useResizeObserver } from '@vueuse/core';
 import {
   computed,
   defineAsyncComponent,
@@ -45,11 +46,35 @@ const {
 const { regionId } = useMapRegion();
 const { view } = useMetricView(metric.defaultView, metric.supportsMap);
 const pendingFocusContractId = ref<string | null>(null);
+const isPanelCollapsed = ref(false);
 const selectedRegion = computed(() => getMapRegionById(regionId.value));
 const spendingMap = useTemplateRef<{
   focusContract: (contractId: string) => void;
 }>('spendingMap');
 const listScroll = useTemplateRef<HTMLElement>('listScroll');
+const mobilePanel = useTemplateRef<HTMLElement>('mobilePanel');
+const mobilePanelHeight = ref(0);
+
+useResizeObserver(mobilePanel, (entries) => {
+  const entry = entries[0];
+  if (!entry) {
+    return;
+  }
+  mobilePanelHeight.value = entry.borderBoxSize?.[0]?.blockSize
+    ?? entry.contentRect.height;
+});
+
+const mobileContentOffsetStyle = computed(() => {
+  if (typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches) {
+    return undefined;
+  }
+  // Overlay wrapper uses p-4 (16px) above the panel.
+  const offsetPx = mobilePanelHeight.value + 16;
+  if (offsetPx <= 16) {
+    return undefined;
+  }
+  return { paddingTop: `${offsetPx}px` };
+});
 
 const { contracts, isLoading, isError } = usePublicContracts(
   () => selectedRegion.value.provinceCodes,
@@ -81,6 +106,10 @@ const statusMessage = computed(() => {
   }
   return null;
 });
+
+function togglePanelCollapsed(): void {
+  isPanelCollapsed.value = !isPanelCollapsed.value;
+}
 
 function tryFocusPendingContract(): void {
   const contractId = pendingFocusContractId.value;
@@ -126,14 +155,19 @@ watch(regionId, () => {
       class="pointer-events-none absolute inset-x-0 top-0 z-20 p-4 lg:pointer-events-auto lg:static lg:inset-auto lg:flex lg:h-full lg:w-md lg:shrink-0 lg:border-r lg:border-white/10 lg:p-0"
     >
       <div
+        ref="mobilePanel"
         class="pointer-events-auto flex max-h-[min(70dvh,100%)] flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-950/90 shadow-lg backdrop-blur-md lg:h-full lg:max-h-none lg:rounded-none lg:border-0 lg:bg-zinc-950 lg:shadow-none lg:backdrop-blur-none"
       >
         <MetricNav
           active-metric-id="public-spending"
           :region-id="regionId"
+          collapsible
+          :collapsed="isPanelCollapsed"
           @navigate="emit('navigateMetric', $event)"
+          @toggle-collapsed="togglePanelCollapsed"
         />
         <LandingHero
+          v-show="!isPanelCollapsed"
           v-model:search-query="searchQuery"
           v-model:selected-statuses="selectedStatuses"
           v-model:year-from="yearFrom"
@@ -148,7 +182,10 @@ watch(regionId, () => {
       </div>
     </div>
 
-    <div class="relative flex h-full min-h-0 w-full flex-col bg-zinc-950 lg:flex-1">
+    <div
+      class="relative flex h-full min-h-0 w-full flex-col bg-zinc-950 lg:flex-1 lg:pt-0!"
+      :style="mobileContentOffsetStyle"
+    >
       <div
         class="pointer-events-none absolute bottom-4 left-4 z-2 flex gap-2 lg:top-4 lg:bottom-auto"
       >

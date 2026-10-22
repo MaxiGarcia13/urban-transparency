@@ -10,7 +10,13 @@ const props = defineProps<{
   region: MapRegion;
 }>();
 
-const { mapContainer, tooltip, clearTooltip, focusContract } = useSpendingMap(
+const {
+  mapContainer,
+  tooltip,
+  clearTooltip,
+  expandFocusedCluster,
+  focusContract,
+} = useSpendingMap(
   toRef(props, 'contracts'),
   toRef(props, 'region'),
 );
@@ -31,7 +37,9 @@ defineExpose({ focusContract });
       :has-known-location="tooltip.hasKnownLocation"
       :x="tooltip.x"
       :y="tooltip.y"
+      :expandable-sibling-count="tooltip.expandableSiblingCount"
       @close="clearTooltip"
+      @expand="expandFocusedCluster"
     />
   </div>
 </template>

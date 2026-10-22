@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { MetricId } from '@/config/metrics';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import LandingHeroRegionSelect from '@/components/landing-hero/landing-hero-region-select.vue';
 import { MetricNav } from '@/components/metric-nav';
 import { useMapRegion } from '@/composables/use-map-region';
@@ -14,6 +14,11 @@ const emit = defineEmits<{
 const metric = getMetricById('business-power');
 const { regionId } = useMapRegion();
 const regionName = computed(() => getMapRegionById(regionId.value).name);
+const isPanelCollapsed = ref(false);
+
+function togglePanelCollapsed(): void {
+  isPanelCollapsed.value = !isPanelCollapsed.value;
+}
 </script>
 
 <template>
@@ -27,10 +32,16 @@ const regionName = computed(() => getMapRegionById(regionId.value).name);
         <MetricNav
           active-metric-id="business-power"
           :region-id="regionId"
+          collapsible
+          :collapsed="isPanelCollapsed"
           @navigate="emit('navigateMetric', $event)"
+          @toggle-collapsed="togglePanelCollapsed"
         />
 
-        <div class="flex shrink-0 flex-col gap-2 p-4 sm:gap-4 md:gap-6 md:p-8">
+        <div
+          v-show="!isPanelCollapsed"
+          class="flex shrink-0 flex-col gap-2 p-4 sm:gap-4 md:gap-6 md:p-8"
+        >
           <div class="flex flex-col gap-2 md:gap-4">
             <h1 class="max-w-md text-2xl leading-tight font-semibold text-balance md:text-5xl">
               ¿Dónde se concentra la
