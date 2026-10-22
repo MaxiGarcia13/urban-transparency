@@ -1,3 +1,13 @@
+## 0.0.13 (2026-10-22)
+
+### 🧹 Chores
+
+- Update scraping commands for Cantabria, País Vasco, and Asturias ([ab497e7](https://github.com/MaxiGarcia13/urban-transparency/commit/ab497e7))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.12 (2026-10-22)
 
 ### 🚀 Features
