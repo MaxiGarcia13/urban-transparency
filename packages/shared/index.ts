@@ -1,3 +1,8 @@
+export type {
+  DirceSectorCode,
+  MunicipalBusinessStats,
+} from './domain/municipal-business-stats';
+export { DIRCE_SECTOR_CODES } from './domain/municipal-business-stats';
 export type { Municipality } from './domain/municipality';
 export type {
   PublicContract,

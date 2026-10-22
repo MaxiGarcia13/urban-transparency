@@ -51,7 +51,7 @@ Prefer **national** sources that scale to any municipality or province. Regional
 
 ### 2. Business Power
 
-- [INE DIRCE](https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177031&menu=resultados&idp=1254735576550) — active businesses by municipality, size, and sector. API pattern: `https://servicios.ine.es/wsevents/api/json/es/DATASET/DIRCE/{municipalityCode}`
+- [INE DIRCE](https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177031&menu=resultados&idp=1254735576550) — active businesses by municipality and sector group. Ingest: table [4721 CSV](https://www.ine.es/jaxiT3/files/t/csv_bdsc/4721.csv) via `pnpm scrape:dirce:cantabria` / `pnpm scrape:dirce:pais-vasco` / `pnpm scrape:dirce:asturias`.
 - Regional stats (pilot): [ICANE — directorio de empresas](https://www.icane.es/data/directorio-empresas-asalariados-estrato)
 - OpenStreetMap Overpass (`https://overpass-api.de/api/interpreter`) — commercial nodes (`office`, `shop`, `amenity=bank`, `industrial`, `building=commercial`) around configurable neighborhood centroids
 
