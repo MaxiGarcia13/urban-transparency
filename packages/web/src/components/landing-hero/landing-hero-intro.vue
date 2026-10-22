@@ -29,17 +29,17 @@ const regionName = computed(() => getMapRegionById(regionId.value).name);
 </script>
 
 <template>
-  <div class="flex shrink-0 flex-col gap-4 p-4 md:gap-6 md:p-8">
+  <div class="flex shrink-0 flex-col gap-2 p-4 sm:gap-4 md:gap-6 md:p-8">
     <div class="flex items-center gap-2">
       <img
         src="/android-chrome-192x192.png"
         alt=""
         width="32"
         height="32"
-        class="size-8 shrink-0"
+        class="size-6 shrink-0 md:size-8"
         decoding="async"
       >
-      <p class="text-sm font-medium tracking-wide text-orange-300 uppercase">
+      <p class="text-xs font-medium tracking-wide text-orange-300 uppercase md:text-sm">
         {{ PRODUCT_NAME }}
       </p>
     </div>
