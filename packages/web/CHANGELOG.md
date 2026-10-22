@@ -1,3 +1,13 @@
+## 0.0.26 (2026-10-22)
+
+### 🚀 Features
+
+- Enhance map interaction by adding tooltip clearing functionality ([1ffebaf](https://github.com/MaxiGarcia13/urban-transparency/commit/1ffebaf))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.25 (2026-10-22)
 
 ### 🚀 Features
