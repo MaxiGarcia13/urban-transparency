@@ -45,7 +45,7 @@ const regionName = computed(() => getMapRegionById(regionId.value).name);
     </div>
 
     <div class="flex flex-col gap-2 md:gap-4">
-      <h1 class="max-w-md text-3xl leading-tight font-semibold text-balance md:text-5xl">
+      <h1 class="max-w-md text-2xl leading-tight font-semibold text-balance md:text-5xl">
         ¿Dónde va el
         <span class="text-orange-400">gasto público</span>
         en
