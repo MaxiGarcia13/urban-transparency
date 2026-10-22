@@ -23,6 +23,7 @@
     "@deck.gl/core": "^9.4.0",
     "@deck.gl/layers": "^9.4.0",
     "@deck.gl/maplibre": "^9.4.0",
+    "@nanostores/vue": "^1.1.0",
     "@phosphor-icons/vue": "^2.2.1",
     "@tanstack/vue-query": "^5.104.2",
     "@tanstack/vue-virtual": "^3.13.47",
