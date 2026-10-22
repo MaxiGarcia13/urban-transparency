@@ -1,5 +1,11 @@
 import { CANTABRIA_REGION_ID, MAP_REGIONS } from '@/config/regions';
 import {
+  BUSINESS_POWER_SECTOR_QUERY_KEY,
+  BUSINESS_POWER_YEAR_QUERY_KEY,
+  parseBusinessPowerFiltersFromSearchParams,
+  serializeBusinessPowerFiltersQuery,
+} from '@/domain/business-power-filters-query';
+import {
   MAP_REGION_QUERY_KEY,
   parseMapRegionIdFromSearchParams,
   serializeMapRegionQuery,
@@ -13,6 +19,7 @@ import {
   parsePublicContractFiltersFromSearchParams,
   serializePublicContractFiltersQuery,
 } from '@/domain/public-contract-filters-query';
+import { $businessPowerFilters } from './business-power-filters';
 import { $metricView } from './metric-view';
 import { $publicContractFilters } from './public-contract-filters';
 import { $regionId } from './region';
@@ -27,6 +34,8 @@ export const METRIC_URL_QUERY_KEYS = [
   'status',
   'yearFrom',
   'yearTo',
+  BUSINESS_POWER_YEAR_QUERY_KEY,
+  BUSINESS_POWER_SECTOR_QUERY_KEY,
 ] as const;
 
 export function hydrateMetricStoresFromUrl(
@@ -47,6 +56,9 @@ export function hydrateMetricStoresFromUrl(
   $publicContractFilters.set(
     parsePublicContractFiltersFromSearchParams(searchParams),
   );
+  $businessPowerFilters.set(
+    parseBusinessPowerFiltersFromSearchParams(searchParams),
+  );
 }
 
 export function buildMetricQueryString(): string {
@@ -66,20 +78,30 @@ export function buildMetricQueryString(): string {
     params.set(METRIC_VIEW_QUERY_KEY, view.view);
   }
 
-  const filters = serializePublicContractFiltersQuery(
+  const contractFilters = serializePublicContractFiltersQuery(
     $publicContractFilters.get(),
   );
-  if (filters.q) {
-    params.set('q', filters.q);
+  if (contractFilters.q) {
+    params.set('q', contractFilters.q);
   }
-  if (filters.status) {
-    params.set('status', filters.status);
+  if (contractFilters.status) {
+    params.set('status', contractFilters.status);
   }
-  if (filters.yearFrom) {
-    params.set('yearFrom', filters.yearFrom);
+  if (contractFilters.yearFrom) {
+    params.set('yearFrom', contractFilters.yearFrom);
   }
-  if (filters.yearTo) {
-    params.set('yearTo', filters.yearTo);
+  if (contractFilters.yearTo) {
+    params.set('yearTo', contractFilters.yearTo);
+  }
+
+  const businessFilters = serializeBusinessPowerFiltersQuery(
+    $businessPowerFilters.get(),
+  );
+  if (businessFilters.year) {
+    params.set(BUSINESS_POWER_YEAR_QUERY_KEY, businessFilters.year);
+  }
+  if (businessFilters.sector) {
+    params.set(BUSINESS_POWER_SECTOR_QUERY_KEY, businessFilters.sector);
   }
 
   return params.toString();

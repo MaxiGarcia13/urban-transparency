@@ -13,6 +13,7 @@ export {
   PUBLIC_CONTRACT_STATUSES,
 } from './domain/public-contract';
 export {
+  getMunicipalityByCode,
   listMunicipalitiesByProvinceCodes,
   requireMunicipalityByCode,
 } from './services/get-municipality-by-code';

@@ -4,6 +4,7 @@ import MetricNav from '@/components/metric-nav/metric-nav.vue';
 import MetricAside from '@/components/metric-shell/metric-aside.vue';
 import { metricIdFromPath } from '@/config/metrics';
 import { CANTABRIA_REGION_ID, MAP_REGIONS } from '@/config/regions';
+import { parseBusinessPowerFiltersFromSearchParams } from '@/domain/business-power-filters-query';
 import { parseMapRegionIdFromSearchParams } from '@/domain/map-region-query';
 import { parsePublicContractFiltersFromSearchParams } from '@/domain/public-contract-filters-query';
 import BaseLayout from '@/layouts/base-layout.astro';
@@ -21,6 +22,7 @@ const regionId = parseMapRegionIdFromSearchParams(
   CANTABRIA_REGION_ID,
 );
 const filters = parsePublicContractFiltersFromSearchParams(Astro.url.searchParams);
+const businessPowerFilters = parseBusinessPowerFiltersFromSearchParams(Astro.url.searchParams);
 ---
 
 <BaseLayout title={title} description={description}>
@@ -33,7 +35,13 @@ const filters = parsePublicContractFiltersFromSearchParams(Astro.url.searchParam
         class="pointer-events-auto flex max-h-[min(70dvh,100%)] w-full flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-950/90 shadow-lg backdrop-blur-md lg:h-full lg:max-h-none lg:rounded-none lg:border-0 lg:bg-zinc-950 lg:shadow-none lg:backdrop-blur-none"
       >
         <MetricNav client:load activeMetricId={metricId} />
-        <MetricAside client:load metricId={metricId} regionId={regionId} filters={filters} />
+        <MetricAside
+          client:load
+          metricId={metricId}
+          regionId={regionId}
+          filters={filters}
+          businessPowerFilters={businessPowerFilters}
+        />
         <slot name="aside-panel" />
       </div>
     </div>

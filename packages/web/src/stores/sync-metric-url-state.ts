@@ -1,4 +1,5 @@
 import { listenKeys } from 'nanostores';
+import { $businessPowerFilters } from './business-power-filters';
 import {
   buildMetricQueryString,
   hydrateMetricStoresFromUrl,
@@ -59,6 +60,11 @@ export function ensureMetricUrlStateSync(): void {
     $publicContractFilters,
     ['searchQuery'],
     writeStoresToUrlDebounced,
+  );
+  listenKeys(
+    $businessPowerFilters,
+    ['periodYear', 'sectorCode'],
+    writeStoresToUrl,
   );
 
   // Store wins across soft nav — put params back on the new path.

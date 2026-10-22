@@ -8,7 +8,9 @@ const municipalitiesByCode = new Map(
   ]),
 );
 
-function getMunicipalityByCode(municipalityCode: string): Municipality | null {
+export function getMunicipalityByCode(
+  municipalityCode: string,
+): Municipality | null {
   return municipalitiesByCode.get(municipalityCode) ?? null;
 }
 
