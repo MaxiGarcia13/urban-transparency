@@ -1,3 +1,13 @@
+## 0.0.23 (2026-10-22)
+
+### 🎨 Styles
+
+- Adjust layout and font sizes in landing hero component ([e9607ad](https://github.com/MaxiGarcia13/urban-transparency/commit/e9607ad))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.22 (2026-10-22)
 
 ### 🐞 Fixes
