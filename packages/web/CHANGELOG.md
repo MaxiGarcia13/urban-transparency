@@ -1,3 +1,13 @@
+## 0.0.22 (2026-10-22)
+
+### 🐞 Fixes
+
+- Adjust landing hero title font size for improved readability ([0da71f8](https://github.com/MaxiGarcia13/urban-transparency/commit/0da71f8))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.21 (2026-10-21)
 
 ### 🚀 Features
