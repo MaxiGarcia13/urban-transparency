@@ -1,3 +1,13 @@
+## 0.0.24 (2026-10-22)
+
+### 🎨 Styles
+
+- Update z-index values for tooltip and landing page filter ([205e5e8](https://github.com/MaxiGarcia13/urban-transparency/commit/205e5e8))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.23 (2026-10-22)
 
 ### 🎨 Styles
