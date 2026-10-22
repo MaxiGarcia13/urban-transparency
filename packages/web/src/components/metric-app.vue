@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import BusinessPowerPlaceholder from '@/components/business-power-placeholder.vue';
-import LandingPage from '@/components/landing-page.vue';
+import { LandingPage } from '@/components/landing-page';
 import { useMetricRoute } from '@/composables/use-metric-route';
 
 const { metricId, navigateToMetric } = useMetricRoute();
