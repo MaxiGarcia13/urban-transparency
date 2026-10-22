@@ -111,7 +111,7 @@ watch(regionId, () => {
         :region="selectedRegion"
       />
 
-      <div class="pointer-events-none absolute right-4 bottom-4 z-10">
+      <div class="pointer-events-none absolute right-4 bottom-4 z-2">
         <PublicContractFiltersControl
           v-model:search-query="searchQuery"
           v-model:selected-statuses="selectedStatuses"

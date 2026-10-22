@@ -60,7 +60,7 @@ onMounted(async () => {
 <template>
   <div
     ref="root"
-    class="absolute z-10 flex max-h-[min(20rem,calc(100%-16px))] max-w-[min(20rem,calc(100%-16px))] flex-col"
+    class="absolute z-4 flex max-h-[min(20rem,calc(100%-16px))] max-w-[min(20rem,calc(100%-16px))] flex-col"
     :style="{ left: `${left}px`, top: `${top}px` }"
     @click.stop
     @wheel.stop
