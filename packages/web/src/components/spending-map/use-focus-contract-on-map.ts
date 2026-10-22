@@ -8,6 +8,7 @@ interface UseFocusContractOnMapOptions {
   mapInstance: ShallowRef<MaplibreMap | null>;
   clusters: ComputedRef<ContractMapCluster[]>;
   openCluster: (cluster: ContractMapCluster, x: number, y: number) => void;
+  clearTooltip: () => void;
   syncVisibleClusters: () => void;
 }
 
@@ -15,6 +16,7 @@ export function useFocusContractOnMap({
   mapInstance,
   clusters,
   openCluster,
+  clearTooltip,
   syncVisibleClusters,
 }: UseFocusContractOnMapOptions) {
   let pendingFocusOnMoveEnd: (() => void) | null = null;
@@ -44,6 +46,7 @@ export function useFocusContractOnMap({
 
     pendingContractId = null;
     clearPendingFocus();
+    clearTooltip();
 
     const targetZoom = Math.max(map.getZoom(), FOCUS_MIN_ZOOM);
     const center = map.getCenter();

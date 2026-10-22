@@ -37,6 +37,7 @@ export function useSpendingMap(
     mapInstance,
     clusters,
     openCluster,
+    clearTooltip,
     syncVisibleClusters,
   });
 
