@@ -34,10 +34,12 @@
     "scrape:placsp": "pnpm --filter=@urban-transparency/scrapper scrape:placsp",
     "scrape:placsp:cantabria": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:cantabria",
     "scrape:placsp:pais-vasco": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:pais-vasco",
+    "scrape:placsp:asturias": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:asturias",
 
     "fetch:region-boundary": "pnpm --filter=@urban-transparency/web fetch:region-boundary",
     "fetch:region-boundary:cantabria": "pnpm --filter=@urban-transparency/web fetch:region-boundary:cantabria",
-    "fetch:region-boundary:pais-vasco": "pnpm --filter=@urban-transparency/web fetch:region-boundary:pais-vasco"
+    "fetch:region-boundary:pais-vasco": "pnpm --filter=@urban-transparency/web fetch:region-boundary:pais-vasco",
+    "fetch:region-boundary:asturias": "pnpm --filter=@urban-transparency/web fetch:region-boundary:asturias"
   },
   "devEngines": {
     "packageManager": {

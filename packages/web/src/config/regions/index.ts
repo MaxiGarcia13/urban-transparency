@@ -1,6 +1,12 @@
+import { asturiasRegion } from './asturias';
 import { cantabriaRegion } from './cantabria';
 import { paisVascoRegion } from './pais-vasco';
 
+export {
+  ASTURIAS_PROVINCE_CODES,
+  ASTURIAS_REGION_ID,
+  asturiasRegion,
+} from './asturias';
 export {
   CANTABRIA_PROVINCE_CODES,
   CANTABRIA_REGION_ID,
@@ -12,7 +18,11 @@ export {
   paisVascoRegion,
 } from './pais-vasco';
 
-export const MAP_REGIONS = [cantabriaRegion, paisVascoRegion] as const;
+export const MAP_REGIONS = [
+  cantabriaRegion,
+  paisVascoRegion,
+  asturiasRegion,
+] as const;
 
 export type MapRegion = (typeof MAP_REGIONS)[number];
 

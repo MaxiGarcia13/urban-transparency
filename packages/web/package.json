@@ -13,6 +13,7 @@
     "fetch:region-boundary": "tsx scripts/fetch-region-boundary.ts",
     "fetch:region-boundary:cantabria": "tsx scripts/fetch-region-boundary.ts --id cantabria --name Cantabria --query Cantabria --province 39",
     "fetch:region-boundary:pais-vasco": "tsx scripts/fetch-region-boundary.ts --id pais-vasco --name \"País Vasco\" --query \"Comunidad Autónoma del País Vasco\" --province 01 --province 20 --province 48",
+    "fetch:region-boundary:asturias": "tsx scripts/fetch-region-boundary.ts --id asturias --name Asturias --query \"Principado de Asturias\" --province 33",
 
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
