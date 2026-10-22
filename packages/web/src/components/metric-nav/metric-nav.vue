@@ -1,74 +1,64 @@
 <script setup lang="ts">
 import type { Component } from 'vue';
 import type { MetricId } from '@/config/metrics';
+import { useStore } from '@nanostores/vue';
 import { PhBuildings, PhCaretDown, PhCaretUp, PhCoins } from '@phosphor-icons/vue';
 import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
 import { METRICS } from '@/config/metrics';
 import { PRODUCT_NAME } from '@/config/product';
-import { CANTABRIA_REGION_ID } from '@/config/regions';
 import { cn } from '@/lib/utils';
+import { $metricAsideCollapsed } from '@/stores/metric-aside-ui';
+import { buildMetricQueryString } from '@/stores/metric-url-query';
+import { ensureMetricUrlStateSync } from '@/stores/sync-metric-url-state';
 
-const props = withDefaults(
-  defineProps<{
-    activeMetricId: MetricId;
-    regionId: string;
-    collapsible?: boolean;
-    collapsed?: boolean;
-  }>(),
-  {
-    collapsible: false,
-    collapsed: false,
-  },
-);
-
-const emit = defineEmits<{
-  navigate: [metricId: MetricId];
-  toggleCollapsed: [];
+const props = defineProps<{
+  activeMetricId: MetricId;
 }>();
+
+ensureMetricUrlStateSync();
 
 const METRIC_ICONS: Record<MetricId, Component> = {
   'public-spending': PhCoins,
   'business-power': PhBuildings,
 };
 
+const isPanelCollapsed = useStore($metricAsideCollapsed);
+
 const navItems = computed(() =>
-  METRICS.map((metric) => {
-    const params = new URLSearchParams();
-    if (props.regionId !== CANTABRIA_REGION_ID) {
-      params.set('region', props.regionId);
-    }
-    const query = params.toString();
-    return {
-      id: metric.id,
-      label: metric.navLabel,
-      icon: METRIC_ICONS[metric.id],
-      href: query ? `${metric.path}?${query}` : metric.path,
-      isActive: metric.id === props.activeMetricId,
-    };
-  }),
+  METRICS.map((metric) => ({
+    id: metric.id,
+    path: metric.path,
+    label: metric.navLabel,
+    icon: METRIC_ICONS[metric.id],
+    isActive: metric.id === props.activeMetricId,
+  })),
 );
 
-function onNavClick(event: MouseEvent, metricId: MetricId): void {
-  if (
-    event.defaultPrevented
-    || event.button !== 0
-    || event.metaKey
-    || event.ctrlKey
-    || event.shiftKey
-    || event.altKey
-  ) {
+function togglePanelCollapsed(): void {
+  $metricAsideCollapsed.set(!$metricAsideCollapsed.get());
+}
+
+function stampMetricQuery(event: MouseEvent, path: string): void {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
     return;
   }
-  event.preventDefault();
-  emit('navigate', metricId);
+  if (event.button !== 0) {
+    return;
+  }
+  const target = event.currentTarget;
+  if (!(target instanceof HTMLAnchorElement)) {
+    return;
+  }
+  const query = buildMetricQueryString();
+  target.href = query ? `${path}?${query}` : path;
 }
 </script>
 
 <template>
   <div
     class="flex shrink-0 items-center gap-2 border-b border-white/10 px-4 py-4 md:gap-4 md:px-8"
-    :class="collapsed ? 'border-b-0' : ''"
+    :class="isPanelCollapsed ? 'border-b-0' : ''"
   >
     <div class="flex min-w-0 items-center gap-2">
       <img
@@ -91,7 +81,8 @@ function onNavClick(event: MouseEvent, metricId: MetricId): void {
       <a
         v-for="item in navItems"
         :key="item.id"
-        :href="item.href"
+        :href="item.path"
+        data-astro-prefetch
         :aria-label="item.label"
         :aria-current="item.isActive ? 'page' : undefined"
         :title="item.label"
@@ -101,7 +92,7 @@ function onNavClick(event: MouseEvent, metricId: MetricId): void {
             ? 'bg-white/10 text-foreground'
             : 'text-muted-foreground hover:bg-white/5 hover:text-foreground',
         )"
-        @click="onNavClick($event, item.id)"
+        @click="stampMetricQuery($event, item.path)"
       >
         <component
           :is="item.icon"
@@ -111,17 +102,16 @@ function onNavClick(event: MouseEvent, metricId: MetricId): void {
       </a>
 
       <Button
-        v-if="collapsible"
         type="button"
         variant="ghost"
         size="icon"
         class="size-10 shrink-0 rounded-xl text-muted-foreground hover:text-foreground lg:hidden"
-        :aria-expanded="!collapsed"
-        :aria-label="collapsed ? 'Expandir panel' : 'Contraer panel'"
-        @click="emit('toggleCollapsed')"
+        :aria-expanded="!isPanelCollapsed"
+        :aria-label="isPanelCollapsed ? 'Expandir panel' : 'Contraer panel'"
+        @click="togglePanelCollapsed"
       >
         <PhCaretDown
-          v-if="collapsed"
+          v-if="isPanelCollapsed"
           class="size-5"
         />
         <PhCaretUp

@@ -1,36 +1,23 @@
-import type { Ref } from 'vue';
-import { ref, watch } from 'vue';
-import { CANTABRIA_REGION_ID, MAP_REGIONS } from '@/config/regions';
-import {
-  MAP_REGION_QUERY_KEY,
-  parseMapRegionQuery,
-  serializeMapRegionQuery,
-} from '@/domain/map-region-query';
-import { useAppUrlSearchParams } from './use-app-url-search-params';
+import { useStore } from '@nanostores/vue';
+import { computed } from 'vue';
+import { $regionId } from '@/stores/region';
+import { ensureMetricUrlStateSync } from '@/stores/sync-metric-url-state';
+import { useClientHydrated } from './use-client-hydrated';
 
-const KNOWN_REGION_IDS = MAP_REGIONS.map((region) => region.id);
+export function useMapRegion(ssrRegionId?: string) {
+  ensureMetricUrlStateSync();
 
-let sharedRegionId: Ref<string> | null = null;
+  const hydrated = useClientHydrated();
+  const state = useStore($regionId);
+  const regionId = computed({
+    get: () =>
+      hydrated.value
+        ? state.value
+        : (ssrRegionId ?? state.value),
+    set: (value: string) => {
+      $regionId.set(value);
+    },
+  });
 
-export function useMapRegion(
-  defaultRegionId: string = CANTABRIA_REGION_ID,
-) {
-  const params = useAppUrlSearchParams();
-
-  if (!sharedRegionId) {
-    sharedRegionId = ref(
-      parseMapRegionQuery(params, KNOWN_REGION_IDS, defaultRegionId),
-    );
-
-    watch(sharedRegionId, (nextRegionId) => {
-      const serialized = serializeMapRegionQuery(
-        nextRegionId,
-        KNOWN_REGION_IDS,
-        defaultRegionId,
-      );
-      params[MAP_REGION_QUERY_KEY] = serialized.region ?? null;
-    });
-  }
-
-  return { regionId: sharedRegionId };
+  return { regionId };
 }

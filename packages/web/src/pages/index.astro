@@ -1,12 +1,32 @@
 ---
-import MetricApp from '@/components/metric-app.vue';
+import { PublicSpendingAsidePanel, PublicSpendingPreview } from '@/components/metric-shell';
+import { getMetricById } from '@/config/metrics';
 import { PRODUCT_NAME } from '@/config/product';
-import BaseLayout from '@/layouts/base-layout.astro';
+import { CANTABRIA_REGION_ID, MAP_REGIONS } from '@/config/regions';
+import { parseMapRegionIdFromSearchParams } from '@/domain/map-region-query';
+import { parseMetricViewFromSearchParams } from '@/domain/metric-view-query';
+import { parsePublicContractFiltersFromSearchParams } from '@/domain/public-contract-filters-query';
+import MetricShell from '@/layouts/metric-shell.astro';
 
 const title = `${PRODUCT_NAME} - Spain`;
 const description = 'Gasto público y datos urbanos sobre el mapa de España';
+const publicSpending = getMetricById('public-spending');
+const regionId = parseMapRegionIdFromSearchParams(
+  Astro.url.searchParams,
+  MAP_REGIONS.map((region) => region.id),
+  CANTABRIA_REGION_ID,
+);
+const view = parseMetricViewFromSearchParams(
+  Astro.url.searchParams,
+  publicSpending.defaultView,
+  publicSpending.supportsMap,
+);
+const filters = parsePublicContractFiltersFromSearchParams(Astro.url.searchParams);
 ---
 
-<BaseLayout title={title} description={description}>
-  <MetricApp client:only="vue" />
-</BaseLayout>
+<MetricShell title={title} description={description}>
+  <div slot="aside-panel" class="contents">
+    <PublicSpendingAsidePanel client:load regionId={regionId} filters={filters} />
+  </div>
+  <PublicSpendingPreview client:load regionId={regionId} view={view} filters={filters} class="h-full" />
+</MetricShell>

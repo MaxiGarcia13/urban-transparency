@@ -30,6 +30,18 @@ export function parseMetricViewQuery(
   return defaultView;
 }
 
+export function parseMetricViewFromSearchParams(
+  searchParams: Pick<URLSearchParams, 'get'>,
+  defaultView: MetricView,
+  supportsMap: boolean,
+): MetricView {
+  return parseMetricViewQuery(
+    { [METRIC_VIEW_QUERY_KEY]: searchParams.get(METRIC_VIEW_QUERY_KEY) },
+    defaultView,
+    supportsMap,
+  );
+}
+
 export function serializeMetricViewQuery(
   view: MetricView,
   defaultView: MetricView,

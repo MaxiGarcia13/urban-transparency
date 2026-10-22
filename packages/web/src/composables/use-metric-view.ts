@@ -1,28 +1,30 @@
 import type { MetricView } from '@/config/metrics';
-import { ref, watch } from 'vue';
-import {
-  METRIC_VIEW_QUERY_KEY,
-  parseMetricViewQuery,
-  serializeMetricViewQuery,
-} from '@/domain/metric-view-query';
-import { useAppUrlSearchParams } from './use-app-url-search-params';
+import { useStore } from '@nanostores/vue';
+import { computed } from 'vue';
+import { $metricView } from '@/stores/metric-view';
+import { ensureMetricUrlStateSync } from '@/stores/sync-metric-url-state';
+import { useClientHydrated } from './use-client-hydrated';
 
 export function useMetricView(
-  defaultView: MetricView,
-  supportsMap: boolean,
+  supportsMap = true,
+  ssrView?: MetricView,
 ) {
-  const params = useAppUrlSearchParams();
-  const view = ref<MetricView>(
-    parseMetricViewQuery(params, defaultView, supportsMap),
-  );
+  ensureMetricUrlStateSync();
 
-  watch(view, (nextView) => {
-    if (nextView === 'map' && !supportsMap) {
-      view.value = 'list';
-      return;
-    }
-    const serialized = serializeMetricViewQuery(nextView, defaultView);
-    params[METRIC_VIEW_QUERY_KEY] = serialized.view ?? null;
+  const hydrated = useClientHydrated();
+  const state = useStore($metricView);
+  const view = computed({
+    get: () =>
+      hydrated.value
+        ? state.value
+        : (ssrView ?? state.value),
+    set: (value: MetricView) => {
+      if (value === 'map' && !supportsMap) {
+        $metricView.set('list');
+        return;
+      }
+      $metricView.set(value);
+    },
   });
 
   return { view };

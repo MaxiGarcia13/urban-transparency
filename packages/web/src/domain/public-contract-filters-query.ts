@@ -91,6 +91,17 @@ export function parsePublicContractFiltersQuery(
   };
 }
 
+export function parsePublicContractFiltersFromSearchParams(
+  searchParams: Pick<URLSearchParams, 'get'>,
+): PublicContractFilters {
+  return parsePublicContractFiltersQuery({
+    q: searchParams.get(PUBLIC_CONTRACT_FILTER_QUERY_KEYS.search),
+    status: searchParams.get(PUBLIC_CONTRACT_FILTER_QUERY_KEYS.status),
+    yearFrom: searchParams.get(PUBLIC_CONTRACT_FILTER_QUERY_KEYS.yearFrom),
+    yearTo: searchParams.get(PUBLIC_CONTRACT_FILTER_QUERY_KEYS.yearTo),
+  });
+}
+
 export function serializePublicContractFiltersQuery(
   filters: PublicContractFilters,
 ): PublicContractFiltersQuery {

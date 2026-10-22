@@ -25,6 +25,18 @@ export function parseMapRegionQuery(
   return regionId;
 }
 
+export function parseMapRegionIdFromSearchParams(
+  searchParams: Pick<URLSearchParams, 'get'>,
+  knownRegionIds: readonly string[],
+  defaultRegionId: string,
+): string {
+  return parseMapRegionQuery(
+    { [MAP_REGION_QUERY_KEY]: searchParams.get(MAP_REGION_QUERY_KEY) },
+    knownRegionIds,
+    defaultRegionId,
+  );
+}
+
 export function serializeMapRegionQuery(
   regionId: string,
   knownRegionIds: readonly string[],

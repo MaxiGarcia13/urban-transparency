@@ -8,6 +8,7 @@ export interface MetricDefinition {
   id: MetricId;
   path: string;
   navLabel: string;
+  titleLead: string;
   titleHighlight: string;
   titleHighlightClass: string;
   defaultView: MetricView;
@@ -19,6 +20,7 @@ export const METRICS: readonly MetricDefinition[] = [
     id: 'public-spending',
     path: '/',
     navLabel: 'Gasto público',
+    titleLead: '¿Dónde va el',
     titleHighlight: 'gasto público',
     titleHighlightClass: 'text-orange-400',
     defaultView: 'map',
@@ -28,6 +30,7 @@ export const METRICS: readonly MetricDefinition[] = [
     id: 'business-power',
     path: '/business-power',
     navLabel: 'Poder empresarial',
+    titleLead: '¿Dónde se concentra la',
     titleHighlight: 'actividad empresarial',
     titleHighlightClass: 'text-teal-400',
     defaultView: 'list',
@@ -41,4 +44,12 @@ export function getMetricById(metricId: MetricId): MetricDefinition {
     throw new Error(`Unknown metric: ${metricId}`);
   }
   return metric;
+}
+
+export function metricIdFromPath(pathname: string): MetricId {
+  const normalized = pathname.replace(/\/+$/, '') || '/';
+  if (normalized === '/business-power') {
+    return 'business-power';
+  }
+  return 'public-spending';
 }
