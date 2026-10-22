@@ -87,10 +87,7 @@ watch(
 );
 
 function selectMunicipality(municipalityCode: string): void {
-  selectedMunicipalityCode.value
-    = selectedMunicipalityCode.value === municipalityCode
-      ? null
-      : municipalityCode;
+  selectedMunicipalityCode.value = municipalityCode;
 }
 </script>
 
@@ -119,15 +116,14 @@ function selectMunicipality(municipalityCode: string): void {
             :selected-municipality-code="selectedMunicipalityCode"
             @select="selectMunicipality"
           />
-
-          <BusinessPowerMunicipalityDetail
-            v-if="selectedMunicipality"
-            :municipality="selectedMunicipality"
-            :rows="rows"
-            @close="selectedMunicipalityCode = null"
-          />
         </div>
       </div>
     </div>
+
+    <BusinessPowerMunicipalityDetail
+      :municipality="selectedMunicipality"
+      :rows="rows"
+      @close="selectedMunicipalityCode = null"
+    />
   </div>
 </template>

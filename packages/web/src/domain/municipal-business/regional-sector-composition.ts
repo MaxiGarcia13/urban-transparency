@@ -16,7 +16,34 @@ export interface BusinessSectorCompositionRow {
   sectorCode: DirceSectorCode;
   label: string;
   activeBusinessCount: number;
-  shareOfRegion: number;
+  share: number;
+}
+
+export function toSectorCompositionRows(
+  countsBySector: ReadonlyMap<DirceSectorCode, number>,
+): BusinessSectorCompositionRow[] {
+  let total = 0;
+  for (const value of countsBySector.values()) {
+    total += value;
+  }
+  if (total <= 0) {
+    return [];
+  }
+
+  const rows: BusinessSectorCompositionRow[] = [];
+  for (const [sectorCode, activeBusinessCount] of countsBySector) {
+    if (activeBusinessCount <= 0) {
+      continue;
+    }
+    rows.push({
+      sectorCode,
+      label: dirceSectorLabel(sectorCode),
+      activeBusinessCount,
+      share: activeBusinessCount / total,
+    });
+  }
+
+  return rows.sort((a, b) => b.activeBusinessCount - a.activeBusinessCount);
 }
 
 export function buildRegionalSectorComposition(
@@ -43,24 +70,5 @@ export function buildRegionalSectorComposition(
     totals.set(row.sectorCode, current + row.activeBusinessCount);
   }
 
-  let regionTotal = 0;
-  for (const value of totals.values()) {
-    regionTotal += value;
-  }
-  if (regionTotal <= 0) {
-    return [];
-  }
-
-  return COMPOSITION_SECTOR_CODES
-    .map((sectorCode) => {
-      const activeBusinessCount = totals.get(sectorCode) ?? 0;
-      return {
-        sectorCode,
-        label: dirceSectorLabel(sectorCode),
-        activeBusinessCount,
-        shareOfRegion: activeBusinessCount / regionTotal,
-      };
-    })
-    .filter((row) => row.activeBusinessCount > 0)
-    .sort((a, b) => b.activeBusinessCount - a.activeBusinessCount);
+  return toSectorCompositionRows(totals);
 }

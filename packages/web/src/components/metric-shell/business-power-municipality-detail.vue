@@ -2,13 +2,20 @@
 import type { MunicipalBusinessStats } from '@urban-transparency/shared';
 import type { MunicipalBusinessRankingRow } from '@/domain/municipal-business';
 import { computed } from 'vue';
-import { dirceSectorLabel } from '@/domain/business-power-filters';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { sectorBreakdownForMunicipality } from '@/domain/municipal-business';
 import { formatInteger } from '@/utils/format-integer';
 import { formatPercent } from '@/utils/format-percent';
+import BusinessSectorCompositionList from './business-sector-composition-list.vue';
 
 const props = defineProps<{
-  municipality: MunicipalBusinessRankingRow;
+  municipality: MunicipalBusinessRankingRow | null;
   rows: MunicipalBusinessStats[];
 }>();
 
@@ -16,85 +23,60 @@ const emit = defineEmits<{
   close: [];
 }>();
 
-const breakdown = computed(() =>
-  sectorBreakdownForMunicipality(
+const isOpen = computed({
+  get: () => props.municipality != null,
+  set: (open) => {
+    if (!open) {
+      emit('close');
+    }
+  },
+});
+
+const composition = computed(() => {
+  if (props.municipality == null) {
+    return [];
+  }
+  return sectorBreakdownForMunicipality(
     props.rows,
     props.municipality.municipalityCode,
     props.municipality.periodYear,
-  ),
-);
-
-const maxCount = computed(() => {
-  let max = 0;
-  for (const row of breakdown.value) {
-    if (row.activeBusinessCount != null && row.activeBusinessCount > max) {
-      max = row.activeBusinessCount;
-    }
-  }
-  return max;
+  );
 });
 
-function barWidthPercent(count: number | null): number {
-  if (count == null || maxCount.value <= 0) {
-    return 0;
+const summary = computed(() => {
+  const municipality = props.municipality;
+  if (municipality == null) {
+    return '';
   }
-  return Math.max(6, Math.round((count / maxCount.value) * 100));
-}
+  const parts: string[] = [];
+  if (municipality.activeBusinessCount != null) {
+    parts.push(`${formatInteger(municipality.activeBusinessCount)} empresas`);
+  } else {
+    parts.push('Sin dato publicado');
+  }
+  if (municipality.shareOfRegion != null) {
+    parts.push(`${formatPercent(municipality.shareOfRegion)} de la región`);
+  }
+  parts.push(String(municipality.periodYear));
+  return parts.join(' · ');
+});
 </script>
 
 <template>
-  <section class="flex flex-col gap-4 border-t border-white/10 pt-6">
-    <div class="flex items-start justify-between gap-4">
-      <div class="flex min-w-0 flex-col gap-1">
-        <h2 class="truncate text-lg font-semibold text-zinc-100">
+  <Dialog v-model:open="isOpen">
+    <DialogContent class="max-h-[min(90vh,40rem)] gap-6 overflow-hidden sm:max-w-lg">
+      <DialogHeader v-if="municipality">
+        <DialogTitle>
           {{ municipality.municipalityName }}
-        </h2>
-        <p class="text-sm text-muted-foreground">
-          <template v-if="municipality.activeBusinessCount != null">
-            {{ formatInteger(municipality.activeBusinessCount) }} empresas
-          </template>
-          <template v-else>
-            Sin dato publicado
-          </template>
-          <template v-if="municipality.shareOfRegion != null">
-            · {{ formatPercent(municipality.shareOfRegion) }} de la región
-          </template>
-          · {{ municipality.periodYear }}
-        </p>
-      </div>
-      <button
-        type="button"
-        class="shrink-0 rounded-lg px-2 py-1 text-sm text-muted-foreground transition-colors hover:bg-white/5 hover:text-zinc-100"
-        @click="emit('close')"
-      >
-        Cerrar
-      </button>
-    </div>
+        </DialogTitle>
+        <DialogDescription>
+          {{ summary }}
+        </DialogDescription>
+      </DialogHeader>
 
-    <ul class="flex flex-col gap-3">
-      <li
-        v-for="row in breakdown"
-        :key="row.sectorCode"
-        class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1"
-      >
-        <span class="truncate text-sm text-zinc-300">
-          {{ dirceSectorLabel(row.sectorCode) }}
-        </span>
-        <span class="text-sm text-zinc-100 tabular-nums">
-          <template v-if="row.activeBusinessCount != null">
-            {{ formatInteger(row.activeBusinessCount) }}
-          </template>
-          <template v-else>
-            —
-          </template>
-        </span>
-        <div class="col-span-2 h-1.5 overflow-hidden rounded-full bg-white/5">
-          <div
-            class="h-full rounded-full bg-teal-400/60"
-            :style="{ width: `${barWidthPercent(row.activeBusinessCount)}%` }"
-          />
-        </div>
-      </li>
-    </ul>
-  </section>
+      <div class="min-h-0 overflow-y-auto overscroll-contain pr-1">
+        <BusinessSectorCompositionList :composition="composition" />
+      </div>
+    </DialogContent>
+  </Dialog>
 </template>

@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { BUSINESS_POWER_TOP_RANKING_LIMIT } from '@/domain/municipal-business';
 import { formatInteger } from '@/utils/format-integer';
 import { formatPercent } from '@/utils/format-percent';
+import { shareToBarWidthPercent } from '@/utils/share-to-bar-width-percent';
 
 const props = defineProps<{
   ranking: MunicipalBusinessRankingRow[];
@@ -37,23 +38,6 @@ const visibleRanking = computed(() =>
 const hasMore = computed(
   () => props.ranking.length > BUSINESS_POWER_TOP_RANKING_LIMIT,
 );
-
-const maxCount = computed(() => {
-  let max = 0;
-  for (const row of props.ranking) {
-    if (row.activeBusinessCount != null && row.activeBusinessCount > max) {
-      max = row.activeBusinessCount;
-    }
-  }
-  return max;
-});
-
-function barWidthPercent(count: number | null): number {
-  if (count == null || maxCount.value <= 0) {
-    return 0;
-  }
-  return Math.max(4, Math.round((count / maxCount.value) * 100));
-}
 </script>
 
 <template>
@@ -134,7 +118,7 @@ function barWidthPercent(count: number | null): number {
             <div class="h-1 overflow-hidden rounded-full bg-white/5">
               <div
                 class="h-full rounded-full bg-teal-400/70"
-                :style="{ width: `${barWidthPercent(row.activeBusinessCount)}%` }"
+                :style="{ width: `${shareToBarWidthPercent(row.shareOfRegion)}%` }"
               />
             </div>
           </button>
