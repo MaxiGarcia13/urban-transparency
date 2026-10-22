@@ -13,13 +13,16 @@ import { usePublicContractFilters } from '@/composables/use-public-contract-filt
 import { usePublicContracts } from '@/composables/use-public-contracts';
 import { getMetricById } from '@/config/metrics';
 import { getMapRegionById } from '@/config/regions';
-import {
-  buildMunicipalBusinessRanking,
-  resolveBusinessStatsPeriodYear,
-  sumActiveBusinessCount,
-} from '@/domain/aggregate-municipal-business-ranking';
 import { aggregateMunicipalSpending } from '@/domain/aggregate-municipal-spending';
 import { filterPublicContracts } from '@/domain/filter-public-contracts';
+import {
+  buildMunicipalBusinessRanking,
+  buildRegionalYearTrend,
+  resolveBusinessStatsPeriodYear,
+  sumActiveBusinessCount,
+  topMunicipalitiesShare,
+  yearOverYearChange,
+} from '@/domain/municipal-business';
 import { useMetricIdFromPath } from './use-metric-id-from-path';
 import { useMobilePanelCollapse } from './use-mobile-panel-collapse';
 
@@ -75,6 +78,18 @@ const businessPeriodYear = computed(() =>
     businessFilters.value.periodYear,
   ),
 );
+const businessTopShare = computed(() =>
+  topMunicipalitiesShare(businessRanking.value),
+);
+const businessYearOverYear = computed(() =>
+  yearOverYearChange(
+    buildRegionalYearTrend(
+      businessRows.value,
+      businessFilters.value.sectorCode,
+    ),
+    businessPeriodYear.value,
+  ),
+);
 </script>
 
 <template>
@@ -118,6 +133,8 @@ const businessPeriodYear = computed(() =>
         v-else-if="isBusinessPower"
         :total-active-businesses="businessTotal"
         :period-year="businessPeriodYear"
+        :top-share="businessTopShare"
+        :year-over-year="businessYearOverYear"
         :is-loading="isBusinessLoading"
       />
     </div>

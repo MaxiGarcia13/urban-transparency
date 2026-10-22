@@ -5,7 +5,6 @@ export interface MunicipalSpending {
   totalAwardedEur: number;
 }
 
-/** Sum awarded amounts across municipality-level contracts. */
 export function aggregateMunicipalSpending(
   contracts: readonly PublicContract[],
 ): MunicipalSpending {

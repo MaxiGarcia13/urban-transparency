@@ -1,24 +1,42 @@
 <script setup lang="ts">
-import type { MunicipalBusinessStats } from '@urban-transparency/shared';
-import type { MunicipalBusinessRankingRow } from '@/domain/aggregate-municipal-business-ranking';
-import { computed, ref } from 'vue';
+import type { MunicipalBusinessRankingRow } from '@/domain/municipal-business';
+import { computed, ref, watch } from 'vue';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import {
-  sectorBreakdownForMunicipality,
-} from '@/domain/aggregate-municipal-business-ranking';
-import { dirceSectorLabel } from '@/domain/business-power-filters';
-import { cn } from '@/lib/utils';
+import { BUSINESS_POWER_TOP_RANKING_LIMIT } from '@/domain/municipal-business';
 import { formatInteger } from '@/utils/format-integer';
+import { formatPercent } from '@/utils/format-percent';
 
 const props = defineProps<{
   ranking: MunicipalBusinessRankingRow[];
-  rows: MunicipalBusinessStats[];
   regionName: string;
   isLoading: boolean;
   statusMessage: string | null;
+  selectedMunicipalityCode: string | null;
 }>();
 
-const expandedMunicipalityCode = ref<string | null>(null);
+const emit = defineEmits<{
+  select: [municipalityCode: string];
+}>();
+
+const showAll = ref(false);
+
+watch(
+  () => props.ranking,
+  () => {
+    showAll.value = false;
+  },
+);
+
+const visibleRanking = computed(() =>
+  showAll.value
+    ? props.ranking
+    : props.ranking.slice(0, BUSINESS_POWER_TOP_RANKING_LIMIT),
+);
+
+const hasMore = computed(
+  () => props.ranking.length > BUSINESS_POWER_TOP_RANKING_LIMIT,
+);
 
 const maxCount = computed(() => {
   let max = 0;
@@ -36,25 +54,24 @@ function barWidthPercent(count: number | null): number {
   }
   return Math.max(4, Math.round((count / maxCount.value) * 100));
 }
-
-function toggleExpanded(municipalityCode: string): void {
-  expandedMunicipalityCode.value
-    = expandedMunicipalityCode.value === municipalityCode
-      ? null
-      : municipalityCode;
-}
-
-function breakdownFor(row: MunicipalBusinessRankingRow): MunicipalBusinessStats[] {
-  return sectorBreakdownForMunicipality(
-    props.rows,
-    row.municipalityCode,
-    row.periodYear,
-  );
-}
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <section class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <h2 class="text-sm font-medium tracking-wide text-teal-300/90 uppercase">
+        Ranking municipal
+      </h2>
+      <p class="text-sm text-muted-foreground">
+        <template v-if="!showAll && hasMore">
+          Top {{ BUSINESS_POWER_TOP_RANKING_LIMIT }} en {{ regionName }}
+        </template>
+        <template v-else>
+          Municipios en {{ regionName }}
+        </template>
+      </p>
+    </div>
+
     <div
       v-if="isLoading"
       class="flex flex-col gap-3"
@@ -63,7 +80,7 @@ function breakdownFor(row: MunicipalBusinessRankingRow): MunicipalBusinessStats[
       <Skeleton
         v-for="index in 8"
         :key="index"
-        class="h-14 w-full rounded-xl"
+        class="h-12 w-full rounded-lg"
       />
     </div>
 
@@ -75,77 +92,66 @@ function breakdownFor(row: MunicipalBusinessRankingRow): MunicipalBusinessStats[
     </p>
 
     <template v-else>
-      <p class="text-sm text-muted-foreground">
-        Ranking municipal en {{ regionName }}
-      </p>
-
-      <ul class="flex flex-col gap-2">
+      <ul class="flex flex-col">
         <li
-          v-for="(row, index) in ranking"
+          v-for="(row, index) in visibleRanking"
           :key="row.municipalityCode"
-          class="overflow-hidden rounded-xl border border-white/10 bg-card/40"
+          class="border-b border-white/5 last:border-b-0"
         >
           <button
             type="button"
-            class="flex w-full flex-col gap-2 px-4 py-3 text-left transition-colors hover:bg-white/5"
-            :aria-expanded="expandedMunicipalityCode === row.municipalityCode"
-            @click="toggleExpanded(row.municipalityCode)"
+            class="flex w-full flex-col gap-2 py-3 text-left transition-colors hover:bg-white/[0.03]"
+            :class="selectedMunicipalityCode === row.municipalityCode
+              ? 'bg-teal-400/5'
+              : ''"
+            :aria-pressed="selectedMunicipalityCode === row.municipalityCode"
+            @click="emit('select', row.municipalityCode)"
           >
             <div class="flex items-baseline justify-between gap-3">
-              <span class="min-w-0 truncate text-sm font-medium text-zinc-100 md:text-base">
+              <span class="min-w-0 truncate text-sm text-zinc-100 md:text-base">
                 <span class="mr-2 text-muted-foreground tabular-nums">
                   {{ index + 1 }}.
                 </span>
                 {{ row.municipalityName }}
               </span>
-              <span class="shrink-0 text-sm font-semibold text-teal-300 tabular-nums md:text-base">
-                <template v-if="row.activeBusinessCount != null">
-                  {{ formatInteger(row.activeBusinessCount) }}
-                </template>
-                <template v-else>
-                  —
-                </template>
+              <span class="shrink-0 text-right">
+                <span class="text-sm font-semibold text-teal-300 tabular-nums md:text-base">
+                  <template v-if="row.activeBusinessCount != null">
+                    {{ formatInteger(row.activeBusinessCount) }}
+                  </template>
+                  <template v-else>
+                    —
+                  </template>
+                </span>
+                <span
+                  v-if="row.shareOfRegion != null"
+                  class="ml-2 text-xs text-muted-foreground tabular-nums"
+                >
+                  {{ formatPercent(row.shareOfRegion) }}
+                </span>
               </span>
             </div>
-            <div class="h-1.5 overflow-hidden rounded-full bg-white/5">
+            <div class="h-1 overflow-hidden rounded-full bg-white/5">
               <div
                 class="h-full rounded-full bg-teal-400/70"
                 :style="{ width: `${barWidthPercent(row.activeBusinessCount)}%` }"
               />
             </div>
           </button>
-
-          <ul
-            v-if="expandedMunicipalityCode === row.municipalityCode"
-            class="border-t border-white/10 px-4 py-3"
-          >
-            <li
-              v-for="sectorRow in breakdownFor(row)"
-              :key="sectorRow.sectorCode"
-              class="flex items-center justify-between gap-3 py-1.5 text-sm"
-            >
-              <span class="min-w-0 truncate text-muted-foreground">
-                {{ dirceSectorLabel(sectorRow.sectorCode) }}
-              </span>
-              <span
-                :class="cn(
-                  'shrink-0 tabular-nums',
-                  sectorRow.activeBusinessCount == null
-                    ? 'text-muted-foreground'
-                    : 'text-zinc-100',
-                )"
-              >
-                <template v-if="sectorRow.activeBusinessCount != null">
-                  {{ formatInteger(sectorRow.activeBusinessCount) }}
-                </template>
-                <template v-else>
-                  —
-                </template>
-              </span>
-            </li>
-          </ul>
         </li>
       </ul>
+
+      <Button
+        v-if="hasMore"
+        type="button"
+        variant="ghost"
+        class="self-start rounded-xl text-muted-foreground hover:text-teal-200"
+        @click="showAll = !showAll"
+      >
+        {{ showAll
+          ? 'Ver solo el top'
+          : `Ver los ${ranking.length} municipios` }}
+      </Button>
     </template>
-  </div>
+  </section>
 </template>

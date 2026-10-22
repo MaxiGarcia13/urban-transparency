@@ -10,7 +10,7 @@ import { useBusinessPowerFilters } from '@/composables/use-business-power-filter
 import { useMapRegion } from '@/composables/use-map-region';
 import { useMunicipalBusinessStats } from '@/composables/use-municipal-business-stats';
 import { getMapRegionById } from '@/config/regions';
-import { availableBusinessStatsYears } from '@/domain/aggregate-municipal-business-ranking';
+import { availableBusinessStatsYears } from '@/domain/municipal-business';
 import { cn } from '@/lib/utils';
 import { $metricAsideCollapsed } from '@/stores/metric-aside-ui';
 
