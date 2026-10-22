@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { PublicContract } from '@urban-transparency/shared';
-import type { CSSProperties } from 'vue';
 import type { MetricView } from '@/config/metrics';
 import type { MapRegion } from '@/config/regions';
 import { defineAsyncComponent, useTemplateRef } from 'vue';
@@ -13,7 +12,6 @@ defineProps<{
   selectedRegion: MapRegion;
   isLoading: boolean;
   statusMessage: string | null;
-  listOffsetStyle?: CSSProperties;
 }>();
 
 const emit = defineEmits<{
@@ -56,8 +54,7 @@ defineExpose({
 
     <div
       v-show="view === 'list'"
-      class="flex h-full min-h-0 flex-col pb-16 lg:pt-16 lg:pb-0"
-      :style="listOffsetStyle"
+      class="flex h-full min-h-0 flex-col pt-[var(--metric-aside-offset,0px)] pb-16 lg:pt-16 lg:pb-0"
     >
       <div
         ref="listScroll"
