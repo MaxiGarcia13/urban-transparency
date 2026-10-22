@@ -2,7 +2,7 @@
 
 Spatial intelligence platform for **Spain**. Maps four core urban metrics in 3D so citizens, journalists, and researchers can see how money, business, income, and rent shape cities.
 
-**Current focus:** Cantabria (province `39`) as the first region. The product and data model are national; Cantabria is a pilot, not the permanent geographic identity of the platform.
+**Current focus:** Cantabria (province `39`) and País Vasco (provinces `01`, `20`, `48`) as the first configured regions. The product and data model are national; these are pilots, not the permanent geographic identity of the platform.
 
 ## Core metrics
 
@@ -15,7 +15,7 @@ Spatial intelligence platform for **Spain**. Maps four core urban metrics in 3D 
 
 ## Status
 
-- **Public Spending** — in progress (Cantabria pilot)
+- **Public Spending** — in progress (Cantabria + País Vasco pilots)
 - Business Power — not started
 - Salary & Household Income — not started
 - Rent Costs — not started
@@ -23,7 +23,7 @@ Spatial intelligence platform for **Spain**. Maps four core urban metrics in 3D 
 ## Geographic scope
 
 - **Target:** all Spanish municipalities (INE municipal codes), filterable by province
-- **Pilot:** Cantabria (`39`)
+- **Pilots:** Cantabria (`39`); País Vasco (`01` Álava, `20` Gipuzkoa, `48` Bizkaia)
 - Geography keys should stay generic: province → municipality → census tract (sección censal) → neighborhood → coordinates
 
 ## Data sources
@@ -32,7 +32,7 @@ Prefer **national** sources that scale to any municipality or province. Regional
 
 ### 1. Public Spending
 
-- [PLACSP](https://contrataciondelestado.es) — national public procurement; [Atom syndication (CODICE)](https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom) (paginate via `rel="next"`). Pilot ingest filters by province (`39` Cantabria). Fields: tender title, awarded amount (€), awardee, execution location, awarding date.
+- [PLACSP](https://contrataciondelestado.es) — national public procurement; [Atom syndication (CODICE)](https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom) (paginate via `rel="next"`). Pilot ingest filters by province (`39` Cantabria; `01`/`20`/`48` País Vasco via `pnpm scrape:placsp:cantabria` / `pnpm scrape:placsp:pais-vasco`). Fields: tender title, awarded amount (€), awardee, execution location, awarding date.
 
 ### 2. Business Power
 

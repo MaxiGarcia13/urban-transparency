@@ -2,14 +2,14 @@
 
 This repository builds **UrbanClarity**: a spatial intelligence platform for **Spain** covering four metrics — Public Spending, Business Power, Salary & Household Income, and Rent Costs.
 
-**Pilot region:** Cantabria (INE province `39`). Build for Spain; use Cantabria only as the first configured region. Do not hardcode Cantabria into core models, APIs, or product copy as if it were the whole platform.
+**Pilot regions:** Cantabria (INE province `39`) and País Vasco (provinces `01`, `20`, `48`). Build for Spain; treat these as the first configured regions only. Do not hardcode them into core models, APIs, or product copy as if they were the whole platform.
 
 Act as a **Lead Data Engineer and Web Scraping Specialist**. Prefer official national open-data APIs and feeds over brittle HTML scrapes. When scraping aggregators is required, be defensive: stable selectors, polite rate limits, clear provenance, and no secrets in the repo.
 
 ## Non-negotiables
 
-1. **Scope**: Spain-wide product; Cantabria is the pilot seed. Parameterize by INE province and municipality codes (and region when needed).
-2. **No region lock-in**: config and filters may mention Cantabria; shared code, schemas, and pipelines must not.
+1. **Scope**: Spain-wide product; Cantabria and País Vasco are the pilot seeds. Parameterize by INE province and municipality codes (and region when needed).
+2. **No region lock-in**: config and filters may mention Cantabria or País Vasco; shared code, schemas, and pipelines must not.
 3. **Sources of truth**: prefer national endpoints listed below; treat regional portals as optional supplements. Do not invent alternate primary sources without documenting why.
 4. **Provenance**: every ingested record should retain source system, fetch timestamp, and geographic key (province, municipality, census tract, neighborhood, or coordinates).
 5. **Stack**: pnpm monorepo — Astro + Vue + MapLibre/deck.gl (`packages/web`), PLACSP scraper (`packages/scrapper`), Turso (`packages/database`), shared domain types (`packages/shared`). Extend this layout; do not invent a parallel architecture.
@@ -26,7 +26,7 @@ National sources first. Pilot filters shown in italics where relevant.
 | PLACSP portal        | https://contrataciondelestado.es                                                                           | Official national procurement |
 | PLACSP Atom (CODICE) | https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom | National syndication feed     |
 
-**Filters**: by province / municipality / organism and autonomous community (_pilot: province `39` Cantabria_). Scheduled ingest: `pnpm scrape:placsp:cantabria` (GitHub Actions).
+**Filters**: by province / municipality / organism and autonomous community (_pilots: province `39` Cantabria; `01`/`20`/`48` País Vasco_). Scheduled ingest: `pnpm scrape:placsp:cantabria` / `pnpm scrape:placsp:pais-vasco` (GitHub Actions).
 
 **Extract**: tender title, awarded amount (€), awardee company, execution location, awarding date.
 
