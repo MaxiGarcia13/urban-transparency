@@ -68,3 +68,7 @@ Prefer **national** sources that scale to any municipality or province. Regional
 ## Product goal
 
 Ingest national (and optional regional) sources into a unified spatial model keyed by province and municipality, then expose them as a 3D map and analytics layer. New regions should mostly mean new geo filters and configs — not new product assumptions.
+
+## Contributing
+
+Setup, package layout, commands, and coding rules: [`CONTRIBUTING.md`](./CONTRIBUTING.md).
