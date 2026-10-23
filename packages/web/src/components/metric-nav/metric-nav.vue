@@ -3,9 +3,9 @@ import type { Component } from 'vue';
 import type { MetricId } from '@/config/metrics';
 import { useStore } from '@nanostores/vue';
 import { PhBuildings, PhCaretDown, PhCaretUp, PhCoins } from '@phosphor-icons/vue';
-import { computed } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { Button } from '@/components/ui/button';
-import { METRICS } from '@/config/metrics';
+import { metricIdFromPath, METRICS } from '@/config/metrics';
 import { PRODUCT_NAME } from '@/config/product';
 import { cn } from '@/lib/utils';
 import { $metricAsideCollapsed } from '@/stores/metric-aside-ui';
@@ -25,13 +25,28 @@ const METRIC_ICONS: Record<MetricId, Component> = {
 
 const isPanelCollapsed = useStore($metricAsideCollapsed);
 
+const activeMetricId = ref(props.activeMetricId);
+
+function syncActiveMetricFromPath(): void {
+  activeMetricId.value = metricIdFromPath(window.location.pathname);
+}
+
+onMounted(() => {
+  syncActiveMetricFromPath();
+  document.addEventListener('astro:page-load', syncActiveMetricFromPath);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('astro:page-load', syncActiveMetricFromPath);
+});
+
 const navItems = computed(() =>
   METRICS.map((metric) => ({
     id: metric.id,
     path: metric.path,
     label: metric.navLabel,
     icon: METRIC_ICONS[metric.id],
-    isActive: metric.id === props.activeMetricId,
+    isActive: metric.id === activeMetricId.value,
   })),
 );
 

@@ -26,7 +26,11 @@ hydrateMetricStoresFromUrl(Astro.url.searchParams);
         data-metric-aside-panel
         class="pointer-events-auto flex max-h-[min(70dvh,100%)] w-full flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-950/90 shadow-lg backdrop-blur-md lg:h-full lg:max-h-none lg:rounded-none lg:border-0 lg:bg-zinc-950 lg:shadow-none lg:backdrop-blur-none"
       >
-        <MetricNav client:load activeMetricId={metricId} />
+        <MetricNav
+          client:load
+          transition:persist="metric-nav"
+          activeMetricId={metricId}
+        />
         <slot name="aside-panel" />
       </div>
     </div>
