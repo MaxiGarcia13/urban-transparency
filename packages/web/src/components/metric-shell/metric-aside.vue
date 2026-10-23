@@ -8,14 +8,13 @@ import { useMobilePanelCollapse } from './use-mobile-panel-collapse';
 
 const props = defineProps<{
   metricId: MetricId;
-  regionId: string;
 }>();
 
 const asideRoot = useTemplateRef<HTMLElement>('asideRoot');
 const { isPanelCollapsed } = useMobilePanelCollapse(asideRoot);
 
 const metric = computed(() => getMetricById(props.metricId));
-const { regionId } = useMapRegion(props.regionId);
+const { regionId } = useMapRegion();
 </script>
 
 <template>

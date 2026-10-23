@@ -1,24 +1,15 @@
 ---
 import { BusinessPowerAsidePanel, BusinessPowerPreview } from '@/components/metric-shell';
 import { PRODUCT_NAME } from '@/config/product';
-import { CANTABRIA_REGION_ID, MAP_REGIONS } from '@/config/regions';
-import { parseBusinessPowerFiltersFromSearchParams } from '@/domain/business-power-filters-query';
-import { parseMapRegionIdFromSearchParams } from '@/domain/map-region-query';
 import MetricShell from '@/layouts/metric-shell.astro';
 
 const title = `${PRODUCT_NAME} - Poder empresarial`;
 const description = 'Actividad empresarial por municipio en España';
-const regionId = parseMapRegionIdFromSearchParams(
-  Astro.url.searchParams,
-  MAP_REGIONS.map((region) => region.id),
-  CANTABRIA_REGION_ID,
-);
-const filters = parseBusinessPowerFiltersFromSearchParams(Astro.url.searchParams);
 ---
 
 <MetricShell title={title} description={description}>
   <div slot="aside-panel" class="contents">
-    <BusinessPowerAsidePanel client:load regionId={regionId} filters={filters} />
+    <BusinessPowerAsidePanel client:load />
   </div>
-  <BusinessPowerPreview client:load regionId={regionId} filters={filters} class="h-full" />
+  <BusinessPowerPreview client:load class="h-full" />
 </MetricShell>

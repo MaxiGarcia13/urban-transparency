@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PublicContractFilters } from '@/domain/filter-public-contracts';
 import { useStore } from '@nanostores/vue';
 import { PhCaretDown } from '@phosphor-icons/vue';
 import { onKeyStroke } from '@vueuse/core';
@@ -20,20 +19,15 @@ import { cn } from '@/lib/utils';
 import { $metricAsideCollapsed } from '@/stores/metric-aside-ui';
 import MetricAside from './metric-aside.vue';
 
-const props = defineProps<{
-  regionId: string;
-  filters: PublicContractFilters;
-}>();
-
 const isAsideCollapsed = useStore($metricAsideCollapsed);
-const { regionId } = useMapRegion(props.regionId);
+const { regionId } = useMapRegion();
 const {
   filters,
   searchQuery,
   selectedStatuses,
   yearFrom,
   yearTo,
-} = usePublicContractFilters(props.filters);
+} = usePublicContractFilters();
 
 const selectedRegion = computed(() => getMapRegionById(regionId.value));
 const regionName = computed(() => selectedRegion.value.name);
@@ -64,10 +58,7 @@ onKeyStroke('Escape', () => {
 </script>
 
 <template>
-  <MetricAside
-    metric-id="public-spending"
-    :region-id="regionId"
-  >
+  <MetricAside metric-id="public-spending">
     <template #description>
       Adjudicaciones municipales de
       {{ regionName }}

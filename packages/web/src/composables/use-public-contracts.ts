@@ -13,22 +13,16 @@ export function usePublicContracts(
       () => ['public-contracts', [...toValue(provinceCodes)]] as const,
     ),
     queryFn: () => fetchPublicContractsByProvinces(toValue(provinceCodes)),
-    staleTime: 60 * 60_000, // treat as fresh for 1 h
-    gcTime: 2 * 60 * 60_000, // keep unused cache for 2 h
+    staleTime: 60 * 60_000,
+    gcTime: 2 * 60 * 60_000,
   });
 
-  // Keep SSR and first client paint identical (empty / pending) so Vue Query
-  // cache does not diverge during hydration or ClientRouter swaps.
-  const contracts = computed(() =>
-    hydrated.value ? (query.data.value ?? []) : [],
-  );
-  const isLoading = computed(
-    () => !hydrated.value || query.isPending.value,
-  );
-
+  // Match SSR shell (empty/loading) on first paint; reveal shared cache after mount.
   return {
-    contracts,
-    isLoading,
+    contracts: computed(() =>
+      hydrated.value ? (query.data.value ?? []) : [],
+    ),
+    isLoading: computed(() => !hydrated.value || query.isPending.value),
     isError: computed(() => hydrated.value && query.isError.value),
   };
 }

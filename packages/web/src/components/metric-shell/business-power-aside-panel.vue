@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { BusinessPowerFilters } from '@/domain/business-power-filters';
 import { useStore } from '@nanostores/vue';
 import { PhCaretDown } from '@phosphor-icons/vue';
 import { onKeyStroke } from '@vueuse/core';
@@ -24,18 +23,13 @@ import { cn } from '@/lib/utils';
 import { $metricAsideCollapsed } from '@/stores/metric-aside-ui';
 import MetricAside from './metric-aside.vue';
 
-const props = defineProps<{
-  regionId: string;
-  filters: BusinessPowerFilters;
-}>();
-
 const isAsideCollapsed = useStore($metricAsideCollapsed);
-const { regionId } = useMapRegion(props.regionId);
+const { regionId } = useMapRegion();
 const {
   filters: businessFilters,
   periodYear,
   sectorCode,
-} = useBusinessPowerFilters(props.filters);
+} = useBusinessPowerFilters();
 
 const selectedRegion = computed(() => getMapRegionById(regionId.value));
 const regionName = computed(() => selectedRegion.value.name);
@@ -83,10 +77,7 @@ onKeyStroke('Escape', () => {
 </script>
 
 <template>
-  <MetricAside
-    metric-id="business-power"
-    :region-id="regionId"
-  >
+  <MetricAside metric-id="business-power">
     <template #description>
       Empresas activas por municipio en
       {{ regionName }}

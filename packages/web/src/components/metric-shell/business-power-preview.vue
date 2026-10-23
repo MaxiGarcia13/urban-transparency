@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { BusinessPowerFilters } from '@/domain/business-power-filters';
 import { computed, ref, watch } from 'vue';
 import { useBusinessPowerFilters } from '@/composables/use-business-power-filters';
 import { useMapRegion } from '@/composables/use-map-region';
@@ -17,13 +16,8 @@ import BusinessPowerRankingList from './business-power-ranking-list.vue';
 import BusinessPowerSectorChart from './business-power-sector-chart.vue';
 import BusinessPowerTrendChart from './business-power-trend-chart.vue';
 
-const props = defineProps<{
-  regionId: string;
-  filters: BusinessPowerFilters;
-}>();
-
-const { filters } = useBusinessPowerFilters(props.filters);
-const { regionId } = useMapRegion(props.regionId);
+const { filters } = useBusinessPowerFilters();
+const { regionId } = useMapRegion();
 const selectedRegion = computed(() => getMapRegionById(regionId.value));
 const selectedMunicipalityCode = ref<string | null>(null);
 

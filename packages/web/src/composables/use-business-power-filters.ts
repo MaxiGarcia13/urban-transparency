@@ -4,21 +4,13 @@ import { useStore } from '@nanostores/vue';
 import { computed } from 'vue';
 import { $businessPowerFilters } from '@/stores/business-power-filters';
 import { ensureMetricUrlStateSync } from '@/stores/sync-metric-url-state';
-import { useClientHydrated } from './use-client-hydrated';
 
-export function useBusinessPowerFilters(
-  ssrFilters?: BusinessPowerFilters,
-) {
+export function useBusinessPowerFilters() {
   ensureMetricUrlStateSync();
 
-  const hydrated = useClientHydrated();
   const store = useStore($businessPowerFilters);
 
-  const filters = computed((): BusinessPowerFilters =>
-    hydrated.value
-      ? store.value
-      : (ssrFilters ?? store.value),
-  );
+  const filters = computed((): BusinessPowerFilters => store.value);
 
   const periodYear = computed({
     get: () => filters.value.periodYear,

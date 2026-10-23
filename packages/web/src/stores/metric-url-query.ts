@@ -39,25 +39,32 @@ export const METRIC_URL_QUERY_KEYS = [
 ] as const;
 
 export function hydrateMetricStoresFromUrl(
-  searchParams: Pick<URLSearchParams, 'get'> = new URL(
-    window.location.href,
-  ).searchParams,
+  searchParams?: Pick<URLSearchParams, 'get'>,
 ): void {
+  const params
+    = searchParams
+      ?? (typeof window !== 'undefined'
+        ? new URL(window.location.href).searchParams
+        : null);
+  if (params == null) {
+    return;
+  }
+
   $regionId.set(
     parseMapRegionIdFromSearchParams(
-      searchParams,
+      params,
       KNOWN_REGION_IDS,
       CANTABRIA_REGION_ID,
     ),
   );
   $metricView.set(
-    parseMetricViewFromSearchParams(searchParams, DEFAULT_VIEW, true),
+    parseMetricViewFromSearchParams(params, DEFAULT_VIEW, true),
   );
   $publicContractFilters.set(
-    parsePublicContractFiltersFromSearchParams(searchParams),
+    parsePublicContractFiltersFromSearchParams(params),
   );
   $businessPowerFilters.set(
-    parseBusinessPowerFiltersFromSearchParams(searchParams),
+    parseBusinessPowerFiltersFromSearchParams(params),
   );
 }
 

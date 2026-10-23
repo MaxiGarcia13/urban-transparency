@@ -18,16 +18,12 @@ export function useMunicipalBusinessStats(
     gcTime: 2 * 60 * 60_000,
   });
 
-  const rows = computed(() =>
-    hydrated.value ? (query.data.value ?? []) : [],
-  );
-  const isLoading = computed(
-    () => !hydrated.value || query.isPending.value,
-  );
-
+  // Match SSR shell (empty/loading) on first paint; reveal shared cache after mount.
   return {
-    rows,
-    isLoading,
+    rows: computed(() =>
+      hydrated.value ? (query.data.value ?? []) : [],
+    ),
+    isLoading: computed(() => !hydrated.value || query.isPending.value),
     isError: computed(() => hydrated.value && query.isError.value),
   };
 }

@@ -4,21 +4,13 @@ import { useStore } from '@nanostores/vue';
 import { computed } from 'vue';
 import { $publicContractFilters } from '@/stores/public-contract-filters';
 import { ensureMetricUrlStateSync } from '@/stores/sync-metric-url-state';
-import { useClientHydrated } from './use-client-hydrated';
 
-export function usePublicContractFilters(
-  ssrFilters?: PublicContractFilters,
-) {
+export function usePublicContractFilters() {
   ensureMetricUrlStateSync();
 
-  const hydrated = useClientHydrated();
   const store = useStore($publicContractFilters);
 
-  const filters = computed((): PublicContractFilters =>
-    hydrated.value
-      ? store.value
-      : (ssrFilters ?? store.value),
-  );
+  const filters = computed((): PublicContractFilters => store.value);
 
   const searchQuery = computed({
     get: () => filters.value.searchQuery,

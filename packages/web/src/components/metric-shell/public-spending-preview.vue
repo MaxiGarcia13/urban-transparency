@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import type { PublicContract } from '@urban-transparency/shared';
-import type { MetricView } from '@/config/metrics';
-import type { PublicContractFilters } from '@/domain/filter-public-contracts';
 import { computed, ref, useTemplateRef, watch } from 'vue';
 import LandingPageMain from '@/components/landing-page/landing-page-main.vue';
 import { useMapRegion } from '@/composables/use-map-region';
@@ -12,16 +10,10 @@ import { getMetricById } from '@/config/metrics';
 import { getMapRegionById } from '@/config/regions';
 import { filterPublicContracts } from '@/domain/filter-public-contracts';
 
-const props = defineProps<{
-  regionId: string;
-  view: MetricView;
-  filters: PublicContractFilters;
-}>();
-
 const metric = getMetricById('public-spending');
-const { filters } = usePublicContractFilters(props.filters);
-const { regionId } = useMapRegion(props.regionId);
-const { view } = useMetricView(metric.supportsMap, props.view);
+const { filters } = usePublicContractFilters();
+const { regionId } = useMapRegion();
+const { view } = useMetricView(metric.supportsMap);
 
 const pendingFocusContractId = ref<string | null>(null);
 const selectedRegion = computed(() => getMapRegionById(regionId.value));
