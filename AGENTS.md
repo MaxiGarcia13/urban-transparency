@@ -2,7 +2,7 @@
 
 This repository builds **UrbanClarity**: a spatial intelligence platform for **Spain** covering four metrics — Public Spending, Business Power, Salary & Household Income, and Rent Costs.
 
-**Configured regions (see `README.md` geographic coverage):** Cantabria (`39`) and País Vasco (`01`, `20`, `48`) are ready for Public Spending; Asturias (`33`) is in progress. Build for Spain; do not hardcode these into core models, APIs, or product copy as if they were the whole platform.
+**Configured seeds:** Cantabria, País Vasco, and Asturias (coverage and INE province codes: `README.md` geographic coverage). Build for Spain; do not hardcode these into core models, APIs, or product copy as if they were the whole platform.
 
 Act as a **Lead Data Engineer and Web Scraping Specialist**. Prefer official national open-data APIs and feeds over brittle HTML scrapes. When scraping aggregators is required, be defensive: stable selectors, polite rate limits, clear provenance, and no secrets in the repo.
 
@@ -17,7 +17,7 @@ Act as a **Lead Data Engineer and Web Scraping Specialist**. Prefer official nat
 
 ## Metric playbooks
 
-National sources first. Configured-region filters shown in italics where relevant.
+National sources first. PLACSP/DIRCE ingest is scheduled via GitHub Actions; prefer root `pnpm scrape:*` aliases when running locally.
 
 ### 1. Public Spending
 
@@ -26,20 +26,20 @@ National sources first. Configured-region filters shown in italics where relevan
 | PLACSP portal        | https://contrataciondelestado.es                                                                           | Official national procurement |
 | PLACSP Atom (CODICE) | https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom | National syndication feed     |
 
-**Filters**: by province / municipality / organism and autonomous community (_configured: province `39` Cantabria; `01`/`20`/`48` País Vasco; `33` Asturias_). Scheduled ingest: `pnpm scrape:placsp:cantabria` / `pnpm scrape:placsp:pais-vasco` / `pnpm scrape:placsp:asturias` (GitHub Actions).
+**Filters**: by province / municipality / organism and autonomous community (configured seeds: see `README.md`).
 
 **Extract**: tender title, awarded amount (€), awardee company, execution location, awarding date.
 
 ### 2. Business Power
 
-| Source                 | URL                                                                                                                   | Role                                                        |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| INE DIRCE              | https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177031&menu=resultados&idp=1254735576550 | National enterprise directory stats                         |
-| INE DIRCE table 4721   | https://www.ine.es/jaxiT3/files/t/csv_bdsc/4721.csv                                                                   | CSV by municipality + CNAE group (_pilot: `--province 39`_) |
-| Regional stats (pilot) | https://www.icane.es/data/directorio-empresas-asalariados-estrato                                                     | Optional regional supplement                                |
-| Overpass               | https://overpass-api.de/api/interpreter                                                                               | OSM commercial nodes (POST); centroids are city config      |
+| Source                 | URL                                                                                                                   | Role                                                       |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| INE DIRCE              | https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177031&menu=resultados&idp=1254735576550 | National enterprise directory stats                        |
+| INE DIRCE table 4721   | https://www.ine.es/jaxiT3/files/t/csv_bdsc/4721.csv                                                                   | CSV by municipality + CNAE group (filter via `--province`) |
+| Regional stats (pilot) | https://www.icane.es/data/directorio-empresas-asalariados-estrato                                                     | Optional regional supplement                               |
+| Overpass               | https://overpass-api.de/api/interpreter                                                                               | OSM commercial nodes (POST); centroids are city config     |
 
-**Extract (DIRCE)**: active businesses per municipality by economic sector group (table 4721). Ingest: `pnpm scrape:dirce:cantabria` / `pnpm scrape:dirce:pais-vasco` / `pnpm scrape:dirce:asturias`.
+**Extract (DIRCE)**: active businesses per municipality by economic sector group (table 4721).
 
 **OSM tags**: `office`, `shop`, `amenity=bank`, `industrial`, `building=commercial`.
 
