@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import MetricNav from '@/components/metric-nav/metric-nav.vue';
+import MetricAsideFooter from '@/components/metric-shell/metric-aside-footer.vue';
 import { metricIdFromPath } from '@/config/metrics';
 import BaseLayout from '@/layouts/base-layout.astro';
 import { hydrateMetricStoresFromUrl } from '@/stores/metric-url-query';
@@ -28,6 +29,7 @@ hydrateMetricStoresFromUrl(Astro.url.searchParams);
       >
         <MetricNav client:load transition:persist="metric-nav" activeMetricId={metricId} />
         <slot name="aside-panel" />
+        <MetricAsideFooter client:load />
       </div>
     </div>
 
