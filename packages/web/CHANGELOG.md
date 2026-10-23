@@ -1,3 +1,13 @@
+## 0.0.30 (2026-10-23)
+
+### 🚀 Features
+
+- Add MetricAsideFooter component and GitHub links ([78b146e](https://github.com/MaxiGarcia13/urban-transparency/commit/78b146e))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.29 (2026-10-23)
 
 ### 🚀 Features
