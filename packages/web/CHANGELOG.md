@@ -1,3 +1,24 @@
+## 0.3.0 (2026-10-23)
+
+### 🚀 Features
+
+- Implement ADRH province income data parsing and integration ([c966d5a](https://github.com/MaxiGarcia13/urban-transparency/commit/c966d5a))
+- Add salary income metrics and related components ([0716605](https://github.com/MaxiGarcia13/urban-transparency/commit/0716605))
+- Implement municipal income stats API and composable ([aa3f599](https://github.com/MaxiGarcia13/urban-transparency/commit/aa3f599))
+
+### 🔄 Refactors
+
+- Update salary income description in MetricAside component ([b89c546](https://github.com/MaxiGarcia13/urban-transparency/commit/b89c546))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/database to 0.3.0
+- Updated @urban-transparency/shared to 0.3.0
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.2.0 (2026-10-23)
 
 ### 🧱 Updated Dependencies

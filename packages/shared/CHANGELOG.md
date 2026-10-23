@@ -1,3 +1,17 @@
+## 0.3.0 (2026-10-23)
+
+### 🚀 Features
+
+- Enhance ADRH data scraping and municipal income stats integration ([ebedfd5](https://github.com/MaxiGarcia13/urban-transparency/commit/ebedfd5))
+
+### 📚 Documentation
+
+- Update AGENTS.md and README.md for income data sources and granularity ([7957eaf](https://github.com/MaxiGarcia13/urban-transparency/commit/7957eaf))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.2.0 (2026-10-23)
 
 This was a version bump only for @urban-transparency/shared to align it with other projects, there were no code changes.

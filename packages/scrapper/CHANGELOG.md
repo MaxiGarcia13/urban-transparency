@@ -1,3 +1,19 @@
+## 0.3.0 (2026-10-23)
+
+### 🚀 Features
+
+- Implement ADRH province income data parsing and integration ([c966d5a](https://github.com/MaxiGarcia13/urban-transparency/commit/c966d5a))
+- Enhance ADRH data scraping and municipal income stats integration ([ebedfd5](https://github.com/MaxiGarcia13/urban-transparency/commit/ebedfd5))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/database to 0.3.0
+- Updated @urban-transparency/shared to 0.3.0
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.2.0 (2026-10-23)
 
 ### 🧱 Updated Dependencies
