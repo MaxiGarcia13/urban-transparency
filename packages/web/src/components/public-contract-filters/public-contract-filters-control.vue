@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PublicContractStatus } from '@urban-transparency/shared';
-import { PhFunnel } from '@phosphor-icons/vue';
+import { Funnel } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
 import { Button } from '@/components/ui/button';
 import {
@@ -89,7 +89,7 @@ watch(isOpen, (open) => {
       :aria-label="filterButtonLabel"
       @click="isOpen = true"
     >
-      <PhFunnel class="size-4" />
+      <Funnel class="size-4" />
       <span>{{ filterButtonLabel }}</span>
     </Button>
 

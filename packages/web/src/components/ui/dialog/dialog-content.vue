@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DialogContentEmits, DialogContentProps } from 'reka-ui';
 import type { HTMLAttributes } from 'vue';
-import { PhX } from '@phosphor-icons/vue';
+import { X } from 'lucide-vue-next';
 import { reactiveOmit } from '@vueuse/core';
 import {
   DialogClose,
@@ -56,7 +56,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
           class="absolute top-2 right-2"
           size="icon-sm"
         >
-          <PhX />
+          <X />
           <span class="sr-only">Cerrar</span>
         </Button>
       </DialogClose>

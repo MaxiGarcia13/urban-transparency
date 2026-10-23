@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStore } from '@nanostores/vue';
-import { PhGithubLogo, PhLightbulb } from '@phosphor-icons/vue';
+import { Github, Lightbulb } from 'lucide-vue-next';
 import { GITHUB_ISSUES_URL, GITHUB_REPO_URL } from '@/config/product';
 import { $metricAsideCollapsed } from '@/stores/metric-aside-ui';
 
@@ -22,7 +22,7 @@ const isAsideCollapsed = useStore($metricAsideCollapsed);
         rel="noopener noreferrer"
         class="inline-flex items-center gap-2 rounded-xl transition-colors hover:text-foreground"
       >
-        <PhGithubLogo
+        <Github
           class="size-4 shrink-0"
           aria-hidden="true"
         />
@@ -34,7 +34,7 @@ const isAsideCollapsed = useStore($metricAsideCollapsed);
         rel="noopener noreferrer"
         class="inline-flex items-center gap-2 rounded-xl transition-colors hover:text-foreground"
       >
-        <PhLightbulb
+        <Lightbulb
           class="size-4 shrink-0"
           aria-hidden="true"
         />

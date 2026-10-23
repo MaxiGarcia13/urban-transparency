@@ -2,7 +2,7 @@
 import type { SelectItemProps } from 'reka-ui';
 
 import type { HTMLAttributes } from 'vue';
-import { PhCheck } from '@phosphor-icons/vue';
+import { Check } from 'lucide-vue-next';
 import { reactiveOmit } from '@vueuse/core';
 import {
   SelectItem,
@@ -33,7 +33,7 @@ const forwardedProps = useForwardProps(delegatedProps);
     <span class="pointer-events-none absolute right-2 flex size-4 items-center justify-center">
       <SelectItemIndicator>
         <slot name="indicator-icon">
-          <PhCheck class="pointer-events-none" />
+          <Check class="pointer-events-none" />
         </slot>
       </SelectItemIndicator>
     </span>

@@ -2,7 +2,7 @@
 import type { Component } from 'vue';
 import type { MetricId } from '@/config/metrics';
 import { useStore } from '@nanostores/vue';
-import { PhBuildings, PhCaretDown, PhCaretUp, PhCoins } from '@phosphor-icons/vue';
+import { Building2, ChevronDown, ChevronUp, Coins } from 'lucide-vue-next';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import { metricIdFromPath, METRICS } from '@/config/metrics';
@@ -19,8 +19,8 @@ const props = defineProps<{
 ensureMetricUrlStateSync();
 
 const METRIC_ICONS: Record<MetricId, Component> = {
-  'public-spending': PhCoins,
-  'business-power': PhBuildings,
+  'public-spending': Coins,
+  'business-power': Building2,
 };
 
 const isPanelCollapsed = useStore($metricAsideCollapsed);
@@ -125,11 +125,11 @@ function stampMetricQuery(event: MouseEvent, path: string): void {
         :aria-label="isPanelCollapsed ? 'Expandir panel' : 'Contraer panel'"
         @click="togglePanelCollapsed"
       >
-        <PhCaretDown
+        <ChevronDown
           v-if="isPanelCollapsed"
           class="size-5"
         />
-        <PhCaretUp
+        <ChevronUp
           v-else
           class="size-5"
         />

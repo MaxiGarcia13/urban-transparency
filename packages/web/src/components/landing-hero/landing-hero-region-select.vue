@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { MapRegion } from '@/config/regions';
-import { PhCaretDown, PhCheck } from '@phosphor-icons/vue';
+import { Check, ChevronDown } from 'lucide-vue-next';
 import {
   SelectContent,
   SelectIcon,
@@ -42,7 +42,7 @@ const regionId = defineModel<string>('regionId', { required: true });
     >
       <SelectValue placeholder="Región" />
       <SelectIcon as-child>
-        <PhCaretDown class="size-[0.55em] shrink-0 translate-y-[0.06em] text-current" />
+        <ChevronDown class="size-[0.55em] shrink-0 translate-y-[0.06em] text-current" />
       </SelectIcon>
     </SelectTrigger>
 
@@ -74,7 +74,7 @@ const regionId = defineModel<string>('regionId', { required: true });
             <SelectItemIndicator
               class="absolute right-2 flex size-4 items-center justify-center"
             >
-              <PhCheck class="size-4" />
+              <Check class="size-4" />
             </SelectItemIndicator>
           </SelectItem>
         </SelectViewport>

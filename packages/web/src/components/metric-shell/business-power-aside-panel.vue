@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStore } from '@nanostores/vue';
-import { PhCaretDown } from '@phosphor-icons/vue';
+import { ChevronDown } from 'lucide-vue-next';
 import { onKeyStroke } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { BusinessPowerFiltersForm } from '@/components/business-power-filters';
@@ -106,7 +106,7 @@ onKeyStroke('Escape', () => {
         @click="togglePanelExpanded"
       >
         <span>{{ isPanelExpanded ? 'Ocultar filtros' : 'Filtros' }}</span>
-        <PhCaretDown
+        <ChevronDown
           :class="cn(
             'size-4 text-muted-foreground transition-transform duration-200',
             isPanelExpanded ? 'rotate-180' : '',
