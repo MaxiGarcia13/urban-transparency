@@ -1,3 +1,22 @@
+## 0.1.0 (2026-10-23)
+
+### 🚀 Features
+
+- Migrate from Phosphor to Lucide icon library ([68aa4f9](https://github.com/MaxiGarcia13/urban-transparency/commit/68aa4f9))
+
+### 🐞 Fixes
+
+- Restore icon imports in various components ([465de52](https://github.com/MaxiGarcia13/urban-transparency/commit/465de52))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/database to 0.1.0
+- Updated @urban-transparency/shared to 0.1.0
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.30 (2026-10-23)
 
 ### 🚀 Features
