@@ -2,9 +2,8 @@
 import type { PublicContract } from '@urban-transparency/shared';
 import type { MetricView } from '@/config/metrics';
 import type { MapRegion } from '@/config/regions';
-import { useTemplateRef } from 'vue';
+import { defineAsyncComponent, useTemplateRef } from 'vue';
 import LandingHeroContractList from '@/components/landing-hero/landing-hero-contract-list.vue';
-import SpendingMap from '@/components/spending-map/spending-map.vue';
 import LandingPageViewToggle from './landing-page-view-toggle.vue';
 
 defineProps<{
@@ -20,6 +19,10 @@ const emit = defineEmits<{
 }>();
 
 const view = defineModel<MetricView>('view', { required: true });
+
+const SpendingMap = defineAsyncComponent(
+  () => import('@/components/spending-map/spending-map.vue'),
+);
 
 const spendingMap = useTemplateRef<{
   focusContract: (contractId: string) => void;

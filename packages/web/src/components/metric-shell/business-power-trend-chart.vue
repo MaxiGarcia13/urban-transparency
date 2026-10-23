@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { BusinessYearTrendPoint } from '@/domain/municipal-business';
 import { useElementSize } from '@vueuse/core';
-import { computed, useTemplateRef } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatInteger } from '@/utils/format-integer';
+
+type MappedTrendPoint = BusinessYearTrendPoint & { x: number; y: number };
 
 const props = withDefaults(
   defineProps<{
@@ -19,9 +21,13 @@ const props = withDefaults(
 
 const chartRoot = useTemplateRef<HTMLElement>('chartRoot');
 const { width: containerWidth } = useElementSize(chartRoot);
+const hoveredPoint = ref<MappedTrendPoint | null>(null);
 
 const VIEW_HEIGHT = 144;
 const PADDING = { top: 14, right: 4, bottom: 8, left: 4 };
+const DOMAIN_PAD_RATIO = 0.1;
+const MIN_DOMAIN_PAD = 1;
+const HIT_RADIUS = 12;
 
 const chartGeometry = computed(() => {
   const points = props.trend;
@@ -31,18 +37,23 @@ const chartGeometry = computed(() => {
   }
 
   const counts = points.map((point) => point.activeBusinessCount);
-  const minCount = Math.min(...counts);
-  const maxCount = Math.max(...counts);
-  const range = Math.max(maxCount - minCount, 1);
+  const rawMin = Math.min(...counts);
+  const rawMax = Math.max(...counts);
+  const span = Math.max(rawMax - rawMin, MIN_DOMAIN_PAD);
+  const pad = Math.max(span * DOMAIN_PAD_RATIO, MIN_DOMAIN_PAD);
+  const domainMin = Math.max(0, rawMin - pad);
+  const domainMax = rawMax + pad;
+  const domainSpan = Math.max(domainMax - domainMin, MIN_DOMAIN_PAD);
+
   const innerWidth = Math.max(width - PADDING.left - PADDING.right, 1);
   const innerHeight = VIEW_HEIGHT - PADDING.top - PADDING.bottom;
   const stepX = points.length === 1 ? 0 : innerWidth / (points.length - 1);
 
-  const mapped = points.map((point, index) => {
+  const mapped: MappedTrendPoint[] = points.map((point, index) => {
     const x = PADDING.left + index * stepX;
     const y = PADDING.top
       + innerHeight
-      - ((point.activeBusinessCount - minCount) / range) * innerHeight;
+      - ((point.activeBusinessCount - domainMin) / domainSpan) * innerHeight;
     return { ...point, x, y };
   });
 
@@ -64,6 +75,10 @@ const latestPoint = computed(() => {
   const points = props.trend;
   return points[points.length - 1] ?? null;
 });
+
+function setHoveredPoint(point: MappedTrendPoint | null): void {
+  hoveredPoint.value = point;
+}
 </script>
 
 <template>
@@ -101,36 +116,72 @@ const latestPoint = computed(() => {
       ref="chartRoot"
       class="flex w-full flex-col gap-2"
     >
-      <svg
+      <div
         v-if="chartGeometry"
-        class="block w-full"
-        :viewBox="`0 0 ${chartGeometry.width} ${VIEW_HEIGHT}`"
-        :height="VIEW_HEIGHT"
-        role="img"
-        :aria-label="`Evolución de ${sectorLabel}`"
+        class="relative w-full"
       >
-        <path
-          :d="chartGeometry.areaPath"
-          class="fill-teal-400/15"
-        />
-        <path
-          :d="chartGeometry.linePath"
-          class="fill-none stroke-teal-300"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <circle
-          v-for="point in chartGeometry.mapped"
-          :key="point.periodYear"
-          :cx="point.x"
-          :cy="point.y"
-          :r="selectedYear === point.periodYear ? 5 : 3.5"
-          :class="selectedYear === point.periodYear
-            ? 'fill-teal-200'
-            : 'fill-teal-400'"
-        />
-      </svg>
+        <svg
+          class="block w-full"
+          :viewBox="`0 0 ${chartGeometry.width} ${VIEW_HEIGHT}`"
+          :height="VIEW_HEIGHT"
+          role="img"
+          :aria-label="`Evolución de ${sectorLabel}`"
+        >
+          <path
+            :d="chartGeometry.areaPath"
+            class="fill-teal-400/15"
+          />
+          <path
+            :d="chartGeometry.linePath"
+            class="fill-none stroke-teal-300"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <g
+            v-for="point in chartGeometry.mapped"
+            :key="point.periodYear"
+          >
+            <circle
+              :cx="point.x"
+              :cy="point.y"
+              :r="HIT_RADIUS"
+              class="fill-transparent"
+              @pointerenter="setHoveredPoint(point)"
+              @pointerleave="setHoveredPoint(null)"
+            />
+            <circle
+              :cx="point.x"
+              :cy="point.y"
+              :r="selectedYear === point.periodYear
+                || hoveredPoint?.periodYear === point.periodYear
+                ? 5
+                : 3.5"
+              :class="selectedYear === point.periodYear
+                || hoveredPoint?.periodYear === point.periodYear
+                ? 'fill-teal-200 pointer-events-none'
+                : 'fill-teal-400 pointer-events-none'"
+            />
+          </g>
+        </svg>
+
+        <div
+          v-if="hoveredPoint"
+          class="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-foreground shadow-md"
+          :style="{
+            left: `${hoveredPoint.x}px`,
+            top: `${hoveredPoint.y - 10}px`,
+          }"
+          role="tooltip"
+        >
+          <p class="text-muted-foreground">
+            {{ hoveredPoint.periodYear }}
+          </p>
+          <p class="font-medium text-teal-300 tabular-nums">
+            {{ formatInteger(hoveredPoint.activeBusinessCount) }}
+          </p>
+        </div>
+      </div>
 
       <div
         v-if="chartGeometry"
