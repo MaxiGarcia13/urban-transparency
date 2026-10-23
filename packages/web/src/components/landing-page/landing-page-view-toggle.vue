@@ -8,7 +8,7 @@ const view = defineModel<MetricView>('view', { required: true });
 
 <template>
   <div
-    class="pointer-events-none absolute bottom-4 left-4 z-2 flex gap-2 lg:top-4 lg:bottom-auto"
+    class="pointer-events-none absolute bottom-4 left-4 z-3 flex gap-2 lg:top-4 lg:bottom-auto"
   >
     <div
       class="pointer-events-auto flex gap-2 rounded-xl border border-white/10 bg-zinc-950/90 p-2 backdrop-blur-md"
