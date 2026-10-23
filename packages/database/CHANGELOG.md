@@ -1,3 +1,17 @@
+## 0.0.12 (2026-10-23)
+
+### 🚀 Features
+
+- Enhance business power metrics, navigation, and landing page structure ([#1](https://github.com/MaxiGarcia13/urban-transparency/pull/1))
+
+### 🧱 Updated Dependencies
+
+- Updated @urban-transparency/shared to 0.0.12
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo @MaxiGarcia13
+
 ## 0.0.11 (2026-10-21)
 
 ### 🚀 Features
