@@ -2,7 +2,7 @@
 
 Thanks for contributing. This guide covers repo layout, everyday commands, and the coding rules we expect in PRs.
 
-Product context and data sources: [`README.md`](./README.md). Agent / ingest playbooks: [`AGENTS.md`](./AGENTS.md).
+Product context and data sources: [`README.md`](./README.md). Geographic coverage (INE codes): [`docs/geographic-coverage.md`](./docs/geographic-coverage.md). Agent / ingest playbooks: [`AGENTS.md`](./AGENTS.md).
 
 ## Prerequisites
 
@@ -143,4 +143,4 @@ Ad-hoc flags: read `packages/scrapper/scripts/scrape-placsp.ts` / `scrape-dirce.
 3. Do not hardcode seed regions into shared schemas, pipelines, or product copy.
 4. Prefer national APIs / open data before regional portals or brittle HTML scrapes.
 
-Questions about metrics or sources: start with `README.md` and `AGENTS.md`.
+Questions about metrics or sources: start with `README.md`, `docs/geographic-coverage.md`, and `AGENTS.md`.

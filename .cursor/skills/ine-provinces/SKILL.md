@@ -9,7 +9,7 @@ description: >-
 
 # INE provinces
 
-**Source of truth:** Geographic coverage table in [`README.md`](../../../README.md) (CCAA → province codes + metric readiness). Do not invent a parallel list.
+**Source of truth:** [`docs/geographic-coverage.md`](../../../docs/geographic-coverage.md) (CCAA → province codes + metric readiness + seed aliases). Do not invent a parallel list.
 
 Municipalities: `packages/shared/cities/data/spain.json` (`id` starts with province). In code: `listMunicipalitiesByProvinceCodes` from `@urban-transparency/shared`.
 

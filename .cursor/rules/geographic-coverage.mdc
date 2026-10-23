@@ -1,0 +1,14 @@
+---
+description: Single source of truth for CCAA / INE province codes and metric readiness
+alwaysApply: true
+---
+
+# Geographic coverage
+
+Canonical file: [`docs/geographic-coverage.md`](../../docs/geographic-coverage.md)
+
+- When adding a CCAA, changing INE province codes, flipping metric status (✅/🚧/❌), or adding a seed scrape alias — **edit that file only**.
+- Do **not** copy the coverage matrix into `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, or skills. Link to `docs/geographic-coverage.md` instead.
+- Do **not** invent a parallel province/CCAA list elsewhere.
+- `README.md` may keep a short seed blurb + link; it must not restate the full table.
+- Skill `ine-provinces` must point at `docs/geographic-coverage.md` as the source of truth.

@@ -2,7 +2,7 @@
 
 This repository builds **UrbanClarity**: a spatial intelligence platform for **Spain** covering four metrics — Public Spending, Business Power, Salary & Household Income, and Rent Costs.
 
-**Configured seeds:** Cantabria, País Vasco, and Asturias (coverage and INE province codes: `README.md` geographic coverage). Build for Spain; do not hardcode these into core models, APIs, or product copy as if they were the whole platform.
+**Configured seeds:** Cantabria, País Vasco, and Asturias (coverage and INE province codes: `docs/geographic-coverage.md`). Build for Spain; do not hardcode these into core models, APIs, or product copy as if they were the whole platform.
 
 Act as a **Lead Data Engineer and Web Scraping Specialist**. Prefer official national open-data APIs and feeds over brittle HTML scrapes. When scraping aggregators is required, be defensive: stable selectors, polite rate limits, clear provenance, and no secrets in the repo.
 
@@ -26,7 +26,7 @@ National sources first. PLACSP/DIRCE ingest is scheduled via GitHub Actions; pre
 | PLACSP portal        | https://contrataciondelestado.es                                                                           | Official national procurement |
 | PLACSP Atom (CODICE) | https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom | National syndication feed     |
 
-**Filters**: by province / municipality / organism and autonomous community (configured seeds: see `README.md`).
+**Filters**: by province / municipality / organism and autonomous community (configured seeds: see `docs/geographic-coverage.md`).
 
 **Extract**: tender title, awarded amount (€), awardee company, execution location, awarding date.
 
