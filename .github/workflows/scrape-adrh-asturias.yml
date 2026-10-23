@@ -1,0 +1,36 @@
+name: 🏙️ Scrape ADRH Asturias
+
+on:
+  schedule:
+    # 1st of Jan/Apr/Jul/Oct at 07:15 UTC (every 3 months).
+    - cron: '15 7 1 1,4,7,10 *'
+  workflow_dispatch:
+
+concurrency:
+  group: scrape-adrh-asturias
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  scrape:
+    name: Scrape ADRH Asturias
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install
+
+      - name: Write .env
+        run: |
+          cat > .env <<EOF
+          TURSO_URL=${{ secrets.TURSO_URL }}
+          TURSO_AUTH_TOKEN=${{ secrets.TURSO_AUTH_TOKEN }}
+          EOF
+
+      - name: Scrape ADRH Asturias
+        run: pnpm scrape:adrh:asturias
