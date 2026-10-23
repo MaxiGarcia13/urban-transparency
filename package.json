@@ -21,6 +21,8 @@
     "node": "24.22.1"
   },
   "scripts": {
+    "prepare": "simple-git-hooks",
+
     "build": "pnpm --filter=@urban-transparency/web build",
     "preview": "pnpm --filter=@urban-transparency/web preview",
     "dev": "pnpm --filter=@urban-transparency/web dev",
@@ -60,6 +62,14 @@
     "@maxigarcia/eslint-config": "^1.14.1",
     "@nx/js": "^23.3.0",
     "eslint": "^10.13.0",
-    "nx": "^23.3.0"
+    "lint-staged": "^17.6.0",
+    "nx": "^23.3.0",
+    "simple-git-hooks": "^2.14.0"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm dlx lint-staged"
+  },
+  "lint-staged": {
+    "*": "pnpm lint:fix"
   }
 }
