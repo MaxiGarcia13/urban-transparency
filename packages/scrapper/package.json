@@ -18,6 +18,11 @@
     "scrape:dirce:pais-vasco": "tsx --env-file=../../.env scripts/scrape-dirce.ts --province 01 --province 20 --province 48",
     "scrape:dirce:asturias": "tsx --env-file=../../.env scripts/scrape-dirce.ts --province 33",
 
+    "scrape:adrh": "tsx --env-file=../../.env scripts/scrape-adrh.ts",
+    "scrape:adrh:cantabria": "tsx --env-file=../../.env scripts/scrape-adrh.ts --province 39",
+    "scrape:adrh:pais-vasco": "tsx --env-file=../../.env scripts/scrape-adrh.ts --province 01 --province 20 --province 48",
+    "scrape:adrh:asturias": "tsx --env-file=../../.env scripts/scrape-adrh.ts --province 33",
+
     "clean": "rm -rf node_modules dist"
   },
   "dependencies": {

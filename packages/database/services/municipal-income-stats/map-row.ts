@@ -6,8 +6,10 @@ export function mapRowToMunicipalIncomeStats(
   return {
     municipalityCode: String(row.municipalityCode),
     periodYear: Number(row.periodYear),
-    rentaNetaMediaPersona: (row.rentaNetaMediaPersona as number | null) ?? null,
-    rentaNetaMediaHogar: (row.rentaNetaMediaHogar as number | null) ?? null,
+    meanNetIncomePerPerson:
+      (row.meanNetIncomePerPerson as number | null) ?? null,
+    meanNetIncomePerHousehold:
+      (row.meanNetIncomePerHousehold as number | null) ?? null,
     sourceSystem: 'ine-adrh',
     fetchedAt: String(row.fetchedAt),
   };

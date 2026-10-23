@@ -46,6 +46,11 @@
     "scrape:dirce:pais-vasco": "pnpm --filter=@urban-transparency/scrapper scrape:dirce:pais-vasco",
     "scrape:dirce:asturias": "pnpm --filter=@urban-transparency/scrapper scrape:dirce:asturias",
 
+    "scrape:adrh": "pnpm --filter=@urban-transparency/scrapper scrape:adrh",
+    "scrape:adrh:cantabria": "pnpm --filter=@urban-transparency/scrapper scrape:adrh:cantabria",
+    "scrape:adrh:pais-vasco": "pnpm --filter=@urban-transparency/scrapper scrape:adrh:pais-vasco",
+    "scrape:adrh:asturias": "pnpm --filter=@urban-transparency/scrapper scrape:adrh:asturias",
+
     "fetch:region-boundary": "pnpm --filter=@urban-transparency/web fetch:region-boundary",
     "fetch:region-boundary:cantabria": "pnpm --filter=@urban-transparency/web fetch:region-boundary:cantabria",
     "fetch:region-boundary:pais-vasco": "pnpm --filter=@urban-transparency/web fetch:region-boundary:pais-vasco",

@@ -6,14 +6,14 @@ const UPSERT_MUNICIPAL_INCOME_STATS_SQL = `
 INSERT INTO municipal_income_stats (
   municipality_code,
   period_year,
-  renta_neta_media_persona,
-  renta_neta_media_hogar,
+  mean_net_income_per_person,
+  mean_net_income_per_household,
   source_system,
   fetched_at
 ) VALUES (?, ?, ?, ?, ?, ?)
 ON CONFLICT(municipality_code, period_year) DO UPDATE SET
-  renta_neta_media_persona = excluded.renta_neta_media_persona,
-  renta_neta_media_hogar = excluded.renta_neta_media_hogar,
+  mean_net_income_per_person = excluded.mean_net_income_per_person,
+  mean_net_income_per_household = excluded.mean_net_income_per_household,
   source_system = excluded.source_system,
   fetched_at = excluded.fetched_at
 `;
@@ -24,8 +24,8 @@ function toUpsertArgs(row: MunicipalIncomeStats): unknown[] {
   return [
     row.municipalityCode,
     row.periodYear,
-    row.rentaNetaMediaPersona,
-    row.rentaNetaMediaHogar,
+    row.meanNetIncomePerPerson,
+    row.meanNetIncomePerHousehold,
     row.sourceSystem,
     row.fetchedAt,
   ];
