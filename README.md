@@ -23,10 +23,10 @@ Status: ✅ ready · 🚧 in progress · ❌ not started
 | -------------------- | ---------------------------------------------------- | --------------- | -------------- | ------------------------- |
 | Andalucía            | `04`, `11`, `14`, `18`, `21`, `23`, `29`, `41`       | ❌              | ❌             | ❌                        |
 | Aragón               | `22`, `44`, `50`                                     | ❌              | ❌             | ❌                        |
-| Asturias             | `33`                                                 | ✅              | ❌             | ❌                        |
+| Asturias             | `33`                                                 | ✅              | 🚧             | ❌                        |
 | Illes Balears        | `07`                                                 | ❌              | ❌             | ❌                        |
 | Canarias             | `35`, `38`                                           | ❌              | ❌             | ❌                        |
-| Cantabria            | `39`                                                 | ✅              | ❌             | ❌                        |
+| Cantabria            | `39`                                                 | ✅              | ✅             | ❌                        |
 | Castilla-La Mancha   | `02`, `13`, `16`, `19`, `45`                         | ❌              | ❌             | ❌                        |
 | Castilla y León      | `05`, `09`, `24`, `34`, `37`, `40`, `42`, `47`, `49` | ❌              | ❌             | ❌                        |
 | Catalunya            | `08`, `17`, `25`, `43`                               | ❌              | ❌             | ❌                        |
@@ -36,7 +36,7 @@ Status: ✅ ready · 🚧 in progress · ❌ not started
 | Madrid               | `28`                                                 | ❌              | ❌             | ❌                        |
 | Murcia               | `30`                                                 | ❌              | ❌             | ❌                        |
 | Navarra              | `31`                                                 | ❌              | ❌             | ❌                        |
-| País Vasco           | `01`, `20`, `48`                                     | ✅              | ❌             | ❌                        |
+| País Vasco           | `01`, `20`, `48`                                     | ✅              | 🚧             | ❌                        |
 | La Rioja             | `26`                                                 | ❌              | ❌             | ❌                        |
 | Ceuta                | `51`                                                 | ❌              | ❌             | ❌                        |
 | Melilla              | `52`                                                 | ❌              | ❌             | ❌                        |
@@ -51,7 +51,7 @@ Prefer **national** sources that scale to any municipality or province. Regional
 
 ### 2. Business Power
 
-- [INE DIRCE](https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177031&menu=resultados&idp=1254735576550) — active businesses by municipality, size, and sector. API pattern: `https://servicios.ine.es/wsevents/api/json/es/DATASET/DIRCE/{municipalityCode}`
+- [INE DIRCE](https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177031&menu=resultados&idp=1254735576550) — active businesses by municipality and sector group. Ingest: table [4721 CSV](https://www.ine.es/jaxiT3/files/t/csv_bdsc/4721.csv) via `pnpm scrape:dirce:cantabria` / `pnpm scrape:dirce:pais-vasco` / `pnpm scrape:dirce:asturias`.
 - Regional stats (pilot): [ICANE — directorio de empresas](https://www.icane.es/data/directorio-empresas-asalariados-estrato)
 - OpenStreetMap Overpass (`https://overpass-api.de/api/interpreter`) — commercial nodes (`office`, `shop`, `amenity=bank`, `industrial`, `building=commercial`) around configurable neighborhood centroids
 

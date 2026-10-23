@@ -2,12 +2,11 @@ import { Buffer } from 'node:buffer';
 import https from 'node:https';
 import { URL } from 'node:url';
 
-import packageJson from '../package.json' with { type: 'json' };
+import { USER_AGENT } from '../utils/user-agent';
 
 const PLACSP_ATOM_FEED_URL
   = 'https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom';
 
-const USER_AGENT = `${packageJson.name}/${packageJson.version}`;
 const FETCH_TIMEOUT_MS = 60_000;
 
 export function getPlacspAtomFeedUrl(): string {

@@ -42,6 +42,7 @@ const ogImageUrl = new URL('/og-image.png', Astro.url).href;
     <meta name="twitter:image" content={ogImageUrl} />
 
     <title>{title}</title>
+    <slot name="head" />
   </head>
   <body class="m-0 min-h-dvh bg-background text-foreground antialiased">
     <slot />

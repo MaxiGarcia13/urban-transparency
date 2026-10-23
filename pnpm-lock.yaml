@@ -243,6 +243,9 @@ importers:
       '@deck.gl/maplibre':
         specifier: ^9.4.0
         version: 9.4.0(@deck.gl/core@9.4.0(@luma.gl/webgpu@9.4.2(@luma.gl/core@9.4.2)(@luma.gl/shadertools@9.4.2(@luma.gl/core@9.4.2))))(@luma.gl/core@9.4.2)(maplibre-gl@6.14.0)
+      '@nanostores/vue':
+        specifier: ^1.1.0
+        version: 1.1.0(nanostores@1.5.5)(vue@3.5.44(typescript@6.0.3))
       '@phosphor-icons/vue':
         specifier: ^2.2.1
         version: 2.2.1(vue@3.5.44(typescript@6.0.3))
@@ -276,6 +279,9 @@ importers:
       maplibre-gl:
         specifier: ^6.14.0
         version: 6.14.0
+      nanostores:
+        specifier: ^1.5.5
+        version: 1.5.5
       reka-ui:
         specifier: ^2.11.0
         version: 2.11.0(vue@3.5.44(typescript@6.0.3))
@@ -1819,6 +1825,20 @@ packages:
 
   '@maxigarcia/eslint-config@1.14.1':
     resolution: {integrity: sha512-P1w/J50KuK0KXLrLEQ457aYtaJXYQPpsdA/C6tbYMe4+Ti4DA5eyDMOtr5Sq/cFfHiqg01Zgfyg3ugPsD4tGNg==}
+
+  '@nanostores/vue@1.1.0':
+    resolution: {integrity: sha512-14eY8/YA0AbtWkAjk8zHKxbjcuPubF+M7y9afQzg2b5VqRJcashwA0100vprau13BTBSynUmU6ZsU6x03YidjA==}
+    engines: {node: ^20.0.0 || >=22.0.0}
+    peerDependencies:
+      '@nanostores/logger': ^0.4.0 || ^1.0.0
+      '@vue/devtools-api': '>=7.6.2'
+      nanostores: ^0.11.3 || ^1.0.0
+      vue: '>=3.3.1'
+    peerDependenciesMeta:
+      '@nanostores/logger':
+        optional: true
+      '@vue/devtools-api':
+        optional: true
 
   '@napi-rs/wasm-runtime@0.2.4':
     resolution: {integrity: sha512-9zESzOO5aDByvhIAsOy9TbpZ0Ur2AJbUI7UT73kcUTS2mxAMHOBaa1st/jAymNoCtvrit99kkzT1FZuXVcgfIQ==}
@@ -4320,6 +4340,10 @@ packages:
     resolution: {integrity: sha512-uKdg2G3GNCKQn9byYOpxbGqrT2fGO5KRt5J/8b3pok8rT6qxGWF6hxMyJiEYtAf+FVyYuD9hRaDqX5uPFYJ4ZQ==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  nanostores@1.5.5:
+    resolution: {integrity: sha512-FixtE239Gl6Gz0ZGCK0WzvNwObNCIwVT+L7zQcf1QgcA6AzBxblzqe9OT88qiucNkhsjSOqiogSaF5jVbJiqSA==}
+    engines: {node: ^20.0.0 || >=22.0.0}
 
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
@@ -7127,6 +7151,11 @@ snapshots:
       - typescript
       - vitest
 
+  '@nanostores/vue@1.1.0(nanostores@1.5.5)(vue@3.5.44(typescript@6.0.3))':
+    dependencies:
+      nanostores: 1.5.5
+      vue: 3.5.44(typescript@6.0.3)
+
   '@napi-rs/wasm-runtime@0.2.4':
     dependencies:
       '@emnapi/core': 1.4.5
@@ -9808,6 +9837,8 @@ snapshots:
   murmurhash-js@1.0.0: {}
 
   nanoid@3.3.20: {}
+
+  nanostores@1.5.5: {}
 
   natural-compare@1.4.0: {}
 

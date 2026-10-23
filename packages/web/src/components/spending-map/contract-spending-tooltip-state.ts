@@ -8,4 +8,5 @@ export interface ContractSpendingTooltipState {
   hasKnownLocation: boolean;
   x: number;
   y: number;
+  expandableSiblingCount: number;
 }

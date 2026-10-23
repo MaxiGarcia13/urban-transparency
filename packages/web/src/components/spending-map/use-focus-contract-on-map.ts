@@ -7,7 +7,12 @@ import { FOCUS_MIN_ZOOM } from './spending-map-config';
 interface UseFocusContractOnMapOptions {
   mapInstance: ShallowRef<MaplibreMap | null>;
   clusters: ComputedRef<ContractMapCluster[]>;
-  openCluster: (cluster: ContractMapCluster, x: number, y: number) => void;
+  openFocusedContract: (
+    cluster: ContractMapCluster,
+    contractId: string,
+    x: number,
+    y: number,
+  ) => void;
   clearTooltip: () => void;
   syncVisibleClusters: () => void;
 }
@@ -15,7 +20,7 @@ interface UseFocusContractOnMapOptions {
 export function useFocusContractOnMap({
   mapInstance,
   clusters,
-  openCluster,
+  openFocusedContract,
   clearTooltip,
   syncVisibleClusters,
 }: UseFocusContractOnMapOptions) {
@@ -59,7 +64,7 @@ export function useFocusContractOnMap({
       pendingFocusOnMoveEnd = null;
       syncVisibleClusters();
       const point = map.project([cluster.longitude, cluster.latitude]);
-      openCluster(cluster, point.x, point.y);
+      openFocusedContract(cluster, contractId, point.x, point.y);
     };
 
     if (alreadyFocused) {

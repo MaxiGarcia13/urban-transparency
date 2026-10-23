@@ -32,14 +32,14 @@ National sources first. Configured-region filters shown in italics where relevan
 
 ### 2. Business Power
 
-| Source                 | URL                                                                                                                   | Role                                                     |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| INE DIRCE              | https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177031&menu=resultados&idp=1254735576550 | National enterprise directory stats                      |
-| INE DIRCE API          | `https://servicios.ine.es/wsevents/api/json/es/DATASET/DIRCE/{municipalityCode}`                                      | JSON by municipality (_pilot: Cantabria municipalities_) |
-| Regional stats (pilot) | https://www.icane.es/data/directorio-empresas-asalariados-estrato                                                     | Optional regional supplement                             |
-| Overpass               | https://overpass-api.de/api/interpreter                                                                               | OSM commercial nodes (POST); centroids are city config   |
+| Source                 | URL                                                                                                                   | Role                                                        |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| INE DIRCE              | https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177031&menu=resultados&idp=1254735576550 | National enterprise directory stats                         |
+| INE DIRCE table 4721   | https://www.ine.es/jaxiT3/files/t/csv_bdsc/4721.csv                                                                   | CSV by municipality + CNAE group (_pilot: `--province 39`_) |
+| Regional stats (pilot) | https://www.icane.es/data/directorio-empresas-asalariados-estrato                                                     | Optional regional supplement                                |
+| Overpass               | https://overpass-api.de/api/interpreter                                                                               | OSM commercial nodes (POST); centroids are city config      |
 
-**Extract (DIRCE)**: active businesses per municipality by size and economic sector.
+**Extract (DIRCE)**: active businesses per municipality by economic sector group (table 4721). Ingest: `pnpm scrape:dirce:cantabria` / `pnpm scrape:dirce:pais-vasco` / `pnpm scrape:dirce:asturias`.
 
 **OSM tags**: `office`, `shop`, `amenity=bank`, `industrial`, `building=commercial`.
 

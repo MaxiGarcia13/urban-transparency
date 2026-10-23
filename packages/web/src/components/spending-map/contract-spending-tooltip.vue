@@ -13,6 +13,7 @@ const props = defineProps<ContractSpendingTooltipState>();
 
 const emit = defineEmits<{
   close: [];
+  expand: [];
 }>();
 
 const root = ref<HTMLElement | null>(null);
@@ -94,6 +95,16 @@ onMounted(async () => {
           class="min-h-0 flex-1 overflow-y-auto overscroll-contain"
         >
           <PublicContractCardBody :contract="contracts[0]" />
+          <Button
+            v-if="expandableSiblingCount > 0"
+            type="button"
+            variant="outline"
+            size="sm"
+            class="mt-4 h-auto w-full rounded-xl px-4 py-2 text-sm"
+            @click="emit('expand')"
+          >
+            Ver {{ expandableSiblingCount }} más en este punto
+          </Button>
         </div>
 
         <template v-else>

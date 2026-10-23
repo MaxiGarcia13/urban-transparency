@@ -17,6 +17,9 @@
     "visualization"
   ],
   "main": "index.js",
+  "engines": {
+    "node": "24.22.1"
+  },
   "scripts": {
     "build": "pnpm --filter=@urban-transparency/web build",
     "preview": "pnpm --filter=@urban-transparency/web preview",
@@ -35,6 +38,11 @@
     "scrape:placsp:cantabria": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:cantabria",
     "scrape:placsp:pais-vasco": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:pais-vasco",
     "scrape:placsp:asturias": "pnpm --filter=@urban-transparency/scrapper scrape:placsp:asturias",
+
+    "scrape:dirce": "pnpm --filter=@urban-transparency/scrapper scrape:dirce",
+    "scrape:dirce:cantabria": "pnpm --filter=@urban-transparency/scrapper scrape:dirce:cantabria",
+    "scrape:dirce:pais-vasco": "pnpm --filter=@urban-transparency/scrapper scrape:dirce:pais-vasco",
+    "scrape:dirce:asturias": "pnpm --filter=@urban-transparency/scrapper scrape:dirce:asturias",
 
     "fetch:region-boundary": "pnpm --filter=@urban-transparency/web fetch:region-boundary",
     "fetch:region-boundary:cantabria": "pnpm --filter=@urban-transparency/web fetch:region-boundary:cantabria",

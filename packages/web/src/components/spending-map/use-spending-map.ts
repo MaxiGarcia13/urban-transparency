@@ -20,7 +20,13 @@ export function useSpendingMap(
   const deckOverlay = shallowRef<MapLibreOverlay | null>(null);
   let destroyMap: (() => void) | null = null;
 
-  const { tooltip, clearTooltip, openCluster, selectCluster } = useContractMapTooltip();
+  const {
+    tooltip,
+    clearTooltip,
+    openFocusedContract,
+    expandFocusedCluster,
+    selectCluster,
+  } = useContractMapTooltip();
 
   const {
     clusters,
@@ -36,7 +42,7 @@ export function useSpendingMap(
   const { focusContract } = useFocusContractOnMap({
     mapInstance,
     clusters,
-    openCluster,
+    openFocusedContract,
     clearTooltip,
     syncVisibleClusters,
   });
@@ -99,6 +105,7 @@ export function useSpendingMap(
     mapContainer,
     tooltip,
     clearTooltip,
+    expandFocusedCluster,
     focusContract,
   };
 }

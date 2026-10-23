@@ -1,5 +1,5 @@
-import packageJson from '../package.json' with { type: 'json' };
 import { delay } from '../utils/delay';
+import { USER_AGENT } from '../utils/user-agent';
 
 export interface GeocodeCoordinates {
   longitude: number;
@@ -7,7 +7,6 @@ export interface GeocodeCoordinates {
 }
 
 const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
-const USER_AGENT = `${packageJson.name}/${packageJson.version}`;
 const MIN_REQUEST_GAP_MS = 1_100;
 
 const geocodeCache = new Map<string, GeocodeCoordinates | null>();
