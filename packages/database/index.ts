@@ -4,6 +4,10 @@ export {
   upsertMunicipalBusinessStats,
 } from './services/municipal-business-stats';
 export {
+  listMunicipalIncomeStatsByProvinces,
+  upsertMunicipalIncomeStats,
+} from './services/municipal-income-stats';
+export {
   listPublicContractsByMunicipality,
   listPublicContractsByProvinces,
   upsertPublicContracts,
