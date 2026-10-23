@@ -81,10 +81,9 @@ onKeyStroke('Escape', () => {
 <template>
   <MetricAside metric-id="salary-income">
     <template #description>
-      Compara la renta neta media entre municipios de
-      {{ regionName }}
-      y cómo ha cambiado en la provincia (INE ADRH). Sirve para ver desigualdades
-      territoriales frente al gasto público, las empresas o el alquiler.
+      Renta neta media oficial (INE ADRH) en
+      {{ regionName }}:
+      evolución de la media provincial y ranking de municipios respecto a esa media.
     </template>
     <LandingHeroIncomeSummary
       :mean-income="incomeMean"
