@@ -33,8 +33,8 @@ Prefer **national** sources that scale to any municipality or province. Regional
 
 ### 3. Salary & Household Income
 
-- [INE ADRH](https://www.ine.es/componentes_inebase/ADRH_total_nacional.htm) — household income atlas. Catalog: [datos.gob.es](https://datos.gob.es/es/catalogo/ea0042823-atlas-de-distribucion-de-renta-de-los-hogares-adrh). API: `https://servicios.ine.es/wsevents/api/json/es/DATASET/ADRH`
-- Granularity: sección censal, filtered by municipality code. Fields: renta neta media por persona / por hogar (€/year)
+- [INE ADRH](https://www.ine.es/componentes_inebase/ADRH_total_nacional.htm) — household income atlas. Catalog: [datos.gob.es](https://datos.gob.es/es/catalogo/ea0042823-atlas-de-distribucion-de-renta-de-los-hogares-adrh). Ingest: jaxiT3 province CSVs (`https://www.ine.es/jaxiT3/files/t/csv_bdsc/{tableId}.csv`); resolve `tableId` from the ADRH operation table index (do not use the dead `wsevents/.../ADRH` JSON API).
+- Granularity: municipality aggregates (5-digit INE; sección rows aggregated at scrape when needed). Fields: renta neta media por persona / por hogar (€/year)
 
 ### 4. Rent Costs
 

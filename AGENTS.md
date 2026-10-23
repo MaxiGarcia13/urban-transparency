@@ -47,13 +47,15 @@ National sources first. PLACSP/DIRCE ingest is scheduled via GitHub Actions; pre
 
 ### 3. Salary & Household Income
 
-| Source               | URL                                                                                           | Role                  |
-| -------------------- | --------------------------------------------------------------------------------------------- | --------------------- |
-| ADRH home            | https://www.ine.es/componentes_inebase/ADRH_total_nacional.htm                                | Atlas docs (national) |
-| datos.gob.es catalog | https://datos.gob.es/es/catalogo/ea0042823-atlas-de-distribucion-de-renta-de-los-hogares-adrh | Catalog entry         |
-| ADRH API             | https://servicios.ine.es/wsevents/api/json/es/DATASET/ADRH                                    | JSON API              |
+| Source                | URL                                                                                           | Role                                                             |
+| --------------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| ADRH home             | https://www.ine.es/componentes_inebase/ADRH_total_nacional.htm                                | Atlas docs (national)                                            |
+| datos.gob.es catalog  | https://datos.gob.es/es/catalogo/ea0042823-atlas-de-distribucion-de-renta-de-los-hogares-adrh | Catalog entry                                                    |
+| INE ADRH CSV (jaxiT3) | https://www.ine.es/jaxiT3/files/t/csv_bdsc/{tableId}.csv                                      | Province CSVs; resolve `tableId` from ADRH operation table index |
 
-**Granularity**: sección censal filtered by municipality code (_pilot: Cantabria municipalities_).
+Do **not** use `https://servicios.ine.es/wsevents/api/json/es/DATASET/ADRH` (dead).
+
+**Granularity**: municipality aggregates (5-digit INE); aggregate sección/CUSEC rows at scrape when the CSV has no municipality rows. Filter via `--province` (configured seeds: see `docs/geographic-coverage.md`).
 
 **Extract**: `Renta neta media por persona` (€/year), `Renta neta media por hogar` (€/year).
 
