@@ -1,10 +1,11 @@
 import type { MunicipalBusinessStats } from '@urban-transparency/shared';
 import type { BusinessPowerFilters } from '../business-power-filters';
 import { getMunicipalityByCode } from '@urban-transparency/shared';
+import { compareNullableNumberDesc } from '@/utils/compare-nullable-number-desc';
+import { METRIC_TOP_RANKING_LIMIT } from '../metric-ranking';
 import { resolveBusinessStatsPeriodYear } from './business-stats-period';
-import { compareNullableCountDesc } from './compare-nullable-count-desc';
 
-export const BUSINESS_POWER_TOP_RANKING_LIMIT = 15;
+export const BUSINESS_POWER_TOP_RANKING_LIMIT = METRIC_TOP_RANKING_LIMIT;
 
 export type MunicipalBusinessRankingRow = Pick<
   MunicipalBusinessStats,
@@ -71,7 +72,7 @@ export function buildMunicipalBusinessRanking(
   }
 
   ranking.sort((a, b) => {
-    const byCount = compareNullableCountDesc(
+    const byCount = compareNullableNumberDesc(
       a.activeBusinessCount,
       b.activeBusinessCount,
     );

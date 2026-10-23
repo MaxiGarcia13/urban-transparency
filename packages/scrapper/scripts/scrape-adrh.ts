@@ -7,7 +7,11 @@ import {
 import { listMunicipalitiesByProvinceCodes } from '@urban-transparency/shared';
 
 import { parseAdrhCsv } from '../domain/parse-adrh-csv';
-import { fetchAdrhRentaMediaCsv } from '../services/adrh-csv-client';
+import { parseAdrhProvinceCsv } from '../domain/parse-adrh-province-csv';
+import {
+  fetchAdrhProvinceRentaMediaCsv,
+  fetchAdrhRentaMediaCsv,
+} from '../services/adrh-csv-client';
 import { delay } from '../utils/delay';
 
 const PROVINCE_CODE_PATTERN = /^\d{2}$/;
@@ -75,13 +79,22 @@ async function scrapeAdrh(): Promise<void> {
   const fetchedAt = new Date().toISOString();
   const allRows: MunicipalIncomeStats[] = [];
 
+  console.log('Downloading ADRH province renta-media CSV (table 53689)');
+  const provinceCsvText = await fetchAdrhProvinceRentaMediaCsv();
+  const provinceRows = parseAdrhProvinceCsv(provinceCsvText, {
+    provinceCodes: uniqueProvinceCodes,
+    fetchedAt,
+  });
+  console.log(`Parsed ${provinceRows.length} province income-stat rows`);
+  allRows.push(...provinceRows);
+
   for (let index = 0; index < uniqueProvinceCodes.length; index += 1) {
     const provinceCode = uniqueProvinceCodes[index];
     if (provinceCode == null) {
       continue;
     }
 
-    if (index > 0 && options.delayMs > 0) {
+    if (options.delayMs > 0) {
       await delay(options.delayMs);
     }
 
@@ -96,8 +109,10 @@ async function scrapeAdrh(): Promise<void> {
     allRows.push(...parsedRows);
   }
 
-  const rows = allRows.filter((row) =>
-    municipalityCodes.has(row.municipalityCode),
+  const rows = allRows.filter(
+    (row) =>
+      row.municipalityCode.length === 2
+      || municipalityCodes.has(row.municipalityCode),
   );
   const unknownMunicipalityCount = allRows.length - rows.length;
   if (unknownMunicipalityCount > 0) {
@@ -107,7 +122,7 @@ async function scrapeAdrh(): Promise<void> {
   }
 
   console.log(
-    `Parsed ${rows.length} municipal income-stat rows (${municipalities.length} municipalities in scope)`,
+    `Parsed ${rows.length} income-stat rows (${provinceRows.length} province + municipal; ${municipalities.length} municipalities in scope)`,
   );
 
   const client = createDatabaseClient();

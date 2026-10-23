@@ -6,6 +6,7 @@ export const ADRH_TEMPUS_OPERATION_ID = 353;
 export const ADRH_RENTA_MEDIA_TABLE_NAME
   = 'Indicadores de renta media y mediana';
 export const ADRH_DIST_SECC_MUN_CODE = 'DIST-SECC-MUN';
+export const ADRH_PROVINCE_RENTA_MEDIA_TABLE_ID = 53689;
 
 const TEMPUS_TABLAS_OPERACION_URL
   = `https://servicios.ine.es/wstempus/js/ES/TABLAS_OPERACION/${ADRH_TEMPUS_OPERATION_ID}`;
@@ -131,4 +132,8 @@ export async function fetchAdrhRentaMediaCsv(
   const tableId = await resolveAdrhRentaMediaTableId(provinceCode, options);
   const csvText = await fetchText(csvBdscUrl(tableId));
   return { tableId, csvText };
+}
+
+export async function fetchAdrhProvinceRentaMediaCsv(): Promise<string> {
+  return fetchText(csvBdscUrl(ADRH_PROVINCE_RENTA_MEDIA_TABLE_ID));
 }

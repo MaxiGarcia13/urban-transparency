@@ -2,9 +2,15 @@
 import { computed } from 'vue';
 import { shareToBarWidthPercent } from '@/utils/share-to-bar-width-percent';
 
-const props = defineProps<{
-  share: number | null | undefined;
-}>();
+const props = withDefaults(
+  defineProps<{
+    share: number | null | undefined;
+    barClass?: string;
+  }>(),
+  {
+    barClass: 'bg-teal-400/80',
+  },
+);
 
 const widthPercent = computed(() => shareToBarWidthPercent(props.share));
 </script>
@@ -12,7 +18,8 @@ const widthPercent = computed(() => shareToBarWidthPercent(props.share));
 <template>
   <div class="h-2 overflow-hidden rounded-full bg-white/5">
     <div
-      class="h-full rounded-full bg-teal-400/80 transition-[width] duration-500"
+      class="h-full rounded-full transition-[width] duration-500"
+      :class="barClass"
       :style="{ width: `${widthPercent}%` }"
     />
   </div>

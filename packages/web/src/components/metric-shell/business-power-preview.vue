@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { MetricRankingRow, MetricTrendPoint } from '@/domain/metric-ranking';
 import { computed, ref, watch } from 'vue';
 import { useBusinessPowerFilters } from '@/composables/use-business-power-filters';
 import { useMapRegion } from '@/composables/use-map-region';
@@ -10,11 +11,15 @@ import {
   buildRegionalSectorComposition,
   buildRegionalYearTrend,
   resolveBusinessStatsPeriodYear,
+  sectorBreakdownForMunicipality,
 } from '@/domain/municipal-business';
-import BusinessPowerMunicipalityDetail from './business-power-municipality-detail.vue';
-import BusinessPowerRankingList from './business-power-ranking-list.vue';
+import { formatInteger } from '@/utils/format-integer';
+import { formatPercent } from '@/utils/format-percent';
 import BusinessPowerSectorChart from './business-power-sector-chart.vue';
-import BusinessPowerTrendChart from './business-power-trend-chart.vue';
+import BusinessSectorCompositionList from './business-sector-composition-list.vue';
+import MetricMunicipalityDetail from './metric-municipality-detail.vue';
+import MetricRankingList from './metric-ranking-list.vue';
+import MetricTrendChart from './metric-trend-chart.vue';
 
 const { filters } = useBusinessPowerFilters();
 const { regionId } = useMapRegion();
@@ -29,26 +34,71 @@ const resolvedYear = computed(() =>
   resolveBusinessStatsPeriodYear(rows.value, filters.value.periodYear),
 );
 
-const ranking = computed(() =>
+const businessRanking = computed(() =>
   buildMunicipalBusinessRanking(rows.value, filters.value),
+);
+
+const ranking = computed((): MetricRankingRow[] =>
+  businessRanking.value.map((row) => ({
+    id: row.municipalityCode,
+    label: row.municipalityName,
+    value: row.activeBusinessCount,
+    share: row.shareOfRegion,
+  })),
 );
 
 const composition = computed(() =>
   buildRegionalSectorComposition(rows.value, filters.value.periodYear),
 );
 
-const trend = computed(() =>
-  buildRegionalYearTrend(rows.value, filters.value.sectorCode),
+const trend = computed((): MetricTrendPoint[] =>
+  buildRegionalYearTrend(rows.value, filters.value.sectorCode).map((point) => ({
+    year: point.periodYear,
+    value: point.activeBusinessCount,
+  })),
 );
 
-const selectedMunicipality = computed(() => {
+const selectedBusinessRow = computed(() => {
   if (!selectedMunicipalityCode.value) {
     return null;
   }
   return (
-    ranking.value.find(
+    businessRanking.value.find(
       (row) => row.municipalityCode === selectedMunicipalityCode.value,
     ) ?? null
+  );
+});
+
+const selectedDetailTitle = computed(
+  () => selectedBusinessRow.value?.municipalityName ?? null,
+);
+
+const selectedDetailDescription = computed(() => {
+  const municipality = selectedBusinessRow.value;
+  if (municipality == null) {
+    return '';
+  }
+  const parts: string[] = [];
+  if (municipality.activeBusinessCount != null) {
+    parts.push(`${formatInteger(municipality.activeBusinessCount)} empresas`);
+  } else {
+    parts.push('Sin dato publicado');
+  }
+  if (municipality.shareOfRegion != null) {
+    parts.push(`${formatPercent(municipality.shareOfRegion)} de la región`);
+  }
+  parts.push(String(municipality.periodYear));
+  return parts.join(' · ');
+});
+
+const selectedSectorComposition = computed(() => {
+  if (selectedBusinessRow.value == null) {
+    return [];
+  }
+  return sectorBreakdownForMunicipality(
+    rows.value,
+    selectedBusinessRow.value.municipalityCode,
+    selectedBusinessRow.value.periodYear,
   );
 });
 
@@ -95,29 +145,33 @@ function selectMunicipality(municipalityCode: string): void {
             :is-loading="isLoading"
           />
 
-          <BusinessPowerTrendChart
-            :trend="trend"
+          <MetricTrendChart
+            :points="trend"
             :selected-year="resolvedYear"
-            :sector-label="dirceSectorLabel(filters.sectorCode)"
+            :subtitle="`${dirceSectorLabel(filters.sectorCode)} · serie anual DIRCE`"
+            :format-value="formatInteger"
             :is-loading="isLoading"
           />
 
-          <BusinessPowerRankingList
+          <MetricRankingList
             :ranking="ranking"
             :region-name="selectedRegion.name"
             :is-loading="isLoading"
             :status-message="listStatusMessage"
-            :selected-municipality-code="selectedMunicipalityCode"
+            :selected-id="selectedMunicipalityCode"
+            :format-value="formatInteger"
             @select="selectMunicipality"
           />
         </div>
       </div>
     </div>
 
-    <BusinessPowerMunicipalityDetail
-      :municipality="selectedMunicipality"
-      :rows="rows"
+    <MetricMunicipalityDetail
+      :title="selectedDetailTitle"
+      :description="selectedDetailDescription"
       @close="selectedMunicipalityCode = null"
-    />
+    >
+      <BusinessSectorCompositionList :composition="selectedSectorComposition" />
+    </MetricMunicipalityDetail>
   </div>
 </template>

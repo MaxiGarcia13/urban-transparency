@@ -3,12 +3,20 @@ import { useStore } from '@nanostores/vue';
 import { onKeyStroke } from '@vueuse/core';
 import { ChevronDown } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
+import LandingHeroIncomeSummary from '@/components/landing-hero/landing-hero-income-summary.vue';
 import { SalaryIncomeFiltersForm } from '@/components/salary-income-filters';
 import { Button } from '@/components/ui/button';
 import { useMapRegion } from '@/composables/use-map-region';
 import { useMunicipalIncomeStats } from '@/composables/use-municipal-income-stats';
 import { useSalaryIncomeFilters } from '@/composables/use-salary-income-filters';
 import { getMapRegionById } from '@/config/regions';
+import {
+  availableIncomeStatsYears,
+  buildRegionalIncomeYearTrend,
+  incomeYearOverYearChange,
+  resolveIncomeStatsPeriodYear,
+} from '@/domain/municipal-income';
+import { salaryIncomeMeasureLabel } from '@/domain/salary-income-filters';
 import { cn } from '@/lib/utils';
 import { $metricAsideCollapsed } from '@/stores/metric-aside-ui';
 import MetricAside from './metric-aside.vue';
@@ -16,19 +24,45 @@ import MetricAside from './metric-aside.vue';
 const isAsideCollapsed = useStore($metricAsideCollapsed);
 const { regionId } = useMapRegion();
 const {
+  filters: incomeFilters,
   periodYear,
   measure,
 } = useSalaryIncomeFilters();
 
 const selectedRegion = computed(() => getMapRegionById(regionId.value));
 const regionName = computed(() => selectedRegion.value.name);
-const { rows } = useMunicipalIncomeStats(
+const { rows, isLoading } = useMunicipalIncomeStats(
   () => selectedRegion.value.provinceCodes,
 );
-const availableYears = computed(() =>
-  [...new Set(rows.value.map((row) => row.periodYear))].sort(
-    (left, right) => right - left,
+const availableYears = computed(() => availableIncomeStatsYears(rows.value));
+
+const incomePeriodYear = computed(() =>
+  resolveIncomeStatsPeriodYear(
+    rows.value,
+    incomeFilters.value.periodYear,
   ),
+);
+const incomeTrend = computed(() =>
+  buildRegionalIncomeYearTrend(
+    rows.value,
+    incomeFilters.value.measure,
+  ),
+);
+const incomeMean = computed(() => {
+  const year = incomePeriodYear.value;
+  if (year == null) {
+    return null;
+  }
+  return incomeTrend.value.find((point) => point.year === year)?.value ?? null;
+});
+const incomeYearOverYear = computed(() =>
+  incomeYearOverYearChange(
+    incomeTrend.value,
+    incomePeriodYear.value,
+  ),
+);
+const measureLabel = computed(() =>
+  salaryIncomeMeasureLabel(incomeFilters.value.measure),
 );
 
 const isPanelExpanded = ref(false);
@@ -47,10 +81,18 @@ onKeyStroke('Escape', () => {
 <template>
   <MetricAside metric-id="salary-income">
     <template #description>
-      Renta neta media por municipio en
+      Compara la renta neta media entre municipios de
       {{ regionName }}
-      (ADRH).
+      y cómo ha cambiado en la provincia (INE ADRH). Sirve para ver desigualdades
+      territoriales frente al gasto público, las empresas o el alquiler.
     </template>
+    <LandingHeroIncomeSummary
+      :mean-income="incomeMean"
+      :period-year="incomePeriodYear"
+      :measure-label="measureLabel"
+      :year-over-year="incomeYearOverYear"
+      :is-loading="isLoading"
+    />
   </MetricAside>
 
   <div

@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <ul class="flex flex-col gap-3">
+  <ul class="flex flex-col gap-4">
     <li
       v-for="row in composition"
       :key="row.sectorCode"
