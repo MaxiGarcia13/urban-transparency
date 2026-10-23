@@ -1,6 +1,6 @@
-# Agent guide — UrbanClarity
+# Agent guide — Urban Clarity
 
-This repository builds **UrbanClarity**: a spatial intelligence platform for **Spain** covering four metrics — Public Spending, Business Power, Salary & Household Income, and Rent Costs.
+This repository builds **Urban Clarity**: a spatial intelligence platform for **Spain** covering four metrics — Public Spending, Business Power, Salary & Household Income, and Rent Costs.
 
 **Configured seeds:** Cantabria, País Vasco, and Asturias (coverage and INE province codes: `docs/geographic-coverage.md`). Build for Spain; do not hardcode these into core models, APIs, or product copy as if they were the whole platform.
 

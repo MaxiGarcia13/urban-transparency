@@ -1,7 +1,7 @@
 ---
 name: scrape-ingest
 description: >-
-  Run UrbanClarity data ingest scrapers (PLACSP public contracts, DIRCE municipal
+  Run Urban Clarity data ingest scrapers (PLACSP public contracts, DIRCE municipal
   business stats) via root pnpm aliases. Use when the user asks to scrape, ingest,
   backfill, or refresh PLACSP/DIRCE data for a region, or when adding a new
   province/region scrape alias.

@@ -2,7 +2,7 @@
 name: ine-provinces
 description: >-
   Resolve Spanish CCAA / regions to 2-digit INE province codes and coverage
-  status for UrbanClarity. Use when mapping a region to --province flags,
+  status for Urban Clarity. Use when mapping a region to --province flags,
   choosing scrape aliases, filtering by province, or asking which provinces
   belong to a comunidad autónoma.
 ---

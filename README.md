@@ -1,8 +1,6 @@
-# UrbanClarity
+# Urban Clarity
 
-Spatial intelligence platform for **Spain**. Maps four core urban metrics in 3D so citizens, journalists, and researchers can see how money, business, income, and rent shape cities.
-
-The product and data model are national. Cantabria, País Vasco, and Asturias are the first configured seeds — not the permanent geographic identity of the platform.
+Spatial intelligence platform for **Spain**. Four urban metrics on a 3D map so citizens, journalists, and researchers can see how money, business, income, and rent shape cities.
 
 ## Core metrics
 
@@ -45,7 +43,9 @@ Prefer **national** sources that scale to any municipality or province. Regional
 
 ## Product goal
 
-Ingest national (and optional regional) sources into a unified spatial model keyed by province and municipality, then expose them as a 3D map and analytics layer. New regions should mostly mean new geo filters and configs — not new product assumptions.
+Give Spain a national, spatial view of public spending, business activity, household income, and rent — not a Cantabria-only product with region forks.
+
+Ingest national (and optional regional) open data into one model keyed by province and municipality, then expose it as a 3D map and analytics layer. New regions should mostly mean new geo filters and configs; metric readiness lives in [`docs/geographic-coverage.md`](./docs/geographic-coverage.md).
 
 ## Contributing
 
