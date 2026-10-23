@@ -4,15 +4,21 @@ import { useStore } from '@nanostores/vue';
 import { PhCaretDown } from '@phosphor-icons/vue';
 import { onKeyStroke } from '@vueuse/core';
 import { computed, ref } from 'vue';
+import LandingHeroSpendingSummary from '@/components/landing-hero/landing-hero-spending-summary.vue';
 import { PublicContractFiltersForm } from '@/components/public-contract-filters';
 import { Button } from '@/components/ui/button';
 import { useMapRegion } from '@/composables/use-map-region';
 import { usePublicContractFilters } from '@/composables/use-public-contract-filters';
 import { usePublicContracts } from '@/composables/use-public-contracts';
 import { getMapRegionById } from '@/config/regions';
-import { availableContractYears } from '@/domain/filter-public-contracts';
+import { aggregateMunicipalSpending } from '@/domain/aggregate-municipal-spending';
+import {
+  availableContractYears,
+  filterPublicContracts,
+} from '@/domain/filter-public-contracts';
 import { cn } from '@/lib/utils';
 import { $metricAsideCollapsed } from '@/stores/metric-aside-ui';
+import MetricAside from './metric-aside.vue';
 
 const props = defineProps<{
   regionId: string;
@@ -22,6 +28,7 @@ const props = defineProps<{
 const isAsideCollapsed = useStore($metricAsideCollapsed);
 const { regionId } = useMapRegion(props.regionId);
 const {
+  filters,
   searchQuery,
   selectedStatuses,
   yearFrom,
@@ -29,10 +36,19 @@ const {
 } = usePublicContractFilters(props.filters);
 
 const selectedRegion = computed(() => getMapRegionById(regionId.value));
-const { contracts } = usePublicContracts(
+const regionName = computed(() => selectedRegion.value.name);
+const { contracts, isLoading } = usePublicContracts(
   () => selectedRegion.value.provinceCodes,
 );
 const availableYears = computed(() => availableContractYears(contracts.value));
+const filteredContracts = computed(() =>
+  filterPublicContracts(contracts.value, filters.value),
+);
+const spending = computed(() =>
+  contracts.value.length === 0
+    ? null
+    : aggregateMunicipalSpending(filteredContracts.value),
+);
 
 const isPanelExpanded = ref(false);
 
@@ -48,6 +64,21 @@ onKeyStroke('Escape', () => {
 </script>
 
 <template>
+  <MetricAside
+    metric-id="public-spending"
+    :region-id="regionId"
+  >
+    <template #description>
+      Adjudicaciones municipales de
+      {{ regionName }}
+      publicadas en PLACSP.
+    </template>
+    <LandingHeroSpendingSummary
+      :spending="spending"
+      :is-loading="isLoading"
+    />
+  </MetricAside>
+
   <div
     v-show="!isAsideCollapsed"
     class="flex min-h-0 flex-1 flex-col text-zinc-100"

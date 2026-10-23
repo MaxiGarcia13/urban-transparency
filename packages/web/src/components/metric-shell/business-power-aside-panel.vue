@@ -5,14 +5,24 @@ import { PhCaretDown } from '@phosphor-icons/vue';
 import { onKeyStroke } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { BusinessPowerFiltersForm } from '@/components/business-power-filters';
+import LandingHeroBusinessSummary from '@/components/landing-hero/landing-hero-business-summary.vue';
 import { Button } from '@/components/ui/button';
 import { useBusinessPowerFilters } from '@/composables/use-business-power-filters';
 import { useMapRegion } from '@/composables/use-map-region';
 import { useMunicipalBusinessStats } from '@/composables/use-municipal-business-stats';
 import { getMapRegionById } from '@/config/regions';
-import { availableBusinessStatsYears } from '@/domain/municipal-business';
+import {
+  availableBusinessStatsYears,
+  buildMunicipalBusinessRanking,
+  buildRegionalYearTrend,
+  resolveBusinessStatsPeriodYear,
+  sumActiveBusinessCount,
+  topMunicipalitiesShare,
+  yearOverYearChange,
+} from '@/domain/municipal-business';
 import { cn } from '@/lib/utils';
 import { $metricAsideCollapsed } from '@/stores/metric-aside-ui';
+import MetricAside from './metric-aside.vue';
 
 const props = defineProps<{
   regionId: string;
@@ -21,13 +31,43 @@ const props = defineProps<{
 
 const isAsideCollapsed = useStore($metricAsideCollapsed);
 const { regionId } = useMapRegion(props.regionId);
-const { periodYear, sectorCode } = useBusinessPowerFilters(props.filters);
+const {
+  filters: businessFilters,
+  periodYear,
+  sectorCode,
+} = useBusinessPowerFilters(props.filters);
 
 const selectedRegion = computed(() => getMapRegionById(regionId.value));
-const { rows } = useMunicipalBusinessStats(
+const regionName = computed(() => selectedRegion.value.name);
+const { rows, isLoading } = useMunicipalBusinessStats(
   () => selectedRegion.value.provinceCodes,
 );
 const availableYears = computed(() => availableBusinessStatsYears(rows.value));
+
+const businessRanking = computed(() =>
+  buildMunicipalBusinessRanking(rows.value, businessFilters.value),
+);
+const businessTotal = computed(() =>
+  sumActiveBusinessCount(businessRanking.value),
+);
+const businessPeriodYear = computed(() =>
+  resolveBusinessStatsPeriodYear(
+    rows.value,
+    businessFilters.value.periodYear,
+  ),
+);
+const businessTopShare = computed(() =>
+  topMunicipalitiesShare(businessRanking.value),
+);
+const businessYearOverYear = computed(() =>
+  yearOverYearChange(
+    buildRegionalYearTrend(
+      rows.value,
+      businessFilters.value.sectorCode,
+    ),
+    businessPeriodYear.value,
+  ),
+);
 
 const isPanelExpanded = ref(false);
 
@@ -43,6 +83,24 @@ onKeyStroke('Escape', () => {
 </script>
 
 <template>
+  <MetricAside
+    metric-id="business-power"
+    :region-id="regionId"
+  >
+    <template #description>
+      Empresas activas por municipio en
+      {{ regionName }}
+      (DIRCE).
+    </template>
+    <LandingHeroBusinessSummary
+      :total-active-businesses="businessTotal"
+      :period-year="businessPeriodYear"
+      :top-share="businessTopShare"
+      :year-over-year="businessYearOverYear"
+      :is-loading="isLoading"
+    />
+  </MetricAside>
+
   <div
     v-show="!isAsideCollapsed"
     class="flex min-h-0 flex-1 flex-col text-zinc-100"
