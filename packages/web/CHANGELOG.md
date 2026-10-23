@@ -1,3 +1,14 @@
+## 0.0.28 (2026-10-23)
+
+### 🚀 Features
+
+- Refactor query client and enhance metric components for improved state management ([65ba266](https://github.com/MaxiGarcia13/urban-transparency/commit/65ba266))
+- Refactor metric shell components and enhance business power and public spending panels ([db7d770](https://github.com/MaxiGarcia13/urban-transparency/commit/db7d770))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.27 (2026-10-23)
 
 ### 🚀 Features
