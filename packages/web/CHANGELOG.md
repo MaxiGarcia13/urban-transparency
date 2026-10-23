@@ -1,3 +1,21 @@
+## 0.0.29 (2026-10-23)
+
+### 🚀 Features
+
+- Enhance MetricNav component with active metric synchronization ([02170e1](https://github.com/MaxiGarcia13/urban-transparency/commit/02170e1))
+
+### 🐞 Fixes
+
+- Update z-index for landing page view toggle component ([24bff8c](https://github.com/MaxiGarcia13/urban-transparency/commit/24bff8c))
+
+### 🔄 Refactors
+
+- Simplify MetricNav component usage in metric-shell.astro ([8e388a4](https://github.com/MaxiGarcia13/urban-transparency/commit/8e388a4))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.28 (2026-10-23)
 
 ### 🚀 Features
