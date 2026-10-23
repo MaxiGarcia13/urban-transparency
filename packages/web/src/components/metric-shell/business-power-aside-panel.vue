@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useStore } from '@nanostores/vue';
-import { ChevronDown } from 'lucide-vue-next';
 import { onKeyStroke } from '@vueuse/core';
+import { ChevronDown } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { BusinessPowerFiltersForm } from '@/components/business-power-filters';
 import LandingHeroBusinessSummary from '@/components/landing-hero/landing-hero-business-summary.vue';
