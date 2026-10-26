@@ -1,7 +1,6 @@
 export const METRIC_IDS = [
   'public-spending',
-  'business-power',
-  'salary-income',
+  'local-economy',
 ] as const;
 
 export type MetricId = (typeof METRIC_IDS)[number];
@@ -31,22 +30,12 @@ export const METRICS: readonly MetricDefinition[] = [
     supportsMap: true,
   },
   {
-    id: 'business-power',
-    path: '/business-power',
-    navLabel: 'Poder empresarial',
-    titleLead: '¿Dónde se concentra la',
-    titleHighlight: 'actividad empresarial',
+    id: 'local-economy',
+    path: '/local-economy',
+    navLabel: 'Economía local',
+    titleLead: '¿Cómo se relacionan',
+    titleHighlight: 'empresas y renta',
     titleHighlightClass: 'text-teal-400',
-    defaultView: 'list',
-    supportsMap: false,
-  },
-  {
-    id: 'salary-income',
-    path: '/salary-income',
-    navLabel: 'Renta y salarios',
-    titleLead: '¿Dónde hay más',
-    titleHighlight: 'renta',
-    titleHighlightClass: 'text-sky-400',
     defaultView: 'list',
     supportsMap: false,
   },
@@ -62,11 +51,8 @@ export function getMetricById(metricId: MetricId): MetricDefinition {
 
 export function metricIdFromPath(pathname: string): MetricId {
   const normalized = pathname.replace(/\/+$/, '') || '/';
-  if (normalized === '/business-power') {
-    return 'business-power';
-  }
-  if (normalized === '/salary-income') {
-    return 'salary-income';
+  if (normalized === '/local-economy') {
+    return 'local-economy';
   }
   return 'public-spending';
 }

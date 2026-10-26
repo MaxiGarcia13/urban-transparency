@@ -1,0 +1,15 @@
+---
+import { LocalEconomyAsidePanel, LocalEconomyPreview } from '@/components/metric-shell';
+import { PRODUCT_NAME } from '@/config/product';
+import MetricShell from '@/layouts/metric-shell.astro';
+
+const title = `${PRODUCT_NAME} - Economía local`;
+const description = 'Empresas activas y renta neta media por municipio en España';
+---
+
+<MetricShell title={title} description={description}>
+  <div slot="aside-panel" class="contents">
+    <LocalEconomyAsidePanel client:load />
+  </div>
+  <LocalEconomyPreview client:load class="h-full" />
+</MetricShell>

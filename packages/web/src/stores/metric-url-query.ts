@@ -1,10 +1,11 @@
 import { CANTABRIA_REGION_ID, MAP_REGIONS } from '@/config/regions';
 import {
-  BUSINESS_POWER_SECTOR_QUERY_KEY,
-  BUSINESS_POWER_YEAR_QUERY_KEY,
-  parseBusinessPowerFiltersFromSearchParams,
-  serializeBusinessPowerFiltersQuery,
-} from '@/domain/business-power-filters-query';
+  LOCAL_ECONOMY_MEASURE_QUERY_KEY,
+  LOCAL_ECONOMY_SECTOR_QUERY_KEY,
+  LOCAL_ECONOMY_YEAR_QUERY_KEY,
+  parseLocalEconomyFiltersFromSearchParams,
+  serializeLocalEconomyFiltersQuery,
+} from '@/domain/local-economy-filters-query';
 import {
   MAP_REGION_QUERY_KEY,
   parseMapRegionIdFromSearchParams,
@@ -19,17 +20,10 @@ import {
   parsePublicContractFiltersFromSearchParams,
   serializePublicContractFiltersQuery,
 } from '@/domain/public-contract-filters-query';
-import {
-  parseSalaryIncomeFiltersFromSearchParams,
-  SALARY_INCOME_MEASURE_QUERY_KEY,
-  SALARY_INCOME_YEAR_QUERY_KEY,
-  serializeSalaryIncomeFiltersQuery,
-} from '@/domain/salary-income-filters-query';
-import { $businessPowerFilters } from './business-power-filters';
+import { $localEconomyFilters } from './local-economy-filters';
 import { $metricView } from './metric-view';
 import { $publicContractFilters } from './public-contract-filters';
 import { $regionId } from './region';
-import { $salaryIncomeFilters } from './salary-income-filters';
 
 const KNOWN_REGION_IDS = MAP_REGIONS.map((region) => region.id);
 const DEFAULT_VIEW = 'map' as const;
@@ -41,10 +35,9 @@ export const METRIC_URL_QUERY_KEYS = [
   'status',
   'yearFrom',
   'yearTo',
-  BUSINESS_POWER_YEAR_QUERY_KEY,
-  BUSINESS_POWER_SECTOR_QUERY_KEY,
-  SALARY_INCOME_YEAR_QUERY_KEY,
-  SALARY_INCOME_MEASURE_QUERY_KEY,
+  LOCAL_ECONOMY_YEAR_QUERY_KEY,
+  LOCAL_ECONOMY_SECTOR_QUERY_KEY,
+  LOCAL_ECONOMY_MEASURE_QUERY_KEY,
 ] as const;
 
 export function hydrateMetricStoresFromUrl(
@@ -72,11 +65,8 @@ export function hydrateMetricStoresFromUrl(
   $publicContractFilters.set(
     parsePublicContractFiltersFromSearchParams(params),
   );
-  $businessPowerFilters.set(
-    parseBusinessPowerFiltersFromSearchParams(params),
-  );
-  $salaryIncomeFilters.set(
-    parseSalaryIncomeFiltersFromSearchParams(params),
+  $localEconomyFilters.set(
+    parseLocalEconomyFiltersFromSearchParams(params),
   );
 }
 
@@ -113,24 +103,17 @@ export function buildMetricQueryString(): string {
     params.set('yearTo', contractFilters.yearTo);
   }
 
-  const businessFilters = serializeBusinessPowerFiltersQuery(
-    $businessPowerFilters.get(),
+  const economyFilters = serializeLocalEconomyFiltersQuery(
+    $localEconomyFilters.get(),
   );
-  if (businessFilters.year) {
-    params.set(BUSINESS_POWER_YEAR_QUERY_KEY, businessFilters.year);
+  if (economyFilters.year) {
+    params.set(LOCAL_ECONOMY_YEAR_QUERY_KEY, economyFilters.year);
   }
-  if (businessFilters.sector) {
-    params.set(BUSINESS_POWER_SECTOR_QUERY_KEY, businessFilters.sector);
+  if (economyFilters.sector) {
+    params.set(LOCAL_ECONOMY_SECTOR_QUERY_KEY, economyFilters.sector);
   }
-
-  const salaryFilters = serializeSalaryIncomeFiltersQuery(
-    $salaryIncomeFilters.get(),
-  );
-  if (salaryFilters.year) {
-    params.set(SALARY_INCOME_YEAR_QUERY_KEY, salaryFilters.year);
-  }
-  if (salaryFilters.measure) {
-    params.set(SALARY_INCOME_MEASURE_QUERY_KEY, salaryFilters.measure);
+  if (economyFilters.measure) {
+    params.set(LOCAL_ECONOMY_MEASURE_QUERY_KEY, economyFilters.measure);
   }
 
   return params.toString();

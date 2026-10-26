@@ -2,7 +2,7 @@
 import type { Component } from 'vue';
 import type { MetricId } from '@/config/metrics';
 import { useStore } from '@nanostores/vue';
-import { Building2, ChevronDown, ChevronUp, Coins, Wallet } from 'lucide-vue-next';
+import { Building2, ChevronDown, ChevronUp, Coins } from 'lucide-vue-next';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import { metricIdFromPath, METRICS } from '@/config/metrics';
@@ -20,8 +20,7 @@ ensureMetricUrlStateSync();
 
 const METRIC_ICONS: Record<MetricId, Component> = {
   'public-spending': Coins,
-  'business-power': Building2,
-  'salary-income': Wallet,
+  'local-economy': Building2,
 };
 
 const isPanelCollapsed = useStore($metricAsideCollapsed);

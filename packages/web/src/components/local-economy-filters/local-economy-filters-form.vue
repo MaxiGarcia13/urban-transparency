@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { DirceSectorCode } from '@urban-transparency/shared';
 import type { SalaryIncomeMeasure } from '@/domain/salary-income-filters';
 import { computed } from 'vue';
 import { Label } from '@/components/ui/label';
@@ -9,13 +10,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { SALARY_INCOME_MEASURE_OPTIONS } from '@/domain/salary-income-filters';
+import {
+  LOCAL_ECONOMY_MEASURE_OPTIONS,
+  LOCAL_ECONOMY_SECTOR_OPTIONS,
+} from '@/domain/local-economy-filters';
 
 defineProps<{
   availableYears: number[];
 }>();
 
 const periodYear = defineModel<number | null>('periodYear', { default: null });
+const sectorCode = defineModel<DirceSectorCode>('sectorCode', {
+  default: 'TOTAL',
+});
 const measure = defineModel<SalaryIncomeMeasure>('measure', {
   default: 'person',
 });
@@ -34,10 +41,10 @@ const yearValue = computed({
 </script>
 
 <template>
-  <div class="flex flex-col gap-6">
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
     <div class="flex flex-col gap-2">
       <Label class="text-sm text-muted-foreground">
-        Año
+        Año (DIRCE y ADRH)
       </Label>
       <Select v-model="yearValue">
         <SelectTrigger class="w-full rounded-xl">
@@ -60,7 +67,27 @@ const yearValue = computed({
 
     <div class="flex flex-col gap-2">
       <Label class="text-sm text-muted-foreground">
-        Indicador
+        Sector (DIRCE)
+      </Label>
+      <Select v-model="sectorCode">
+        <SelectTrigger class="w-full rounded-xl">
+          <SelectValue placeholder="Total" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem
+            v-for="option in LOCAL_ECONOMY_SECTOR_OPTIONS"
+            :key="option.code"
+            :value="option.code"
+          >
+            {{ option.label }}
+          </SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+
+    <div class="flex flex-col gap-2 sm:col-span-2 lg:col-span-1">
+      <Label class="text-sm text-muted-foreground">
+        Indicador de renta (ADRH)
       </Label>
       <Select v-model="measure">
         <SelectTrigger class="w-full rounded-xl">
@@ -68,7 +95,7 @@ const yearValue = computed({
         </SelectTrigger>
         <SelectContent>
           <SelectItem
-            v-for="option in SALARY_INCOME_MEASURE_OPTIONS"
+            v-for="option in LOCAL_ECONOMY_MEASURE_OPTIONS"
             :key="option.code"
             :value="option.code"
           >

@@ -1,5 +1,5 @@
 import { listenKeys } from 'nanostores';
-import { $businessPowerFilters } from './business-power-filters';
+import { $localEconomyFilters } from './local-economy-filters';
 import {
   buildMetricQueryString,
   hydrateMetricStoresFromUrl,
@@ -8,7 +8,6 @@ import {
 import { $metricView } from './metric-view';
 import { $publicContractFilters } from './public-contract-filters';
 import { $regionId } from './region';
-import { $salaryIncomeFilters } from './salary-income-filters';
 
 const SEARCH_QUERY_DEBOUNCE_MS = 300;
 
@@ -63,13 +62,8 @@ export function ensureMetricUrlStateSync(): void {
     writeStoresToUrlDebounced,
   );
   listenKeys(
-    $businessPowerFilters,
-    ['periodYear', 'sectorCode'],
-    writeStoresToUrl,
-  );
-  listenKeys(
-    $salaryIncomeFilters,
-    ['periodYear', 'measure'],
+    $localEconomyFilters,
+    ['periodYear', 'sectorCode', 'measure'],
     writeStoresToUrl,
   );
 
