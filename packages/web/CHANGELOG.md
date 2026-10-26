@@ -1,3 +1,13 @@
+## 0.4.0 (2026-10-26)
+
+### 🚀 Features
+
+- Introduce local economy metrics and components ([f8eb8b0](https://github.com/MaxiGarcia13/urban-transparency/commit/f8eb8b0))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.3.0 (2026-10-23)
 
 ### 🚀 Features
